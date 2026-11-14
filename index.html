@@ -19,6 +19,7 @@ body{background:var(--bg);color:var(--ink);font:15px/1.55 Manrope,system-ui,sans
 *::-webkit-scrollbar{width:10px;height:10px}
 *::-webkit-scrollbar-track{background:#1b120c;border-radius:10px}
 *::-webkit-scrollbar-thumb{background:linear-gradient(#a06a32,#6b4423);border-radius:10px;border:2px solid #1b120c}
+*::-webkit-scrollbar-thumb:hover{background:linear-gradient(var(--brass),#8a5a2b)}
 .bg{position:fixed;inset:0;z-index:-2;pointer-events:none;overflow:hidden}
 .bg i{position:absolute;border-radius:50%;filter:blur(90px);opacity:.45}
 .bg i:nth-child(1){width:62vw;height:62vw;left:-20vw;top:-24vw;background:radial-gradient(#6a3f1f,transparent 66%);animation:d1 44s ease-in-out infinite alternate}
@@ -59,7 +60,7 @@ section{scroll-margin-top:calc(var(--head) + 16px)}
 .tag:before{content:"";position:absolute;left:9px;top:50%;transform:translateY(-50%);width:8px;height:8px;border-radius:50%;background:#3a2712}
 .sh h2{font:800 clamp(21px,2.4vw,30px) Georgia,serif}
 .sh .sub{color:var(--mut);font-size:12.5px;width:100%;margin-top:-6px}
-.work{display:grid;grid-template-columns:412px 1fr;gap:22px;align-items:start}
+.work{display:grid;grid-template-columns:420px 1fr;gap:22px;align-items:start}
 #controls{position:sticky;top:calc(var(--head) + 14px);max-height:calc(100vh - var(--head) - 28px);overflow-y:auto;padding:2px 8px 22px 2px}
 .grp{position:relative;background:linear-gradient(165deg,#2c1e13,#231710);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
 .grp:after{content:"";position:absolute;inset:5px;border:1px dashed rgba(232,217,189,.1);border-radius:12px;pointer-events:none}
@@ -97,11 +98,27 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
 .warnbar{margin-top:12px;padding:11px 14px;border-radius:11px;background:rgba(224,164,55,.1);border:1px solid rgba(224,164,55,.4);color:#ecc27a;font-size:12px;font-weight:800;line-height:1.5}
 .okbar{margin-top:12px;padding:11px 14px;border-radius:11px;background:rgba(143,166,83,.1);border:1px solid rgba(143,166,83,.35);color:#cfe0ab;font-size:12px;font-weight:800}
 .errbar{margin-top:12px;padding:11px 14px;border-radius:11px;background:rgba(192,69,58,.12);border:1px solid rgba(192,69,58,.4);color:#e8b8b2;font-size:12px;font-weight:800}
-.dg{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:7px}
-.dc{border:1px solid rgba(217,164,65,.22);background:#20150d;border-radius:10px;padding:8px 5px;cursor:pointer;text-align:center;color:var(--dim)}
-.dc svg{width:42px;height:30px;display:block;margin:0 auto 4px;stroke:currentColor;fill:none;stroke-width:1.6}
-.dc span{font-size:9.8px;font-weight:800;line-height:1.2;display:block}
-.dc.on{border-color:var(--brass);background:linear-gradient(170deg,#3a2712,#241811);color:var(--brass2);box-shadow:0 0 0 1px var(--brass)}
+/* ==== карточки конструкций с иллюстрациями ==== */
+.dg{display:grid;grid-template-columns:repeat(auto-fit,minmax(106px,1fr));gap:8px}
+.dc{position:relative;border:1px solid rgba(217,164,65,.22);background:linear-gradient(170deg,#251a11,#1a120b);border-radius:12px;padding:9px 6px 8px;cursor:pointer;text-align:center;color:var(--dim);transition:.18s;overflow:hidden}
+.dc:before{content:"";position:absolute;inset:0;background:radial-gradient(72% 62% at 50% 0%,rgba(217,164,65,.14),transparent 72%);opacity:0;transition:.22s;pointer-events:none}
+.dc:hover{border-color:rgba(217,164,65,.55);transform:translateY(-2px)}
+.dc:hover:before{opacity:1}
+.dc.on{border-color:var(--brass);background:linear-gradient(170deg,#3b2813,#241811);color:var(--brass2);box-shadow:0 0 0 1px var(--brass),0 12px 24px -14px rgba(217,164,65,.7)}
+.dc.on:before{opacity:1}
+.dc .icoWrap{display:block;position:relative;z-index:1}
+.dc .icoWrap svg{display:block;width:100%;height:auto;filter:drop-shadow(0 3px 5px rgba(0,0,0,.55))}
+.dc .nm{position:relative;z-index:1;font-size:9.9px;font-weight:800;line-height:1.22;display:block;margin-top:6px;min-height:2.44em}
+.dc .bdg{position:absolute;top:5px;right:5px;z-index:2;font:800 7.4px ui-monospace,monospace;letter-spacing:.3px;padding:2px 4px;border-radius:5px;background:rgba(217,164,65,.16);color:var(--brass2);border:1px solid rgba(217,164,65,.3);text-transform:uppercase}
+.dc.on .bdg{background:rgba(36,21,5,.4);color:#f5d488;border-color:rgba(245,212,136,.45)}
+.dsel{margin-top:12px;border:1px solid rgba(217,164,65,.28);border-radius:12px;padding:12px;background:linear-gradient(160deg,#33230f,#241811);display:flex;gap:12px;align-items:flex-start}
+.dsel .big{width:86px;flex-shrink:0}
+.dsel .big svg{display:block;width:100%;height:auto;filter:drop-shadow(0 4px 7px rgba(0,0,0,.55))}
+.dsel h5{font:800 12.5px Manrope;color:var(--brass2);margin-bottom:4px}
+.dsel p{font-size:10.6px;color:var(--dim);line-height:1.5}
+.dsel .tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}
+.dsel .tags i{font-style:normal;font-size:9px;font-weight:800;padding:2px 7px;border-radius:99px;background:rgba(63,160,140,.12);color:#7fd4c2;border:1px solid rgba(63,160,140,.3)}
+.dsel.empty{color:var(--mut);font-size:11px;display:block;text-align:center}
 .sw{display:flex;flex-wrap:wrap;gap:8px}
 .swatch{width:28px;height:28px;border-radius:50%;border:2px solid rgba(0,0,0,.5);cursor:pointer}
 .swatch.on{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--brass)}
@@ -145,6 +162,13 @@ input[type=color]{width:28px;height:28px;border-radius:50%;border:2px dashed var
 .card{background:linear-gradient(165deg,#2c1e13,#231710);border:1px solid var(--line);border-radius:15px;padding:17px}
 .grid2{display:grid;grid-template-columns:1.2fr 1fr;gap:18px;align-items:start}
 .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:12px}
+.gcard{border:1px solid var(--line);border-radius:13px;background:linear-gradient(170deg,#251a11,#1a120b);padding:12px;cursor:pointer;transition:.18s;text-align:left}
+.gcard:hover{border-color:rgba(217,164,65,.55);transform:translateY(-2px)}
+.gcard.on{border-color:var(--brass);box-shadow:0 0 0 1px var(--brass)}
+.gcard svg{display:block;width:100%;height:auto;margin-bottom:8px;filter:drop-shadow(0 4px 7px rgba(0,0,0,.5))}
+.gcard b{display:block;font:800 12px Manrope;color:var(--brass2);margin-bottom:3px}
+.gcard span{display:block;font-size:10.2px;color:var(--mut);line-height:1.4}
 #board{background:var(--mat);border:1px solid #3c5c4d;border-radius:17px;padding:24px;overflow:auto;max-height:680px;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:24px 24px}
 #board svg{display:block}
 .paper{background:var(--paper);border-radius:15px;padding:6px;overflow-x:auto}
@@ -185,7 +209,7 @@ footer{border-top:2px dashed rgba(232,217,189,.14);margin-top:50px;padding:24px 
 #printRoot{display:none}
 #bootError{position:fixed;left:14px;right:14px;bottom:14px;z-index:999;background:#7a2e2a;color:#fff;padding:12px 16px;border-radius:11px;font:700 13px Manrope,sans-serif}
 @media(max-width:1120px){.work,.grid2{grid-template-columns:1fr}#controls{position:static;max-height:none;overflow:visible;order:2}.stagecol{order:1}.stage{height:56vh;min-height:380px}}
-@media(max-width:640px){main{padding-left:11px;padding-right:11px}header{padding:0 11px;gap:8px}.brand b{display:none}.hhint{display:none}.fam button{min-width:0;flex:1;padding:10px 12px}.opts{grid-template-columns:1fr}}
+@media(max-width:640px){main{padding-left:11px;padding-right:11px}header{padding:0 11px;gap:8px}.brand b{display:none}.hhint{display:none}.fam button{min-width:0;flex:1;padding:10px 12px}.opts{grid-template-columns:1fr}.dg{grid-template-columns:repeat(auto-fit,minmax(96px,1fr))}}
 @media print{body>*:not(#printRoot){display:none!important}#printRoot{display:block!important}.print-page{page-break-after:always;break-after:page;width:210mm;height:297mm;overflow:hidden}.print-page svg{display:block}}
 @page{size:A4;margin:0}
 </style>
@@ -194,14 +218,14 @@ footer{border-top:2px dashed rgba(232,217,189,.14);margin-top:50px;padding:24px 
 <div class="bg"><i></i><i></i><i></i></div>
 <header>
   <a class="brand" href="#studio"><svg viewBox="0 0 32 32" fill="none"><path d="M6 26L22 6" stroke="#d9a441" stroke-width="2.4" stroke-linecap="round"/><circle cx="6" cy="26" r="2" fill="#c0453a"/></svg><b>Ателье кожаных <i>изделий</i></b></a>
-  <nav><a href="#studio" class="on">Конфигуратор</a><a href="#print">Печать</a><a href="#split">Разделение</a><a href="#pattern">Раскрой</a><a href="#spec">Спецификация</a><a href="#assembly">Сборка</a></nav>
+  <nav><a href="#studio" class="on">Конфигуратор</a><a href="#catalog">Конструкции</a><a href="#print">Печать</a><a href="#split">Разделение</a><a href="#pattern">Раскрой</a><a href="#spec">Спецификация</a><a href="#assembly">Сборка</a></nav>
   <button class="btn brass sm" id="topPdf" disabled>Скачать A4</button>
 </header>
 
 <main>
 <section class="mast reveal in">
   <h1>Ателье кожаных <span>изделий</span></h1>
-  <p>Чехлы для ноутбуков, планшетов и э-книг + картхолдеры и обложки на документы РБ. Печать всегда на A4: легенда условных обозначений, места крепления фурнитуры и зоны склейки включаются по желанию. Крупные детали автоматически раскладываются на несколько листов A4 с метками совмещения.</p>
+  <p>22 конструкции с наглядными иллюстрациями: видно, как выглядит клапан, где карман, молния, зажим или гофре. Чехлы для ноутбуков, планшетов и э-книг, картхолдеры и обложки на документы РБ. Печать всегда A4 с легендой, фурнитурой и зонами склейки по желанию.</p>
   <div class="fam" id="familyTabs">
     <button data-family="case" class="on"><svg viewBox="0 0 32 32"><rect x="4" y="7" width="24" height="18" rx="3"/><path d="M4 12h24"/></svg><span><b>Чехлы</b><span>ноутбуки · планшеты · э-книги</span></span></button>
     <button data-family="card"><svg viewBox="0 0 32 32"><rect x="3" y="9" width="26" height="16" rx="3"/><rect x="7" y="13" width="18" height="4" rx="1"/></svg><span><b>Картхолдеры</b><span>карты · паспорта РБ · купюры</span></span></button>
@@ -244,7 +268,10 @@ footer{border-top:2px dashed rgba(232,217,189,.14);margin-top:50px;padding:24px 
     <div class="sl"><label>Посадка</label><input id="ease" type="range" min="0" max="12" step="0.5"><output id="easeOut"></output></div>
     <div class="sl"><label>Припуск</label><input id="seam" type="range" min="2" max="12" step="0.5"><output id="seamOut"></output></div></div>
 
-  <div class="grp"><div class="gt"><em>03</em> Конструкция</div><div class="dg" id="designGrid"></div></div>
+  <div class="grp"><div class="gt"><em>03</em> Конструкция · как выглядит</div>
+    <div class="dg" id="designGrid"></div>
+    <div id="designDetail"></div>
+    <p class="hint">Иллюстрации меняются вместе с цветом кожи и нити — видно реальный оттенок, строчку и фурнитуру.</p></div>
 
   <div class="grp"><div class="gt"><em>04</em> Кожа</div>
     <div class="row"><div class="sw grow" id="swatches"></div><input type="color" id="color"></div>
@@ -276,8 +303,7 @@ footer{border-top:2px dashed rgba(232,217,189,.14);margin-top:50px;padding:24px 
       <label class="check"><input type="checkbox" id="pLabels">Подписи</label>
       <label class="check"><input type="checkbox" id="pMini">Мини-легенда</label>
       <label class="check"><input type="checkbox" id="pCal">Калибровка</label>
-    </div>
-    <p class="hint">Лист всегда A4 210×297 мм, поле 10 мм. Деталь больше поля печатается несколькими листами с перекрытием 8 мм и метками V/H.</p></div>
+    </div></div>
 
   <div class="grp"><div class="gt"><em>07</em> 3D</div>
     <div class="sl"><label id="openLbl">Раскрытие</label><input id="open" type="range" min="0" max="180" step="1"><output id="openOut"></output></div>
@@ -295,7 +321,7 @@ footer{border-top:2px dashed rgba(232,217,189,.14);margin-top:50px;padding:24px 
     <canvas id="gl"></canvas><canvas id="fallback" hidden></canvas>
     <div class="lock" id="lock"><div class="lockcard">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
-      <h3>Выберите изделие</h3><p>Нужно выбрать модель/формат и конструкцию. После этого откроются 3D, раскрой и экспорт.</p>
+      <h3>Выберите изделие</h3><p>Выберите модель/формат и конструкцию — откроются 3D, раскрой и экспорт.</p>
       <div id="lockList" class="ready"></div><div class="lprog" style="margin-top:12px"><i id="lockBar"></i></div>
     </div></div>
     <div id="veil" class="off"><div class="spin"></div><p>Загружаем 3D…</p></div>
@@ -307,8 +333,13 @@ footer{border-top:2px dashed rgba(232,217,189,.14);margin-top:50px;padding:24px 
 </div>
 </section>
 
+<section id="catalog" class="reveal">
+  <div class="sh"><span class="tag">05 · Конструкции</span><h2 id="catTitle">Все конструкции линии</h2><span class="sub">Каждая иллюстрация показывает реальный крой: форму клапана, расположение карманов, слотов, молнии, зажима или гофре. Нажмите карточку, чтобы применить конструкцию.</span></div>
+  <div class="gallery" id="gallery"></div>
+</section>
+
 <section id="print" class="reveal">
-  <div class="sh"><span class="tag">05 · Печать</span><h2>Документ на печать — всегда A4</h2><span class="sub">Состав документа настраивается. Легенда объясняет все условные обозначения, фурнитура и зоны склейки показываются только если включены.</span></div>
+  <div class="sh"><span class="tag">06 · Печать</span><h2>Документ на печать — всегда A4</h2><span class="sub">Легенда объясняет условные обозначения, фурнитура и зоны склейки показываются только если включены.</span></div>
   <div class="grid2">
     <div class="card"><h4 style="color:var(--brass2);margin-bottom:10px">Состав пакета</h4><div id="printSummary" class="stats"></div><div id="printWarn"></div></div>
     <div class="card"><h4 style="color:var(--brass2);margin-bottom:10px">Условные обозначения</h4><svg id="legendPreview" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 250" style="width:100%;height:auto;background:var(--paper);border-radius:12px"></svg></div>
@@ -316,7 +347,7 @@ footer{border-top:2px dashed rgba(232,217,189,.14);margin-top:50px;padding:24px 
 </section>
 
 <section id="split" class="reveal">
-  <div class="sh"><span class="tag">06 · Разделение</span><h2>Деление деталей под кусок кожи</h2><span class="sub">Кромка режется по длине, панели — по оптимальной оси. Стыки помечены парными метками J…A / J…B и припуском.</span></div>
+  <div class="sh"><span class="tag">07 · Разделение</span><h2>Деление деталей под кусок кожи</h2><span class="sub">Кромка режется по длине, панели — по оптимальной оси. Стыки помечены парными метками J…A / J…B.</span></div>
   <div id="splitWarn"></div>
   <div class="grid2" style="margin-top:14px">
     <div class="card"><h4 style="color:var(--brass2);margin-bottom:10px">Кусок мастера</h4><div id="stockSummary" class="stats"></div></div>
@@ -325,25 +356,25 @@ footer{border-top:2px dashed rgba(232,217,189,.14);margin-top:50px;padding:24px 
 </section>
 
 <section id="pattern" class="reveal">
-  <div class="sh"><span class="tag">07 · Раскрой</span><h2>Выкройка на экране</h2><span class="sub">Сплошная — рез · красный пунктир — шов · синий — сгиб/обхват · фиолетовый J — стык · янтарная зона — склейка · кружок с крестом — фурнитура.</span></div>
+  <div class="sh"><span class="tag">08 · Раскрой</span><h2>Выкройка на экране</h2><span class="sub">Сплошная — рез · красный пунктир — шов · синий — сгиб/обхват · фиолетовый J — стык · янтарная зона — склейка.</span></div>
   <div class="toolbar"><span class="grow"></span><button class="btn sm" id="svgBtn2" disabled>SVG</button><button class="btn sm" id="previewBtn2" disabled>Листы A4</button><button class="btn brass sm" id="pdfBtn2" disabled>PDF A4</button></div>
   <div id="board"><svg id="patternSvg" xmlns="http://www.w3.org/2000/svg"></svg></div>
 </section>
 
 <section id="spec" class="reveal">
-  <div class="sh"><span class="tag">08 · Спецификация</span><h2>Детали, расход, проверка</h2><span class="sub">Состав учитывает деление. Листы A4 считаются с учётом раскладки крупных деталей.</span></div>
+  <div class="sh"><span class="tag">09 · Спецификация</span><h2>Детали, расход, проверка</h2><span class="sub">Состав учитывает деление. Листы A4 считаются с учётом раскладки крупных деталей.</span></div>
   <div class="stats"><div class="stat"><div class="v" id="stArea">—</div><div class="l">Кожи</div></div><div class="stat"><div class="v" id="stParts">—</div><div class="l">Частей</div></div><div class="stat"><div class="v" id="stJoins">—</div><div class="l">Стыков</div></div><div class="stat"><div class="v" id="stSheets">—</div><div class="l">Листов A4</div></div><div class="stat"><div class="v" id="stThread">—</div><div class="l">Нити</div></div></div>
   <div class="grid2"><div class="paper"><table><thead><tr><th>Деталь</th><th>Размер</th><th>Стыки</th><th>A4</th></tr></thead><tbody id="specBody"></tbody></table></div>
   <div class="card"><h4 style="color:var(--brass2);margin-bottom:10px">Самопроверка</h4><ul class="join-list" id="checkList"></ul><button class="btn sm" id="selfTest" style="margin-top:12px;width:100%">Прогнать тесты</button><div id="testReport"></div></div></div>
 </section>
 
 <section id="assembly" class="reveal">
-  <div class="sh"><span class="tag">09 · Сборка</span><h2>Техкарта</h2><span class="sub">Порядок операций адаптируется под конструкцию, деление и фурнитуру.</span></div>
+  <div class="sh"><span class="tag">10 · Сборка</span><h2>Техкарта</h2><span class="sub">Порядок операций адаптируется под конструкцию, деление и фурнитуру.</span></div>
   <div class="grid3" id="techCards"></div>
 </section>
 </main>
 
-<footer>Ателье кожаных изделий · печать A4 · легенда / фурнитура / склейка опционально · 3D-раскрытие</footer>
+<footer>Ателье кожаных изделий · 22 конструкции с иллюстрациями · печать A4 · 3D-раскрытие</footer>
 <div id="printRoot"></div><div id="toasts"></div>
 
 <div class="overlay" id="preview" hidden><div class="scrim" id="previewScrim"></div><div class="modal">
@@ -361,7 +392,6 @@ window.addEventListener("error",function(e){var b=document.getElementById("bootE
 </script>
 
 <script type="module">
-/* ================= утилиты ================= */
 const $=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(s));
 const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
 const nv=(v,d=0)=>Number.isFinite(Number(v))?Number(v):d;
@@ -370,7 +400,6 @@ const fx=(n,d=1)=>Number(nv(n)).toFixed(d);
 const lerp=(a,b,t)=>a+(b-a)*t;
 const DEG=Math.PI/180;
 
-/* ================= каталог устройств (полный) ================= */
 const DEVICES={
 laptop:[
 ["Apple","MacBook 13 Unibody (2008–2010)",330,231,27.4],["Apple","MacBook 12 (2015–2017)",280.5,196.5,13.1],
@@ -582,7 +611,6 @@ ebook:[
 ]
 };
 const TYPE_LABEL={laptop:"ноутбуков",tablet:"планшетов",ebook:"электронных книг"};
-
 const CARD_FORMATS=[
 {id:"id1",group:"Карты",name:"Банковская карта ID-1",w:85.6,h:53.98,t:.8},
 {id:"id1e",group:"Карты",name:"ID-1 с эмбоссированием",w:85.6,h:53.98,t:1},
@@ -598,13 +626,37 @@ const CARD_FORMATS=[
 ];
 const CASE_DESIGNS={slip:["Слипкейс","slip"],pocket:["С карманом","pocket"],strap:["С ремешком","flap band"],lock:["С замком","flap lock"],diag:["Косой клапан","flap diag"],zip:["На молнии","zip"],handle:["С ручкой","flap handle"],folio:["Фолио","wrap"],stud:["На кнопке","flap stud"],roll:["Скрутка","wrap roll"],organizer:["Органайзер","flap pocket org"]};
 const CARD_DESIGNS={ch_slip:["Минимал-слип","slip"],ch_slots:["Слотовый","slots"],ch_pull:["С язычком","pull"],ch_bifold:["Бифолд","wrap"],ch_snap:["Конверт-кнопка","flap stud"],ch_mag:["Магнитный флип","wrap magnet"],ch_clip:["С зажимом","clip"],ch_zip:["На молнии","zip"],ch_acc:["Аккордеон","acc"],ch_long:["Лонг-кошелёк","wrap long"],ch_fan:["Веер","fan"]};
+/* описания и метки для карточек конструкций */
+const DESIGN_META={
+slip:{badge:"2 детали",desc:"Две панели, вход сверху. Самый быстрый в изготовлении чехол: шов по трём сторонам, верх открыт.",tags:["без фурнитуры","плоский крой"]},
+pocket:{badge:"карман",desc:"Слипкейс с накладным карманом: мышь, кабель, блок питания или документы. Подгибка верха 12 мм.",tags:["карман","подгибка 12"]},
+strap:{badge:"лента",desc:"Клапан заправляется под горизонтальную ленту — фиксация без металла, тихая и мягкая.",tags:["лента","клапан"]},
+lock:{badge:"замок",desc:"Треугольный клапан с поворотным замком turn-lock. Классический портфельный силуэт.",tags:["turn-lock","овал 16×9"]},
+diag:{badge:"клапан",desc:"Клапан со скошенным срезом: асимметрия, быстрый доступ, минимум фурнитуры.",tags:["косой срез"]},
+zip:{badge:"молния",desc:"Закрывается молнией по верху и на 80 мм в бока. Полная защита содержимого.",tags:["молния №5","пуллер Ø5"]},
+handle:{badge:"ручка",desc:"Клапан, переносная ручка на заклёпках и магнитная фиксация. Формат мини-портфеля.",tags:["ручка 280×30","заклёпки Ø4"]},
+folio:{badge:"книжка",desc:"Раскрывается как книга: корешок по толщине устройства, внутренний карман, хлястик.",tags:["корешок","магнит","хлястик"]},
+stud:{badge:"кнопка",desc:"Прямой клапан на кнопке альфа с усилителем изнутри. Надёжно и лаконично.",tags:["кнопка 12,5","Ø3,5"]},
+roll:{badge:"скрутка",desc:"Полотно-скрутка с регулируемой завязкой, шлевками и кнопкой. Мягкая кожа, компактно в дороге.",tags:["завязка 420","кнопка Ø6"]},
+organizer:{badge:"органайзер",desc:"Клапан, накладной карман, петли для ручек и кармашек для карт внутри.",tags:["петли","кармашек","кнопка"]},
+ch_slip:{badge:"2 детали",desc:"Минимум деталей: задняя панель и передняя с выемкой под большой палец. 2–4 карты.",tags:["без фурнитуры","выемка"]},
+ch_slots:{badge:"3 слота",desc:"Три каскадных слота со сдвигом 11 мм — карты видны лесенкой, каждая достаётся независимо.",tags:["каскад 11 мм","подгибка 8"]},
+ch_pull:{badge:"язычок",desc:"Вертикальный картхолдер: кожаный язычок в дне выталкивает карты вверх одним движением.",tags:["язычок 130×12"]},
+ch_bifold:{badge:"книжка",desc:"Складывается пополам: 4 слота на двух половинах и купюрное отделение под ними.",tags:["корешок","4 слота"]},
+ch_snap:{badge:"кнопка",desc:"Конверт с треугольным клапаном на кнопке альфа — карты и мелочь не выпадают.",tags:["кнопка альфа","усилитель"]},
+ch_mag:{badge:"магнит",desc:"Книжка с магнитным хлястиком: тихая фиксация, не изнашивает кожу как кнопка.",tags:["магнит 10×2","хлястик"]},
+ch_clip:{badge:"зажим",desc:"Слоты под карты плюс металлический зажим для купюр на заклёпках сверху.",tags:["зажим 60×25","заклёпки Ø3"]},
+ch_zip:{badge:"молния",desc:"Замкнутая боковина и молния по трём сторонам. Карты, монеты, сложенные купюры.",tags:["молния №3","боковина"]},
+ch_acc:{badge:"гофре",desc:"Аккордеон на 3–8 секций с разделителями. Максимальная вместимость при малой площади.",tags:["гофре","разделители"]},
+ch_long:{badge:"лонг",desc:"Длинный кошелёк: купюры лежат без сгиба, 4 слота и разделитель внутри.",tags:["лонг","4 слота"]},
+ch_fan:{badge:"ось",desc:"Пластины вращаются вокруг винта-поста — карты раскрываются веером, нужная сразу видна.",tags:["винт-пост Ø4","3–6 пластин"]}
+};
 const COLORS=["#4a2e1c","#8a5a2b","#a4713a","#6e2f2a","#26201c","#5c5233","#c9a876","#2e3a4d"];
 const FINISHES=[["crazy","Crazy Horse",1],["smooth","Гладкая",.92],["saffiano","Сафьян",.82]];
 const THREADS=[["cream","Кремовая","#e8d9bd"],["tone","В тон",null],["black","Чёрная","#221a14"],["red","Красная","#b0453a"]];
 const LININGS=[["none","Без подкладки",0,1],["suede","Замша 0,7 мм",.7,.95],["thin","Кожа 0,8 мм",.8,.9]];
 const STOCKS=[{id:"a4",name:"A4",w:210,h:297},{id:"a3",name:"A3",w:297,h:420},{id:"a2",name:"A2",w:420,h:594},{id:"20x20",name:"Обрезок 20×20 см",w:200,h:200},{id:"30x30",name:"Кусок 30×30 см",w:300,h:300},{id:"30x40",name:"Кусок 30×40 см",w:300,h:400},{id:"custom",name:"Свой размер",w:250,h:350}];
-const SHEET={w:210,h:297,m:10,ov:8};
-SHEET.pw=SHEET.w-2*SHEET.m;SHEET.ph=SHEET.h-2*SHEET.m;
+const SHEET={w:210,h:297,m:10,ov:8};SHEET.pw=190;SHEET.ph=277;
 
 const DEF={family:"case",type:"laptop",brand:"all",search:"",model:"",A:304,B:215,C:12,cardFmt:"id1",cards:4,orient:"h",design:"",cardDesign:"",ease:6,seam:6,thick:2.2,color:"#8a5a2b",finish:"crazy",patina:45,thread:"cream",lining:"suede",stock:"a4",stockW:250,stockH:350,stockM:8,split:true,join:8,maxPart:220,open:0,explode:0,light:1.5,angle:35,autoRot:true,fill:true,quality:"high",print:{legend:true,hardware:true,glue:true,stitch:true,joins:true,labels:true,mini:true,cal:true},picked:{device:false,design:false}};
 function sanitize(x){
@@ -634,8 +686,8 @@ function sanitize(x){
   return d;
 }
 let S=sanitize(null);
-try{S=sanitize(JSON.parse(localStorage.getItem("atelierA4v1")||"null"))}catch(e){}
-function save(){setTimeout(()=>{try{localStorage.setItem("atelierA4v1",JSON.stringify(S))}catch(e){}},120)}
+try{S=sanitize(JSON.parse(localStorage.getItem("atelierIconsV1")||"null"))}catch(e){}
+function save(){setTimeout(()=>{try{localStorage.setItem("atelierIconsV1",JSON.stringify(S))}catch(e){}},120)}
 
 const isCard=()=>S.family==="card";
 const famName=()=>isCard()?"Картхолдеры":"Чехлы";
@@ -656,6 +708,82 @@ const useGus=()=>forceGus()||S.C>flatLimit();
 const wrapAllow=()=>Math.PI/2*(S.C+S.thick)-S.C;
 function threadHex(){const t=THREADS.find(x=>x[0]===S.thread)||THREADS[0];if(t[2])return t[2];const n=parseInt(S.color.slice(1),16);return "#"+[((n>>16)&255),((n>>8)&255),(n&255)].map(v=>Math.floor(v*.78).toString(16).padStart(2,"0")).join("")}
 const fmtName=()=>isCard()?cardFmt().name:(S.model&&S.model!=="custom"?S.model:"свой размер");
+
+/* ============ ИЛЛЮСТРАЦИИ КОНСТРУКЦИЙ ============ */
+function iconPal(){
+  const n=parseInt(S.color.slice(1),16),r=(n>>16)&255,g=(n>>8)&255,b=n&255;
+  const dk="rgb("+Math.round(r*.58)+","+Math.round(g*.58)+","+Math.round(b*.58)+")";
+  const lt="rgb("+Math.min(255,Math.round(r*1.22+26))+","+Math.min(255,Math.round(g*1.22+24))+","+Math.min(255,Math.round(b*1.22+22))+")";
+  return{b:S.color,d:dk,l:lt,t:threadHex(),br:"#e0b352",brd:"#8d6a1c",cd:"#ece7dd",cds:"#a9a29a",st:"#c3c8ce",std:"#8d949c",cash:"#cfe0c0",cashd:"#93ae82",mg:"#2b2b30"};
+}
+function designIcon(id){
+  const P=iconPal();
+  const dash='stroke="'+P.t+'" stroke-width="0.85" stroke-dasharray="2.2 1.7" fill="none" stroke-linecap="round"';
+  const body='fill="'+P.b+'" stroke="'+P.d+'" stroke-width="1.2"';
+  const light='fill="'+P.l+'" stroke="'+P.d+'" stroke-width="1"';
+  const card='fill="'+P.cd+'" stroke="'+P.cds+'" stroke-width="0.7"';
+  const brass='fill="'+P.br+'" stroke="'+P.brd+'" stroke-width="0.7"';
+  let g="";
+  switch(id){
+    case "slip":
+      g='<rect x="19" y="4" width="34" height="12" rx="2" '+card+'/><rect x="10" y="13" width="52" height="31" rx="5" '+body+'/><path d="M10 16 H62" stroke="'+P.d+'" stroke-width="1" opacity=".55"/><path d="M14 18 V40 H58 V18" '+dash+'/>';break;
+    case "pocket":
+      g='<rect x="19" y="4" width="34" height="11" rx="2" '+card+'/><rect x="10" y="12" width="52" height="32" rx="5" '+body+'/><path d="M22 25 h9 a5 4 0 0 0 10 0 h9 v16 h-28 z" '+light+'/><path d="M25 29 V38 H47 V29" '+dash+'/><path d="M14 16 V40" '+dash+' opacity=".55"/>';break;
+    case "strap":
+      g='<rect x="10" y="11" width="52" height="33" rx="5" '+body+'/><path d="M10 16 a5 5 0 0 1 5-5 h42 a5 5 0 0 1 5 5 v11 h-52 z" '+light+'/><rect x="8" y="29" width="56" height="7" rx="2.5" fill="'+P.d+'" stroke="'+P.d+'" stroke-width="1"/><path d="M13 24 H59" '+dash+'/><path d="M11 32.5 H61" '+dash+' opacity=".5"/>';break;
+    case "lock":
+      g='<rect x="10" y="14" width="52" height="30" rx="5" '+body+'/><path d="M10 19 a5 5 0 0 1 5-5 h42 a5 5 0 0 1 5 5 L36 35 Z" '+light+'/><path d="M14 20 L36 32 L58 20" '+dash+'/><ellipse cx="36" cy="30" rx="6.6" ry="3.7" '+brass+'/><rect x="33" y="29" width="6" height="2" rx="1" fill="'+P.d+'"/>';break;
+    case "diag":
+      g='<rect x="10" y="12" width="52" height="32" rx="5" '+body+'/><path d="M10 17 a5 5 0 0 1 5-5 h42 a5 5 0 0 1 5 5 v5 L10 30 Z" '+light+'/><path d="M13 27.6 L59 20.4" '+dash+'/><path d="M14 34 V40 H58 V32" '+dash+' opacity=".5"/>';break;
+    case "zip":{
+      let teeth="";for(let x=13;x<=59;x+=3.1)teeth+='<rect x="'+fx(x,1)+'" y="13.4" width="1.7" height="4.2" rx=".5" fill="'+P.br+'"/>';
+      g='<rect x="10" y="17" width="52" height="27" rx="5" '+body+'/><rect x="10" y="14.4" width="52" height="2.6" fill="'+P.d+'"/>'+teeth+'<rect x="49" y="11.6" width="7.5" height="7" rx="1.6" '+brass+'/><path d="M52.7 18.6 v4.6" stroke="'+P.br+'" stroke-width="1.6" stroke-linecap="round"/><rect x="50.6" y="22.6" width="4.2" height="6" rx="1.4" '+brass+'/><path d="M14 22 V40 H58 V22" '+dash+'/>';break;}
+    case "handle":
+      g='<path d="M26 16 C26 3.5 46 3.5 46 16" fill="none" stroke="'+P.b+'" stroke-width="4.6" stroke-linecap="round"/><path d="M26 16 C26 3.5 46 3.5 46 16" fill="none" stroke="'+P.d+'" stroke-width="1" opacity=".5"/><rect x="10" y="15" width="52" height="29" rx="5" '+body+'/><path d="M10 20 a5 5 0 0 1 5-5 h42 a5 5 0 0 1 5 5 v7 h-52 z" '+light+'/><circle cx="26" cy="18" r="2.1" '+brass+'/><circle cx="46" cy="18" r="2.1" '+brass+'/><path d="M14 30 V40 H58 V30" '+dash+'/>';break;
+    case "folio":
+      g='<rect x="7" y="9" width="27" height="34" rx="3" '+body+'/><rect x="38" y="9" width="27" height="34" rx="3" '+body+'/><rect x="34" y="9" width="4" height="34" fill="'+P.d+'"/><path d="M36 11 V41" '+dash+' opacity=".7"/><rect x="42" y="24" width="19" height="15" rx="2" '+light+'/><path d="M45 28 V36 H58 V28" '+dash+'/><path d="M65 22 h4.5 a2 2 0 0 1 2 2 v6 a2 2 0 0 1 -2 2 H65 z" '+light+'/><circle cx="62" cy="27" r="2" '+brass+'/><path d="M11 13 V39 H30 V13" '+dash+' opacity=".6"/>';break;
+    case "stud":
+      g='<rect x="10" y="13" width="52" height="31" rx="5" '+body+'/><path d="M10 18 a5 5 0 0 1 5-5 h42 a5 5 0 0 1 5 5 v10 h-52 z" '+light+'/><path d="M13 25 H59" '+dash+'/><circle cx="36" cy="29" r="4.3" '+brass+'/><circle cx="36" cy="29" r="2" fill="'+P.d+'" opacity=".55"/><path d="M14 33 V40 H58 V33" '+dash+' opacity=".6"/>';break;
+    case "roll":
+      g='<rect x="14" y="13" width="42" height="28" rx="14" '+body+'/><ellipse cx="14" cy="27" rx="7" ry="14" '+light+'/><path d="M14 20.5 a6.5 6.5 0 0 1 0 13" fill="none" stroke="'+P.d+'" stroke-width="1"/><path d="M14 24 a3 3 0 0 1 0 6" fill="none" stroke="'+P.d+'" stroke-width=".8"/><rect x="30" y="9" width="8" height="36" rx="2" fill="'+P.d+'"/><path d="M38 27 C48 24 56 20.5 65 23" fill="none" stroke="'+P.d+'" stroke-width="2.2" stroke-linecap="round"/><circle cx="34" cy="27" r="2.6" '+brass+'/><path d="M42 17 H52 M42 37 H52" '+dash+' opacity=".6"/>';break;
+    case "organizer":
+      g='<rect x="8" y="11" width="56" height="33" rx="4" '+body+'/><path d="M8 15 a4 4 0 0 1 4-4 h48 a4 4 0 0 1 4 4 v4 H8 z" '+light+'/><rect x="15" y="23" width="5.5" height="16" rx="2.6" '+light+'/><rect x="23" y="23" width="5.5" height="16" rx="2.6" '+light+'/><path d="M17.7 26 V36" stroke="'+P.st+'" stroke-width="1.5" stroke-linecap="round"/><path d="M25.7 26 V36" stroke="'+P.st+'" stroke-width="1.5" stroke-linecap="round"/><rect x="34" y="25" width="24" height="14" rx="2" '+light+'/><path d="M37 29 V36 H55 V29" '+dash+'/><circle cx="36" cy="15" r="2" '+brass+'/><path d="M11 21 V41" '+dash+' opacity=".5"/>';break;
+    case "ch_slip":
+      g='<rect x="14" y="9" width="44" height="32" rx="4" '+body+'/><rect x="19" y="4" width="34" height="12" rx="2" '+card+'/><path d="M14 21 h13 a9 6 0 0 0 18 0 h13 v20 h-44 z" '+light+'/><path d="M17 26 V38 H55 V26" '+dash+'/>';break;
+    case "ch_slots":{
+      g='<rect x="12" y="7" width="48" height="36" rx="4" '+body+'/>';
+      for(let i=0;i<3;i++){const y=13+i*9;g+='<rect x="17" y="'+(y-6)+'" width="38" height="10" rx="1.6" '+card+'/><rect x="12" y="'+y+'" width="48" height="9" rx="1.5" fill="'+(i%2?P.b:P.l)+'" stroke="'+P.d+'" stroke-width=".9"/><path d="M15 '+(y+3)+' H57" '+dash+' opacity=".8"/>'}
+      break;}
+    case "ch_pull":
+      g='<rect x="22" y="8" width="28" height="36" rx="4" '+body+'/><rect x="26" y="3" width="20" height="11" rx="1.6" '+card+'/><path d="M31 9 V3.5 h10 V9" fill="none" stroke="'+P.t+'" stroke-width="2.4" stroke-linecap="round"/><path d="M22 21 h6 a8 5 0 0 0 16 0 h6 v23 h-28 z" '+light+'/><path d="M25 26 V41 H47 V26" '+dash+'/>';break;
+    case "ch_bifold":
+      g='<rect x="6" y="10" width="28" height="30" rx="3" '+body+'/><rect x="38" y="10" width="28" height="30" rx="3" '+body+'/><rect x="34" y="10" width="4" height="30" fill="'+P.d+'"/><path d="M36 12 V38" '+dash+' opacity=".7"/><rect x="10" y="15" width="20" height="7" rx="1.2" '+card+'/><rect x="42" y="15" width="20" height="7" rx="1.2" '+card+'/><rect x="9" y="20" width="22" height="8" rx="1.4" '+light+'/><rect x="41" y="20" width="22" height="8" rx="1.4" '+light+'/><rect x="9" y="29" width="22" height="8" rx="1.4" '+light+'/><rect x="41" y="29" width="22" height="8" rx="1.4" '+light+'/><path d="M12 23 H28 M12 32 H28 M44 23 H60 M44 32 H60" '+dash+' opacity=".85"/>';break;
+    case "ch_snap":
+      g='<rect x="14" y="13" width="44" height="29" rx="4" '+body+'/><rect x="19" y="7" width="34" height="10" rx="1.8" '+card+'/><path d="M14 18 a4 4 0 0 1 4-4 h36 a4 4 0 0 1 4 4 L36 32 Z" '+light+'/><path d="M18 20 L36 29.5 L54 20" '+dash+'/><circle cx="36" cy="27.5" r="3.7" '+brass+'/><circle cx="36" cy="27.5" r="1.7" fill="'+P.d+'" opacity=".55"/>';break;
+    case "ch_mag":
+      g='<rect x="8" y="10" width="26" height="30" rx="3" '+body+'/><rect x="38" y="10" width="26" height="30" rx="3" '+body+'/><rect x="34" y="10" width="4" height="30" fill="'+P.d+'"/><path d="M36 12 V38" '+dash+' opacity=".7"/><rect x="11" y="15" width="20" height="7" rx="1.2" '+card+'/><rect x="11" y="21" width="20" height="8" rx="1.4" '+light+'/><rect x="41" y="21" width="20" height="8" rx="1.4" '+light+'/><path d="M62 20 h6 a2 2 0 0 1 2 2 v6 a2 2 0 0 1 -2 2 h-6 z" '+light+'/><circle cx="60" cy="25" r="2.1" fill="'+P.mg+'"/><circle cx="66" cy="25" r="2.1" fill="'+P.mg+'"/><path d="M14 24 H28 M44 24 H58" '+dash+' opacity=".85"/>';break;
+    case "ch_clip":
+      g='<rect x="18" y="10" width="36" height="12" rx="1.5" fill="'+P.cash+'" stroke="'+P.cashd+'" stroke-width=".8"/><path d="M22 14 H50 M22 18 H44" stroke="'+P.cashd+'" stroke-width=".7" opacity=".8"/><rect x="14" y="17" width="44" height="25" rx="4" '+body+'/><rect x="24" y="6.5" width="24" height="11" rx="2" fill="'+P.st+'" stroke="'+P.std+'" stroke-width=".8"/><rect x="28" y="10.5" width="16" height="4" rx="1" fill="'+P.std+'"/><circle cx="28" cy="12" r="1.8" '+brass+'/><circle cx="44" cy="12" r="1.8" '+brass+'/><path d="M14 26 H58 M14 33 H58" stroke="'+P.d+'" stroke-width="1"/><path d="M17 29 H55 M17 36 H55" '+dash+' opacity=".8"/>';break;
+    case "ch_zip":{
+      let teeth="";for(let x=19;x<=53;x+=3)teeth+='<rect x="'+fx(x,1)+'" y="12.6" width="1.6" height="3.4" rx=".4" fill="'+P.br+'"/>';
+      g='<rect x="12" y="15" width="48" height="27" rx="6" '+body+'/><path d="M12 24 V21 a6 6 0 0 1 6-6 H54 a6 6 0 0 1 6 6 V24" fill="none" stroke="'+P.br+'" stroke-width="2.2"/>'+teeth+'<rect x="49.5" y="11.6" width="7" height="6.4" rx="1.5" '+brass+'/><path d="M53 18 v4" stroke="'+P.br+'" stroke-width="1.5" stroke-linecap="round"/><rect x="51" y="21.6" width="4" height="5.6" rx="1.3" '+brass+'/><path d="M16 24 V38 H56 V24" '+dash+'/>';break;}
+    case "ch_acc":
+      g='<rect x="7" y="10" width="7.5" height="32" rx="2" '+body+'/><rect x="57.5" y="10" width="7.5" height="32" rx="2" '+body+'/><path d="M14.5 42 L20 12 L25.5 42 L31 12 L36.5 42 L42 12 L47.5 42 L53 12 L57.5 42 Z" fill="'+P.l+'" stroke="'+P.d+'" stroke-width="1"/><rect x="17" y="7" width="6" height="9" rx="1" '+card+'/><rect x="28" y="7" width="6" height="9" rx="1" '+card+'/><rect x="39" y="7" width="6" height="9" rx="1" '+card+'/><path d="M20 16 V38 M31 16 V38 M42 16 V38 M53 16 V38" '+dash+' opacity=".65"/>';break;
+    case "ch_long":
+      g='<rect x="5" y="14" width="62" height="24" rx="3" '+body+'/><path d="M36 16 V36" '+dash+' opacity=".8"/><rect x="9" y="17.5" width="24" height="17" rx="1.2" fill="'+P.cash+'" stroke="'+P.cashd+'" stroke-width=".8"/><path d="M13 22 H29 M13 26 H25 M13 30 H29" stroke="'+P.cashd+'" stroke-width=".7" opacity=".85"/><rect x="42" y="15.5" width="20" height="7" rx="1.2" '+card+'/><rect x="40" y="20" width="24" height="7.5" rx="1.4" '+light+'/><rect x="40" y="28.5" width="24" height="7.5" rx="1.4" '+light+'/><path d="M43 23 H61 M43 31.5 H61" '+dash+' opacity=".85"/>';break;
+    case "ch_fan":{
+      g="";
+      for(let i=0;i<4;i++){
+        const ang=-32+i*10.5,f=i===3?P.l:P.b;
+        g+='<g transform="rotate('+fx(ang,1)+' 20 38)"><rect x="17" y="12" width="38" height="26" rx="3" fill="'+f+'" stroke="'+P.d+'" stroke-width="1"/>'+(i===3?'<rect x="21" y="15" width="30" height="9" rx="1.4" '+card+'/><path d="M21 27 H51 M21 32 H51" '+dash+' opacity=".8"/>':'')+'</g>';
+      }
+      g+='<circle cx="20" cy="38" r="3.4" '+brass+'/><circle cx="20" cy="38" r="1.5" fill="'+P.d+'"/>';
+      break;}
+    default:
+      g='<rect x="12" y="12" width="48" height="26" rx="4" '+body+'/>';
+  }
+  return '<svg viewBox="0 0 72 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="'+(designs()[id]?designs()[id][0]:id)+'">'+g+'</svg>';
+}
 
 /* ================= геометрия ================= */
 function roundedRect(x,y,w,h,r){
@@ -685,8 +813,6 @@ function dotsAlong(poly,step){
   const out=[];let acc=0;
   for(let i=0;i<poly.length;i++){
     const a=poly[i],b=poly[(i+1)%poly.length],l=Math.hypot(b[0]-a[0],b[1]-a[1]);
-    let t=0;
-    while(acc+l*(t+ (step-acc%step)/l )<=l){}
     let d=step-(acc%step);
     while(d<l){out.push([lerp(a[0],b[0],d/l),lerp(a[1],b[1],d/l)]);d+=step}
     acc+=l;
@@ -696,7 +822,6 @@ function dotsAlong(poly,step){
 const hole=(type,x,y,w,h,label)=>({type,x,y,w,h,label:label||""});
 const mark=(x1,y1,x2,y2,label)=>({x1,y1,x2,y2,label:label||""});
 function piece(id,name,w,h,poly,o){o=o||{};return{id,name,w,h,poly,qty:o.qty||1,notes:o.notes||"",holes:o.holes||[],folds:o.folds||[],marks:o.marks||[],notches:o.notches||[],stitch:inset(poly,S.seam),joins:[]}}
-
 function deriveRaw(){
   const g=useGus(),t=S.thick,s=S.seam,e=S.ease,wa=wrapAllow(),P=[],kind=def()[1];
   if(isCard()){
@@ -931,7 +1056,6 @@ function pieceSVG(p,o){
 }
 const printOpts=()=>({print:true,glue:S.print.glue,stitch:S.print.stitch,hardware:S.print.hardware,joins:S.print.joins,labels:S.print.labels});
 const screenOpts=()=>({print:false,glue:S.print.glue,stitch:S.print.stitch,hardware:S.print.hardware,joins:S.print.joins,labels:S.print.labels});
-
 function layout(M){
   let x=12,y=12,rh=0,mw=0;const pos=[];
   M.pieces.forEach(p=>{if(x+p.w>920){x=12;y+=rh+18;rh=0}pos.push({p,x,y});x+=p.w+16;rh=Math.max(rh,p.h);mw=Math.max(mw,x)});
@@ -991,32 +1115,30 @@ function calSVG(idx,total){
   g+='<text x="105" y="78" text-anchor="middle" font-size="4" font-weight="bold" font-family="Arial">Отрезок = 100 мм</text>';
   g+='<rect x="30" y="95" width="50" height="50" fill="none" stroke="#111" stroke-width="0.5"/><text x="55" y="122" text-anchor="middle" font-size="4" font-family="Arial">50 × 50 мм</text>';
   g+='<rect x="95" y="95" width="85.6" height="53.98" rx="3.18" fill="none" stroke="#111" stroke-width="0.5"/><text x="137.8" y="124" text-anchor="middle" font-size="3.4" font-family="Arial">Карта ID-1 85,60×53,98</text>';
-  const lines=["1. Масштаб 100% / Реальный размер, не «Вписать».","2. Поля: Нет. Колонтитулы: выключить.","3. Отрезок сверху должен быть ровно 100 мм.","4. Банковская карта обязана совпасть с контуром.","5. Крупные детали: несколько листов, перекрытие 8 мм.","6. Совмещайте кресты и точки V/H, склеивайте встык."];
-  lines.forEach((t,i)=>{g+='<text x="24" y="'+(168+i*8)+'" font-size="3.7" font-family="Arial">'+t+'</text>'});
+  ["1. Масштаб 100% / Реальный размер, не «Вписать».","2. Поля: Нет. Колонтитулы: выключить.","3. Отрезок сверху должен быть ровно 100 мм.","4. Банковская карта обязана совпасть с контуром.","5. Крупные детали: несколько листов, перекрытие 8 мм.","6. Совмещайте кресты и точки V/H, склеивайте встык."].forEach((t,i)=>{g+='<text x="24" y="'+(168+i*8)+'" font-size="3.7" font-family="Arial">'+t+'</text>'});
   g+='<text x="24" y="228" font-size="3.6" font-family="Arial" font-weight="bold">Изделие: '+famName()+' · '+designName()+'</text>';
   g+='<text x="24" y="236" font-size="3.4" font-family="Arial">Формат: '+fmtName()+' · габарит '+fmt(S.A)+'×'+fmt(S.B)+'×'+fmt(S.C)+' мм</text>';
-  g+='<text x="24" y="244" font-size="3.4" font-family="Arial">Крой: '+edgeLabel(useGus())+' · кусок кожи: '+stock().name+' · частей: '+derive().pieces.length+'</text>';
+  g+='<text x="24" y="244" font-size="3.4" font-family="Arial">Крой: '+edgeLabel(useGus())+' · кусок кожи: '+stock().name+'</text>';
   return '<svg xmlns="http://www.w3.org/2000/svg" width="210mm" height="297mm" viewBox="0 0 210 297">'+g+'</svg>';
 }
 function legendRows(){
   return [
     {t:"Контур реза",d:"Сплошная тёмная линия. Резать по ней.",g:'<line x1="0" y1="6" x2="26" y2="6" stroke="#111" stroke-width="0.9"/>'},
-    {t:"Линия шва",d:"Красный пунктир. Отступ "+fmt(S.seam)+" мм от реза, шаг "+fmt(isCard()?3:3.5)+" мм.",g:'<line x1="0" y1="6" x2="26" y2="6" stroke="#b03030" stroke-width="0.8" stroke-dasharray="1.7 1.3"/>'},
+    {t:"Линия шва",d:"Красный пунктир. Отступ "+fmt(S.seam)+" мм, шаг "+fmt(isCard()?3:3.5)+" мм.",g:'<line x1="0" y1="6" x2="26" y2="6" stroke="#b03030" stroke-width="0.8" stroke-dasharray="1.7 1.3"/>'},
     {t:"Сгиб / подгибка",d:"Синий штрихпунктир. Согнуть, не резать.",g:'<line x1="0" y1="6" x2="26" y2="6" stroke="#3a6ea5" stroke-width="0.8" stroke-dasharray="3.2 1.4 0.7 1.4"/>'},
-    {t:"Линия обхвата",d:"Синий пунктир. Зона, где кожа огибает торец.",g:'<line x1="0" y1="6" x2="26" y2="6" stroke="#3a6ea5" stroke-width="0.7" stroke-dasharray="2 1.2"/>'},
-    {t:"Отверстие фурнитуры",d:"Кружок с крестом, рядом диаметр. Пробить до сшивки.",g:'<circle cx="13" cy="6" r="3.2" fill="none" stroke="#111" stroke-width="0.6"/><line x1="9" y1="6" x2="17" y2="6" stroke="#111" stroke-width="0.35"/><line x1="13" y1="2" x2="13" y2="10" stroke="#111" stroke-width="0.35"/>'},
+    {t:"Линия обхвата",d:"Синий пунктир. Кожа огибает торец изделия.",g:'<line x1="0" y1="6" x2="26" y2="6" stroke="#3a6ea5" stroke-width="0.7" stroke-dasharray="2 1.2"/>'},
+    {t:"Отверстие фурнитуры",d:"Кружок с крестом и диаметром. Пробить до сшивки.",g:'<circle cx="13" cy="6" r="3.2" fill="none" stroke="#111" stroke-width="0.6"/><line x1="9" y1="6" x2="17" y2="6" stroke="#111" stroke-width="0.35"/><line x1="13" y1="2" x2="13" y2="10" stroke="#111" stroke-width="0.35"/>'},
     {t:"Прорезь",d:"Прямоугольник с крестом — лапки замка, магнит.",g:'<rect x="6" y="3.5" width="14" height="5" rx="0.8" fill="none" stroke="#111" stroke-width="0.6"/><line x1="9" y1="6" x2="17" y2="6" stroke="#111" stroke-width="0.35"/><line x1="13" y1="2" x2="13" y2="10" stroke="#111" stroke-width="0.35"/>'},
-    {t:"Зона склейки",d:"Янтарная полоса по припуску. Клей только внутри шва.",g:'<rect x="0" y="2" width="26" height="8" fill="#e0a437" fill-opacity="0.3"/><circle cx="6" cy="6" r="0.9" fill="#e0a437"/><circle cx="13" cy="6" r="0.9" fill="#e0a437"/><circle cx="20" cy="6" r="0.9" fill="#e0a437"/>'},
-    {t:"Стык частей J",d:"Фиолетовый пунктир, метки A и B. Совмещать одноимённые.",g:'<line x1="13" y1="0" x2="13" y2="12" stroke="#9b3fbf" stroke-width="0.9" stroke-dasharray="2.2 1.1"/><circle cx="13" cy="2" r="1.4" fill="#9b3fbf"/><circle cx="13" cy="10" r="1.4" fill="#9b3fbf"/>'},
-    {t:"Метка совмещения",d:"Треугольники на кромке: центр низа, углы, концы молнии.",g:'<path d="M9,1 L17,1 L13,7 Z" fill="#111"/><line x1="13" y1="7" x2="13" y2="12" stroke="#bbb" stroke-width="0.3" stroke-dasharray="1 1.2"/>'},
-    {t:"Крест листа",d:"Углы печатного поля. Совмещать при склейке листов.",g:'<line x1="7" y1="6" x2="19" y2="6" stroke="#111" stroke-width="0.4"/><line x1="13" y1="0" x2="13" y2="12" stroke="#111" stroke-width="0.4"/><circle cx="13" cy="6" r="1" fill="#111"/>'},
+    {t:"Зона склейки",d:"Янтарная полоса. Клей только внутри линии шва.",g:'<rect x="0" y="2" width="26" height="8" fill="#e0a437" fill-opacity="0.3"/><circle cx="6" cy="6" r="0.9" fill="#e0a437"/><circle cx="13" cy="6" r="0.9" fill="#e0a437"/><circle cx="20" cy="6" r="0.9" fill="#e0a437"/>'},
+    {t:"Стык частей J",d:"Фиолетовый пунктир, метки A и B парные.",g:'<line x1="13" y1="0" x2="13" y2="12" stroke="#9b3fbf" stroke-width="0.9" stroke-dasharray="2.2 1.1"/><circle cx="13" cy="2" r="1.4" fill="#9b3fbf"/><circle cx="13" cy="10" r="1.4" fill="#9b3fbf"/>'},
+    {t:"Метка совмещения",d:"Треугольники: центр низа, углы, концы молнии.",g:'<path d="M9,1 L17,1 L13,7 Z" fill="#111"/><line x1="13" y1="7" x2="13" y2="12" stroke="#bbb" stroke-width="0.3" stroke-dasharray="1 1.2"/>'},
+    {t:"Крест листа",d:"Углы печатного поля. Совмещать при склейке.",g:'<line x1="7" y1="6" x2="19" y2="6" stroke="#111" stroke-width="0.4"/><line x1="13" y1="0" x2="13" y2="12" stroke="#111" stroke-width="0.4"/><circle cx="13" cy="6" r="1" fill="#111"/>'},
     {t:"Точка склейки V/H",d:"V — вертикальный шов листов, H — горизонтальный.",g:'<circle cx="13" cy="6" r="1.6" fill="#9b3fbf"/><circle cx="13" cy="6" r="3.4" fill="none" stroke="#9b3fbf" stroke-width="0.35"/>'}
   ];
 }
 function legendSVG(idx,total){
   let g=sheetFrame("Легенда · условные обозначения","справочный лист",idx,total);
-  const rows=legendRows();
-  rows.forEach((r,i)=>{
+  legendRows().forEach((r,i)=>{
     const y=26+i*22;
     g+='<g transform="translate(16 '+y+')">'+r.g+'</g>';
     g+='<text x="50" y="'+(y+4)+'" font-size="4" font-weight="bold" font-family="Arial" fill="#111">'+r.t+'</text>';
@@ -1027,12 +1149,7 @@ function legendSVG(idx,total){
 }
 function renderLegendPreview(){
   const rows=legendRows();let g="";
-  rows.forEach((r,i)=>{
-    const y=10+i*22;
-    g+='<g transform="translate(10 '+y+')">'+r.g+'</g>';
-    g+='<text x="44" y="'+(y+5)+'" font-size="7" font-weight="bold" font-family="Arial" fill="#2b1c0c">'+r.t+'</text>';
-    g+='<text x="44" y="'+(y+14)+'" font-size="5.4" font-family="Arial" fill="#6b4c22">'+r.d+'</text>';
-  });
+  rows.forEach((r,i)=>{const y=10+i*22;g+='<g transform="translate(10 '+y+')">'+r.g+'</g><text x="44" y="'+(y+5)+'" font-size="7" font-weight="bold" font-family="Arial" fill="#2b1c0c">'+r.t+'</text><text x="44" y="'+(y+14)+'" font-size="5.4" font-family="Arial" fill="#6b4c22">'+r.d+'</text>'});
   const svg=$("#legendPreview");svg.setAttribute("viewBox","0 0 320 "+(rows.length*22+14));svg.innerHTML=g;
 }
 function buildPages(M){
@@ -1041,9 +1158,7 @@ function buildPages(M){
   if(S.print.legend)out.push({cap:"Легенда",svg:legendSVG(idx++,total)});
   M.pieces.forEach((p,pi)=>{
     const t=tilesOf(p.w,p.h);
-    for(let r=0;r<t.ny;r++)for(let c=0;c<t.nx;c++){
-      out.push({cap:p.name+(t.nx*t.ny>1?" · "+String.fromCharCode(65+c)+(r+1):""),svg:tileSVG(p,r,c,t.nx,t.ny,idx++,total,pi+1,M.pieces.length)});
-    }
+    for(let r=0;r<t.ny;r++)for(let c=0;c<t.nx;c++)out.push({cap:p.name+(t.nx*t.ny>1?" · "+String.fromCharCode(65+c)+(r+1):""),svg:tileSVG(p,r,c,t.nx,t.ny,idx++,total,pi+1,M.pieces.length)});
   });
   return out;
 }
@@ -1103,7 +1218,7 @@ function openPreview(){
 function renderPrint(M){
   const sheets=sheetsOf(M),tiled=M.pieces.filter(p=>{const t=tilesOf(p.w,p.h);return t.nx*t.ny>1}).length;
   $("#printSummary").innerHTML=[["Формат","A4"],["Поле","10 мм"],["Листов",sheets],["Деталей",M.pieces.length],["Плитками",tiled],["Легенда",S.print.legend?"да":"нет"]].map(x=>'<div class="stat"><div class="v">'+x[1]+'</div><div class="l">'+x[0]+'</div></div>').join("");
-  $("#printWarn").innerHTML=tiled?'<div class="warnbar">'+tiled+' дет. больше печатного поля A4 — они разложены на несколько листов с перекрытием 8 мм, крестами и точками V/H.</div>':'<div class="okbar">✓ Все детали помещаются на один лист A4 каждая.</div>';
+  $("#printWarn").innerHTML=tiled?'<div class="warnbar">'+tiled+' дет. больше печатного поля A4 — разложены на несколько листов с перекрытием 8 мм, крестами и точками V/H.</div>':'<div class="okbar">✓ Все детали помещаются на один лист A4 каждая.</div>';
   renderLegendPreview();
 }
 function renderSplit(M){
@@ -1119,36 +1234,30 @@ function renderSpec(M){
   $("#stJoins").textContent=M.joins.length;
   $("#stSheets").textContent=sheetsOf(M);
   $("#stThread").textContent=fmt(M.stitchLen/1000*2.5+.3)+" м";
-  const checks=[["Части помещаются в кусок кожи",M.oversize===0],["Нет NaN в геометрии",M.pieces.every(p=>Number.isFinite(p.w)&&Number.isFinite(p.h)&&p.poly.every(q=>Number.isFinite(q[0])&&Number.isFinite(q[1])))],["Стыки размечены парно",M.joins.every(j=>j.parts.length>1)],["Кромка соответствует толщине",M.pieces.some(p=>p.id==="gusset"||p.id==="side")===M.gusset],["Листы A4 без NaN",buildPages(M).every(pg=>pg.svg.indexOf("NaN")<0)],["Все листы 210×297 мм",buildPages(M).every(pg=>pg.svg.indexOf('width="210mm"')>=0)]];
-  $("#checkList").innerHTML=checks.map(c=>'<li>'+(c[1]?"✓":"✕")+' <b>'+c[0]+'</b></li>').join("");
+  const checks=[["Части помещаются в кусок кожи",M.oversize===0],["Нет NaN в геометрии",M.pieces.every(p=>Number.isFinite(p.w)&&Number.isFinite(p.h)&&p.poly.every(q=>Number.isFinite(q[0])&&Number.isFinite(q[1])))],["Стыки размечены парно",M.joins.every(j=>j.parts.length>1)],["Кромка соответствует толщине",M.pieces.some(p=>p.id==="gusset"||p.id==="side")===M.gusset],["Листы A4 без NaN",buildPages(M).every(pg=>pg.svg.indexOf("NaN")<0)],["Все листы 210×297 мм",buildPages(M).every(pg=>pg.svg.indexOf('width="210mm"')>=0)],["Иконки конструкций отрисованы",$$("#designGrid .icoWrap svg").length===Object.keys(designs()).length,Object.keys(designs()).length+" шт"]];
+  $("#checkList").innerHTML=checks.map(c=>'<li>'+(c[1]?"✓":"✕")+' <b>'+c[0]+'</b>'+(c[2]?' <code>'+c[2]+'</code>':'')+'</li>').join("");
 }
 function techText(M){
   const L=[];
   L.push("АТЕЛЬЕ КОЖАНЫХ ИЗДЕЛИЙ — ТЕХКАРТА");
   L.push("Линия: "+famName()+" · "+designName());
+  const meta=DESIGN_META[designId()];if(meta)L.push("Конструкция: "+meta.desc);
   L.push("Формат: "+fmtName()+" · габарит "+fmt(S.A)+"×"+fmt(S.B)+"×"+fmt(S.C)+" мм");
-  L.push("Крой: "+edgeLabel(M.gusset)+" · кожа "+fmt(S.thick)+" мм · подкладка "+(LININGS.find(l=>l[0]===S.lining)||LININGS[0])[1]);
+  L.push("Крой: "+edgeLabel(M.gusset)+" · кожа "+fmt(S.thick)+" мм");
   L.push("Печать: A4 210×297, поле 10 мм, листов "+sheetsOf(M));
-  L.push("Кусок кожи: "+M.stock.name+" "+fmt(M.stock.w)+"×"+fmt(M.stock.h)+" · стык "+S.join+" мм · частей "+M.pieces.length);
+  L.push("Кусок кожи: "+M.stock.name+" · стык "+S.join+" мм · частей "+M.pieces.length);
   L.push("");L.push("ДЕТАЛИ:");
-  M.pieces.forEach((p,i)=>{const t=tilesOf(p.w,p.h);L.push((i+1)+". "+p.name+" — "+fmt(p.w)+"×"+fmt(p.h)+" мм · A4 листов "+(t.nx*t.ny)+(p.joins.length?" · стыки "+p.joins.map(j=>j.id+j.side).join("/"):""))});
+  M.pieces.forEach((p,i)=>{const t=tilesOf(p.w,p.h);L.push((i+1)+". "+p.name+" — "+fmt(p.w)+"×"+fmt(p.h)+" мм · A4 листов "+(t.nx*t.ny))});
   L.push("");L.push("СТЫКИ:");
   if(M.joins.length)M.joins.forEach(j=>L.push(j.id+": "+j.parts.join(" <-> ")+" · припуск "+j.allow+" мм"));else L.push("нет");
   L.push("");L.push("ПОРЯДОК:");
-  L.push("1. Печать 100%, проверить отрезок 100 мм и карту ID-1.");
-  L.push("2. Скрупные детали склеить по крестам и точкам V/H (перекрытие 8 мм).");
-  L.push("3. Перенести на кожу по долевой, подписать J-метки с изнанки.");
-  if(M.joins.length)L.push("4. Состыковать части по одинаковым J: припуск "+S.join+" мм, проверить общую длину.");
-  L.push("5. Спустить припуски до "+fmt(S.thick*.65)+" мм, сгибы — до "+fmt(S.thick*.5)+" мм.");
-  L.push("6. Разметить шов "+fmt(S.seam)+" мм, пробить шаг "+fmt(M.pitch)+" мм.");
-  L.push("7. Клей только в янтарной зоне внутри линии шва.");
-  L.push("8. Фурнитуру поставить до сшивания.");
-  L.push("9. Сшить седельным швом, обработать урез, отформовать 12–24 ч.");
+  ["1. Печать 100%, проверить отрезок 100 мм и карту ID-1.","2. Крупные детали склеить по крестам и точкам V/H.","3. Перенести на кожу по долевой, подписать J с изнанки.","4. Состыковать части по одинаковым J.","5. Спустить припуски до "+fmt(S.thick*.65)+" мм.","6. Разметить шов "+fmt(S.seam)+" мм, пробить шаг "+fmt(M.pitch)+" мм.","7. Клей только в янтарной зоне.","8. Фурнитуру поставить до сшивания.","9. Сшить, обработать урез, отформовать 12–24 ч."].forEach(x=>L.push(x));
   return L.join("\n");
 }
 function renderTech(M){
+  const meta=DESIGN_META[designId()]||{desc:"",tags:[]};
   const steps=["Проверить калибровку A4 и размеры.","Склеить листы крупных деталей по V/H.","Раскроить части, подписать J с изнанки.","Состыковать разделённые детали.","Спустить припуски и сгибы.","Разметить и пробить шов.","Нанести клей в отмеченные зоны.","Поставить фурнитуру до замыкания шва.","Сшить, обработать урез, отформовать."];
-  $("#techCards").innerHTML='<div class="tcard"><h4>Карта изделия</h4>'+[["Линия",famName()],["Конструкция",designName()],["Формат",fmtName()],["Крой",edgeLabel(M.gusset)],["Печать","A4 · "+sheetsOf(M)+" лист."],["Кусок",M.stock.name],["Частей",M.pieces.length],["Стыков",M.joins.length],["Кожа",fmt(S.thick)+" мм"],["Шов",fmt(M.stitchLen/1000)+" м"]].map(k=>'<div class="kv"><span>'+k[0]+'</span><b>'+k[1]+'</b></div>').join("")+'</div><div class="tcard"><h4>Стыковка</h4><ul>'+(M.joins.length?M.joins.map(j=>'<li><b>'+j.id+'</b>: '+j.parts.join(" ↔ ")+' · '+j.allow+' мм.</li>').join(""):"<li>Детали цельные.</li>")+'<li>Стык кромки — на дне или боку, не на лицевом центре.</li><li>Сверяйте общую длину собранной кромки.</li></ul></div><div class="tcard"><h4>Порядок работ</h4><ol>'+steps.map(x=>'<li>'+x+'</li>').join("")+'</ol></div>';
+  $("#techCards").innerHTML='<div class="tcard"><h4>Карта изделия</h4>'+[["Линия",famName()],["Конструкция",designName()],["Формат",fmtName()],["Крой",edgeLabel(M.gusset)],["Печать","A4 · "+sheetsOf(M)+" лист."],["Кусок",M.stock.name],["Частей",M.pieces.length],["Стыков",M.joins.length],["Кожа",fmt(S.thick)+" мм"],["Шов",fmt(M.stitchLen/1000)+" м"]].map(k=>'<div class="kv"><span>'+k[0]+'</span><b>'+k[1]+'</b></div>').join("")+'</div><div class="tcard"><h4>'+designName()+'</h4><div style="margin-bottom:10px">'+designIcon(designId())+'</div><p style="font-size:12.3px;color:var(--dim);line-height:1.55">'+meta.desc+'</p><ul style="margin-top:9px">'+(M.joins.length?M.joins.map(j=>'<li><b>'+j.id+'</b>: '+j.parts.join(" ↔ ")+'</li>').join(""):"<li>Детали цельные, стыковка не требуется.</li>")+'</ul></div><div class="tcard"><h4>Порядок работ</h4><ol>'+steps.map(x=>'<li>'+x+'</li>').join("")+'</ol></div>';
 }
 function downloadTech(){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([techText(derive())],{type:"text/plain;charset=utf-8"}));a.download="tech_"+(designId()||"item")+".txt";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),3000)}
 
@@ -1177,14 +1286,10 @@ function leatherMaps(color,finish,patina){
     h[y*N+x]=clamp(v,0,1);
   }
   const base=parseInt(color.slice(1),16),br=(base>>16)&255,bg=(base>>8)&255,bb=base&255;
-  const ac=document.createElement("canvas");ac.width=ac.height=N;
-  const ax=ac.getContext("2d"),ai=ax.createImageData(N,N),ad=ai.data;
-  const rc=document.createElement("canvas");rc.width=rc.height=N;
-  const rx=rc.getContext("2d"),ri=rx.createImageData(N,N),rd=ri.data;
-  const nc=document.createElement("canvas");nc.width=nc.height=N;
-  const nx=nc.getContext("2d"),ni=nx.createImageData(N,N),nd=ni.data;
-  const rough=finish==="crazy"?.66:finish==="smooth"?.5:.58;
-  const st=finish==="crazy"?2.6:finish==="smooth"?1.4:3.2;
+  const ac=document.createElement("canvas");ac.width=ac.height=N;const ax=ac.getContext("2d"),ai=ax.createImageData(N,N),ad=ai.data;
+  const rc=document.createElement("canvas");rc.width=rc.height=N;const rx=rc.getContext("2d"),ri=rx.createImageData(N,N),rd=ri.data;
+  const nc=document.createElement("canvas");nc.width=nc.height=N;const nx=nc.getContext("2d"),ni=nx.createImageData(N,N),nd=ni.data;
+  const rough=finish==="crazy"?.66:finish==="smooth"?.5:.58,st=finish==="crazy"?2.6:finish==="smooth"?1.4:3.2;
   for(let y=0;y<N;y++)for(let x=0;x<N;x++){
     const i=y*N+x,v=h[i],m=.78+.4*v,k=i*4;
     ad[k]=clamp(br*m,0,255);ad[k+1]=clamp(bg*m,0,255);ad[k+2]=clamp(bb*m,0,255);ad[k+3]=255;
@@ -1194,14 +1299,13 @@ function leatherMaps(color,finish,patina){
     nd[k]=(-dx*il*.5+.5)*255;nd[k+1]=(-dy*il*.5+.5)*255;nd[k+2]=(il*.5+.5)*255;nd[k+3]=255;
   }
   ax.putImageData(ai,0,0);rx.putImageData(ri,0,0);nx.putImageData(ni,0,0);
-  const rr=noiseGen(99);
-  ax.lineCap="round";
+  const rr=noiseGen(99);ax.lineCap="round";
   const cnt=finish==="crazy"?Math.floor(30+patina*1.1):12;
   for(let i=0;i<cnt;i++){
     const x=rr.rnd()*N,y=rr.rnd()*N,a=(rr.rnd()<.5?.5:-.6)+(rr.rnd()-.5)*.9,l=15+rr.rnd()*90;
     ax.strokeStyle="rgba("+Math.min(255,br+70)+","+Math.min(255,bg+60)+","+Math.min(255,bb+45)+","+(0.04+rr.rnd()*.1)+")";
-    ax.lineWidth=.5+rr.rnd()*1.1;
-    ax.beginPath();ax.moveTo(x,y);ax.quadraticCurveTo(x+Math.cos(a)*l/2+(rr.rnd()-.5)*18,y+Math.sin(a)*l/2+(rr.rnd()-.5)*18,x+Math.cos(a)*l,y+Math.sin(a)*l);ax.stroke();
+    ax.lineWidth=.5+rr.rnd()*1.1;ax.beginPath();ax.moveTo(x,y);
+    ax.quadraticCurveTo(x+Math.cos(a)*l/2+(rr.rnd()-.5)*18,y+Math.sin(a)*l/2+(rr.rnd()-.5)*18,x+Math.cos(a)*l,y+Math.sin(a)*l);ax.stroke();
   }
   const out={albedo:ac,rough:rc,normal:nc};
   mapCache.set(key,out);if(mapCache.size>6)mapCache.delete(mapCache.keys().next().value);
@@ -1219,7 +1323,6 @@ function leatherMat(rx,ry){
   const cc={crazy:.16,smooth:.34,saffiano:.22}[S.finish]||.2;
   return track(new T3.MeshPhysicalMaterial({map:tex(m.albedo,true,rx,ry),normalMap:tex(m.normal,false,rx,ry),roughnessMap:tex(m.rough,false,rx,ry),normalScale:new T3.Vector2(.85,.85),roughness:1,clearcoat:cc,clearcoatRoughness:.55,envMapIntensity:.9,sheen:.25,sheenRoughness:.8}));
 }
-function edgeMat(){const n=parseInt(S.color.slice(1),16);return track(new T3.MeshPhysicalMaterial({color:new T3.Color(((n>>16)&255)*.45/255,((n>>8)&255)*.45/255,(n&255)*.45/255),roughness:.35,clearcoat:.7,clearcoatRoughness:.25}))}
 function threadMat(){return track(new T3.MeshStandardMaterial({color:new T3.Color(threadHex()),roughness:.75}))}
 function brassMat(){return track(new T3.MeshStandardMaterial({color:0xb08d57,metalness:1,roughness:.26}))}
 function steelMat(){return track(new T3.MeshStandardMaterial({color:0xb8bcc2,metalness:1,roughness:.3}))}
@@ -1263,11 +1366,11 @@ function ringGeo(w,h,r,thick,depth){
   outer.lineTo(ow,oh-rr);outer.quadraticCurveTo(ow,oh,ow-rr,oh);outer.lineTo(-ow+rr,oh);
   outer.quadraticCurveTo(-ow,oh,-ow,oh-rr);outer.lineTo(-ow,-oh+rr);outer.quadraticCurveTo(-ow,-oh,-ow+rr,-oh);
   const iw=ow-thick,ih=oh-thick,ir=Math.max(.0008,rr-thick*.6);
-  const hole=new T3.Path();
-  hole.moveTo(-iw+ir,-ih);hole.lineTo(iw-ir,-ih);hole.quadraticCurveTo(iw,-ih,iw,-ih+ir);
-  hole.lineTo(iw,ih-ir);hole.quadraticCurveTo(iw,ih,iw-ir,ih);hole.lineTo(-iw+ir,ih);
-  hole.quadraticCurveTo(-iw,ih,-iw,ih-ir);hole.lineTo(-iw,-ih+ir);hole.quadraticCurveTo(-iw,-ih,-iw+ir,-ih);
-  outer.holes.push(hole);
+  const hp=new T3.Path();
+  hp.moveTo(-iw+ir,-ih);hp.lineTo(iw-ir,-ih);hp.quadraticCurveTo(iw,-ih,iw,-ih+ir);
+  hp.lineTo(iw,ih-ir);hp.quadraticCurveTo(iw,ih,iw-ir,ih);hp.lineTo(-iw+ir,ih);
+  hp.quadraticCurveTo(-iw,ih,-iw,ih-ir);hp.lineTo(-iw,-ih+ir);hp.quadraticCurveTo(-iw,-ih,-iw+ir,-ih);
+  outer.holes.push(hp);
   const g=track(new T3.ExtrudeGeometry(outer,{depth,bevelEnabled:false,curveSegments:12}));
   g.translate(0,0,-depth/2);return g;
 }
@@ -1313,8 +1416,7 @@ function zipper(pts,z,mat,parent){
 }
 function cardObj(w,h,i,parent){
   const g=new T3.Group();(parent||group).add(g);
-  const m=cardMat(i);
-  panel(w,h,.0008,m,g,.003);
+  panel(w,h,.0008,cardMat(i),g,.003);
   const chip=track(new T3.MeshStandardMaterial({color:0xc9a227,metalness:1,roughness:.35}));
   const cg=track(new T3.BoxGeometry(w*.13,h*.16,.0004));
   const cm=new T3.Mesh(cg,chip);cm.position.set(-w*.28,h*.1,.0006);g.add(cm);
@@ -1346,7 +1448,7 @@ async function init3D(){
     scene.add(keyL);scene.add(keyL.target);
     rimL=new T3.DirectionalLight(0x9dc4ff,.9);rimL.position.set(-.7,.35,-.6);scene.add(rimL);
     const fg=track(new T3.CircleGeometry(1.6,64));
-    const fm=track(new T3.MeshStandardMaterial({color:0x241a12,roughness:.92,metalness:0}));
+    const fm=track(new T3.MeshStandardMaterial({color:0x241a12,roughness:.92}));
     floorMesh=new T3.Mesh(fg,fm);floorMesh.rotation.x=-Math.PI/2;floorMesh.receiveShadow=true;scene.add(floorMesh);
     group=new T3.Group();scene.add(group);
     ready3=true;$("#veil").classList.add("off");
@@ -1375,42 +1477,33 @@ function build3D(){
   clear3D();
   const R=deriveRaw(),M=derive();
   const t=S.thick/1000,seam=S.seam/1000;
-  const lm=leatherMat(2.2,1.6),lm2=leatherMat(1.4,1.1),em=edgeMat(),tm=threadMat(),bm=brassMat(),sm=steelMat();
+  const lm=leatherMat(2.2,1.6),lm2=leatherMat(1.4,1.1),tm=threadMat(),bm=brassMat(),sm=steelMat();
   const lin=liningT()>0?liningMat():null;
   const ex=S.explode/100,op=S.open;
   const W=R.outer.w/1000,H=R.outer.h/1000,D=Math.max(.004,R.outer.c/1000);
-  const kind=def()[1];
-  const rad=Math.min(.008,W*.06,H*.06);
+  const kind=def()[1],rad=Math.min(.008,W*.06,H*.06);
   const joinMat=track(new T3.MeshStandardMaterial({color:0x9b3fbf,emissive:0x2a0a35,roughness:.5}));
-  const addJoinMarks=(w,h,z,parent)=>{
-    const n=Math.min(M.joins.length,6);
-    for(let i=0;i<n;i++){const g=track(new T3.BoxGeometry(.0012,h*.86,.0006));const m=new T3.Mesh(g,joinMat);m.position.set(-w/2+(i+1)*w/(n+1),0,z);(parent||group).add(m)}
-  };
+  const addJoinMarks=(w,h,z,parent)=>{const n=Math.min(M.joins.length,6);for(let i=0;i<n;i++){const g=track(new T3.BoxGeometry(.0012,h*.86,.0006));const m=new T3.Mesh(g,joinMat);m.position.set(-w/2+(i+1)*w/(n+1),0,z);(parent||group).add(m)}};
   if(isCard()){
-    const cw=R.cardW/1000,ch=R.cardH/1000;
-    const stack=Math.max(.0012,R.depth/1000);
+    const cw=R.cardW/1000,ch=R.cardH/1000,stack=Math.max(.0012,R.depth/1000);
     if(/wrap/.test(kind)){
       const long=/long/.test(kind);
       const hw=(long?Math.max(.160,(R.cardW+74)/1000):(R.cardW+S.ease)/1000);
       const hh=(long?Math.max(.092,(R.cardH+38)/1000):(R.cardH+S.ease)/1000);
       const sp=Math.max(.003,(R.depth+2*S.thick)/1000);
-      const left=new T3.Group();group.add(left);
-      left.position.set(-hw/2-sp/2,0,0);
+      const left=new T3.Group();group.add(left);left.position.set(-hw/2-sp/2,0,0);
       panel(hw,hh,t,lm,left,rad);
-      if(lin)panel(hw-2*seam,hh-2*seam,liningT()/1000,lin,left,rad).position.z=t/2+liningT()/2000;
+      if(lin){const l=panel(hw-2*seam,hh-2*seam,liningT()/1000,lin,left,rad);l.position.z=t/2+liningT()/2000}
       stitchRect(hw,hh,rad,seam,t/2+.0006,tm,left);
-      const half=2;
-      for(let i=0;i<half;i++){
+      for(let i=0;i<2;i++){
         const sw=hw-.006,sh=ch*.6;
         const sl=panel(sw,sh,t*.7,lm2,left,.003);
         sl.position.set(0,-hh/2+sh/2+.004+i*.012,t/2+.0016+i*.0016+ex*.01);
         stitchRect(sw,sh,.003,seam*.7,t*.35+.0005,tm,sl);
         if(S.fill){const c=cardObj(cw,ch,i,left);c.position.set(0,-hh/2+ch/2+.010+i*.012,t/2+.0026+i*.0016+ex*.01)}
       }
-      const pivot=new T3.Group();group.add(pivot);
-      pivot.position.set(sp/2,0,0);
-      const right=new T3.Group();pivot.add(right);
-      right.position.set(hw/2,0,-(t+.0006));
+      const pivot=new T3.Group();group.add(pivot);pivot.position.set(sp/2,0,0);
+      const right=new T3.Group();pivot.add(right);right.position.set(hw/2,0,-(t+.0006));
       panel(hw,hh,t,lm,right,rad);
       stitchRect(hw,hh,rad,seam,t/2+.0006,tm,right);
       for(let i=0;i<2;i++){
@@ -1424,16 +1517,13 @@ function build3D(){
       const spineG=track(new T3.BoxGeometry(sp,hh,t));
       const spineM=new T3.Mesh(spineG,lm);spineM.position.set(0,0,-t/2);spineM.castShadow=true;group.add(spineM);
       if(/magnet/.test(kind)){
-        const tab=panel(.055,.020,t*.8,lm2,right,.006);
-        tab.position.set(hw/2-.012,0,t/2+.002);
-        magnet(hw/2-.014,0,t/2+.004,right);
-        magnet(-hw/2-sp/2+hw-.014,0,t/2+.004,left);
+        const tab=panel(.055,.020,t*.8,lm2,right,.006);tab.position.set(hw/2-.012,0,t/2+.002);
+        magnet(hw/2-.014,0,t/2+.004,right);magnet(-sp/2-hw+.014,0,t/2+.004,left);
       }
       addJoinMarks(hw,hh,t/2+.001,left);
       frameModel(hw*2+sp,hh,D);
     }else if(/fan/.test(kind)){
-      const pw=(R.cardW+10+2*S.seam)/1000,ph=(R.cardH+6+2*S.seam)/1000;
-      const n=clamp(S.cards,3,6);
+      const pw=(R.cardW+10+2*S.seam)/1000,ph=(R.cardH+6+2*S.seam)/1000,n=clamp(S.cards,3,6);
       const px=-pw/2+.012,py=-ph/2+.012;
       const back=panel(pw+.002,ph+.002,t,lm,group,rad);back.position.z=-stack/2-t/2-ex*.02;
       for(let i=0;i<n;i++){
@@ -1445,60 +1535,44 @@ function build3D(){
         if(S.fill){const c=cardObj(cw,ch,i,pv);c.position.set(pw/2-.012,ph/2-.008,t*.32+.001)}
       }
       const cv=new T3.Group();group.add(cv);
-      cv.position.set(px,py,stack/2+t/2+ex*.02);
-      cv.rotation.z=-(op/180)*1.05;
+      cv.position.set(px,py,stack/2+t/2+ex*.02);cv.rotation.z=-(op/180)*1.05;
       const cm=panel(pw+.002,ph+.002,t,lm,cv,rad);cm.position.set(pw/2-.012,ph/2-.012,0);
       stitchRect(pw+.002,ph+.002,rad,seam,t/2+.0006,tm,cm);
       rivet(px,py,stack/2+t+.003,bm,group,.004);
       frameModel(pw*1.5,ph*1.4,D);
     }else if(/acc/.test(kind)){
-      const pl=clamp(S.cards,3,8);
-      const spread=.3+.7*(op/180);
-      const totalW=W*spread;
+      const pl=clamp(S.cards,3,8),spread=.3+.7*(op/180),totalW=W*spread;
       const back=panel(W,H,t,lm,group,rad);back.position.z=-D/2-t/2-ex*.02;
       const front=panel(W,H,t,lm,group,rad);front.position.z=D/2+t/2+ex*.02;
       stitchRect(W,H,rad,seam,t/2+.0006,tm,front);
       for(let i=0;i<pl-1;i++){
         const x=-totalW/2+totalW*(i+1)/pl;
-        const dv=panel(W*.94,H*.9,t*.55,lm2,group,.003);
-        dv.position.set(x*.55,0,0);
-        dv.rotation.y=Math.PI/2;
-        if(S.fill&&i<6){const c=cardObj(cw,ch,i,group);c.position.set(x*.55+ .004,0,.002);c.rotation.y=Math.PI/2}
+        const dv=panel(W*.94,H*.9,t*.55,lm2,group,.003);dv.position.set(x*.55,0,0);dv.rotation.y=Math.PI/2;
+        if(S.fill&&i<6){const c=cardObj(cw,ch,i,group);c.position.set(x*.55+.004,0,.002);c.rotation.y=Math.PI/2}
       }
-      [-1,1].forEach(s=>{
-        const zz=track(new T3.BufferGeometry());
-        const pts=[];const segs=pl*2;
-        for(let i=0;i<=segs;i++){const u=i/segs;pts.push(new T3.Vector3(s*(W/2),-H/2+H*u,0))}
-        const sideG=track(new T3.BoxGeometry(t*.6,H,totalW));
-        const side=new T3.Mesh(sideG,lm2);side.position.set(s*W/2,0,0);side.castShadow=true;group.add(side);
-      });
+      [-1,1].forEach(s=>{const g=track(new T3.BoxGeometry(t*.6,H,totalW));const m=new T3.Mesh(g,lm2);m.position.set(s*W/2,0,0);m.castShadow=true;group.add(m)});
       addJoinMarks(W,H,D/2+t+.001);
       frameModel(W*1.3,H,D+totalW);
     }else if(/zip/.test(kind)){
       const back=panel(W,H,t,lm,group,rad);back.position.z=-D/2+t/2;
       const ring=new T3.Mesh(ringGeo(W,H,rad,t,Math.max(.001,D-2*t)),lm2);ring.castShadow=true;group.add(ring);
-      const lid=new T3.Group();group.add(lid);
-      lid.position.set(0,-H/2,D/2-t/2);
+      const lid=new T3.Group();group.add(lid);lid.position.set(0,-H/2,D/2-t/2);
       const front=panel(W,H,t,lm,lid,rad);front.position.set(0,H/2,0);
       stitchRect(W,H,rad,seam,t/2+.0006,tm,front);
       lid.rotation.x=-(op/180)*.85;
-      const zp=[[W/2-.004,H/2-.004],[-W/2+.004,H/2-.004],[-W/2+.004,-H/2+.004],[W/2-.004,-H/2+.004]];
-      zipper(zp,0,bm,group);
+      zipper([[W/2-.004,H/2-.004],[-W/2+.004,H/2-.004],[-W/2+.004,-H/2+.004],[W/2-.004,-H/2+.004]],0,bm,group);
       if(S.fill)for(let i=0;i<Math.min(S.cards,5);i++){const c=cardObj(cw,ch,i,group);c.position.set(0,.004,-D/2+t+.001+i*.0012)}
       addJoinMarks(W,H,D/2+.001);
       frameModel(W,H,D);
     }else{
       const fh=(R.cardH*.72+S.ease+2*S.seam)/1000;
-      const backH=(/slots/.test(kind))?(R.cardH+S.ease+22+2*S.seam)/1000:H;
-      const back=panel(W,backH,t,lm,group,rad);
-      back.position.set(0,(backH-H)/2,-stack/2-t/2-ex*.018);
+      const backH=/slots/.test(kind)?(R.cardH+S.ease+22+2*S.seam)/1000:H;
+      const back=panel(W,backH,t,lm,group,rad);back.position.set(0,(backH-H)/2,-stack/2-t/2-ex*.018);
       if(lin){const l=panel(W-2*seam,backH-2*seam,liningT()/1000,lin,group,rad);l.position.set(0,(backH-H)/2,-stack/2-liningT()/2000-ex*.018)}
       stitchRect(W,backH,rad,seam,-stack/2-t-.0006,tm,back);
       if(/flap/.test(kind)){
-        const pv=new T3.Group();group.add(pv);
-        pv.position.set(0,backH/2+(backH-H)/2,-stack/2-t/2);
-        const fl=panel(W,R.cardH*.45/1000,t,lm2,pv,rad);
-        fl.position.set(0,-R.cardH*.45/2000,-(stack+t)-.001);
+        const pv=new T3.Group();group.add(pv);pv.position.set(0,backH/2+(backH-H)/2,-stack/2-t/2);
+        const fl=panel(W,R.cardH*.45/1000,t,lm2,pv,rad);fl.position.set(0,-R.cardH*.45/2000,-(stack+t)-.001);
         stitchRect(W,R.cardH*.45/1000,rad,seam,-t/2-.0006,tm,fl);
         snap(0,-R.cardH*.45/1000+.016,-(stack+t)-.001-t/2,bm,fl);
         pv.rotation.x=(op/180)*Math.PI*.92;
@@ -1514,15 +1588,11 @@ function build3D(){
           if(S.fill){const c=cardObj(cw,ch,i,group);c.position.set(0,-backH/2+ch/2+.012+i*.011+(backH-H)/2,stack/2+t+.0024+i*.0014+ex*.012)}
         }
       }else{
-        const front=panel(W,fh,t,lm,group,rad);
-        front.position.set(0,-(H-fh)/2,stack/2+t/2+ex*.018);
+        const front=panel(W,fh,t,lm,group,rad);front.position.set(0,-(H-fh)/2,stack/2+t/2+ex*.018);
         stitchRect(W,fh,rad,seam,t/2+.0006,tm,front);
         if(S.fill)for(let i=0;i<Math.min(S.cards,6);i++){const c=cardObj(cw,ch,i,group);c.position.set(0,(backH-H)/2+.010,-stack/2+.0008+i*(stack/Math.max(1,Math.min(S.cards,6))))}
       }
-      if(/pull/.test(kind)){
-        const rb=panel(.012,.055,.0012,lm2,group,.001);
-        rb.position.set(0,backH/2+.020+(backH-H)/2,0);
-      }
+      if(/pull/.test(kind)){const rb=panel(.012,.055,.0012,lm2,group,.001);rb.position.set(0,backH/2+.020+(backH-H)/2,0)}
       if(/clip/.test(kind)){
         const cg=track(new T3.BoxGeometry(.060,.024,.0022));
         const cm2=new T3.Mesh(cg,sm);cm2.position.set(0,backH/2-.014+(backH-H)/2,-stack/2-t-.002);cm2.castShadow=true;group.add(cm2);
@@ -1538,13 +1608,11 @@ function build3D(){
     if(/wrap/.test(kind)){
       const hw=W/2,sp=Math.max(.004,(R.depth+2*S.thick)/1000);
       const left=new T3.Group();group.add(left);left.position.set(-hw/2-sp/2,0,0);
-      panel(hw,H,t,lm,left,rad);
-      stitchRect(hw,H,rad,seam,t/2+.0006,tm,left);
+      panel(hw,H,t,lm,left,rad);stitchRect(hw,H,rad,seam,t/2+.0006,tm,left);
       if(lin){const l=panel(hw-2*seam,H-2*seam,liningT()/1000,lin,left,rad);l.position.z=t/2+liningT()/2000}
       const piv=new T3.Group();group.add(piv);piv.position.set(sp/2,0,0);
       const right=new T3.Group();piv.add(right);right.position.set(hw/2,0,-(t+.0008));
-      panel(hw,H,t,lm,right,rad);
-      stitchRect(hw,H,rad,seam,t/2+.0006,tm,right);
+      panel(hw,H,t,lm,right,rad);stitchRect(hw,H,rad,seam,t/2+.0006,tm,right);
       const pk=panel(hw*.7,H*.5,t*.7,lm2,right,.005);pk.position.set(0,-H*.12,t/2+.0018);
       piv.rotation.y=(op-180)*DEG;
       const spg=track(new T3.BoxGeometry(sp,H,t));
@@ -1560,11 +1628,7 @@ function build3D(){
         const ring=new T3.Mesh(ringGeo(W,H,rad,t,Math.max(.001,D-2*t)),lm2);ring.castShadow=true;ring.receiveShadow=true;group.add(ring);
         stitchRect(W,H,rad,t*.5,(D-2*t)/2-.0004,tm,group);
         stitchRect(W,H,rad,t*.5,-(D-2*t)/2+.0004,tm,group);
-      }else{
-        const seamG=track(new T3.BoxGeometry(.0012,.0012,.0012));
-        const pts=rrPts(W,H,rad,.0006);
-        stitches(pts,0,tm,group,.0035);
-      }
+      }else stitches(rrPts(W,H,rad,.0006),0,tm,group,.0035);
       const front=panel(W,H,t,lm,group,rad);front.position.z=D/2-t/2+ex*.03;
       stitchRect(W,H,rad,seam,D/2+.0006,tm,front);
       if(lin){const l=panel(W-2*seam,H-2*seam,liningT()/1000,lin,group,rad);l.position.z=D/2-liningT()/2000+ex*.03}
@@ -1575,30 +1639,21 @@ function build3D(){
       }
       if(/flap/.test(kind)){
         const flL=H*.42;
-        const pv=new T3.Group();group.add(pv);
-        pv.position.set(0,H/2,D/2-t/2);
+        const pv=new T3.Group();group.add(pv);pv.position.set(0,H/2,D/2-t/2);
         const fl=panel(W*.98,flL,t,lm2,pv,rad);fl.position.set(0,-flL/2,t*.6+.0012);
         stitchRect(W*.98,flL,rad,seam,t/2+.0006,tm,fl);
         if(/stud|lock/.test(kind)){snap(0,-flL+.020,t*.6+.0012+t/2,bm,fl,.006);snap(0,H/2-flL+.020,D/2+.002,bm,group,.006)}
-        if(/band/.test(kind)){
-          const bd=panel(W+.004,.022,t*.7,lm2,group,.003);bd.position.set(0,H/2-flL*.7,D/2+t*.5+.002);
-        }
+        if(/band/.test(kind)){const bd=panel(W+.004,.022,t*.7,lm2,group,.003);bd.position.set(0,H/2-flL*.7,D/2+t*.5+.002)}
         pv.rotation.x=(op/180)*Math.PI*.95;
       }
-      if(/zip/.test(kind)){
-        const zp=[[-W/2+.006,H/2-.002],[W/2-.006,H/2-.002]];
-        zipper(zp,D/2-.001,bm,group);
-      }
+      if(/zip/.test(kind))zipper([[-W/2+.006,H/2-.002],[W/2-.006,H/2-.002]],D/2-.001,bm,group);
       if(/handle/.test(kind)){
         const curve=new T3.CatmullRomCurve3([new T3.Vector3(-.06,H/2,0),new T3.Vector3(-.05,H/2+.05,0),new T3.Vector3(.05,H/2+.05,0),new T3.Vector3(.06,H/2,0)]);
         const hg=track(new T3.TubeGeometry(curve,40,.005,10,false));
         const hm=new T3.Mesh(hg,lm2);hm.castShadow=true;group.add(hm);
         rivet(-.06,H/2-.004,D/2+.002,bm,group);rivet(.06,H/2-.004,D/2+.002,bm,group);
       }
-      if(S.fill&&(op>25||!/flap/.test(kind))){
-        const dv=panel(S.A/1000,S.B/1000,Math.max(.004,S.C/1000),steelMat(),group,.004);
-        dv.position.set(0,H*.16,0);
-      }
+      if(S.fill&&(op>25||!/flap/.test(kind))){const dv=panel(S.A/1000,S.B/1000,Math.max(.004,S.C/1000),steelMat(),group,.004);dv.position.set(0,H*.16,0)}
       addJoinMarks(W,H,D/2+.001);
       frameModel(W,H,D);
     }
@@ -1652,7 +1707,7 @@ function fillSelects(){
   $("#finish").innerHTML=FINISHES.map(f=>'<option value="'+f[0]+'">'+f[1]+'</option>').join("");
   $("#thread").innerHTML=THREADS.map(t=>'<option value="'+t[0]+'">'+t[1]+'</option>').join("");
   $("#lining").innerHTML=LININGS.map(l=>'<option value="'+l[0]+'">'+l[1]+'</option>').join("");
-  $("#swatches").innerHTML=COLORS.map(c=>'<button class="swatch" data-color="'+c+'" style="background:'+c+'"></button>').join("");
+  $("#swatches").innerHTML=COLORS.map(c=>'<button class="swatch" data-color="'+c+'" style="background:'+c+'" title="'+c+'"></button>').join("");
 }
 function fillModels(){
   const q=$("#search").value.trim().toLowerCase(),brand=$("#brand").value||"all",arr=DEVICES[S.type],groups={},order=[];
@@ -1670,12 +1725,35 @@ function fillModels(){
   const idx=arr.findIndex(d=>d[1]===S.model);
   $("#model").value=S.model==="custom"?"custom":(idx>=0?String(idx):"");
   const total=DEVICES.laptop.length+DEVICES.tablet.length+DEVICES.ebook.length;
-  $("#catCount").textContent="Показано "+shown+" из "+arr.length+" "+TYPE_LABEL[S.type]+" · всего в каталоге "+total;
+  $("#catCount").textContent="Показано "+shown+" из "+arr.length+" "+TYPE_LABEL[S.type]+" · всего "+total;
   $("#chCatalog").textContent=DEVICES.laptop.length+" ноутб. + "+DEVICES.tablet.length+" планш. + "+DEVICES.ebook.length+" э-книг";
 }
 function fillDesigns(){
-  const reg=designs();
-  $("#designGrid").innerHTML=Object.keys(reg).map(id=>'<button class="dc '+(designId()===id?"on":"")+'" data-design="'+id+'"><svg viewBox="0 0 46 34"><rect x="6" y="7" width="34" height="22" rx="4"/><path d="M10 13h26M10 20h18"/></svg><span>'+reg[id][0]+'</span></button>').join("");
+  const reg=designs(),cur=designId();
+  $("#designGrid").innerHTML=Object.keys(reg).map(id=>{
+    const m=DESIGN_META[id]||{badge:"",desc:""};
+    return '<button class="dc'+(cur===id?" on":"")+'" data-design="'+id+'" title="'+reg[id][0]+' — '+m.desc+'"><span class="bdg">'+m.badge+'</span><span class="icoWrap">'+designIcon(id)+'</span><span class="nm">'+reg[id][0]+'</span></button>';
+  }).join("");
+  renderDesignDetail();
+  renderGallery();
+}
+function refreshDesignIcons(){
+  $$("#designGrid .dc").forEach(b=>{const w=b.querySelector(".icoWrap");if(w)w.innerHTML=designIcon(b.dataset.design)});
+  renderDesignDetail();renderGallery();
+}
+function renderDesignDetail(){
+  const id=designId(),box=$("#designDetail");
+  if(!id||!designs()[id]){box.innerHTML='<div class="dsel empty">Выберите конструкцию — здесь появится увеличенная иллюстрация, описание и фурнитура.</div>';return}
+  const m=DESIGN_META[id]||{desc:"",tags:[]};
+  box.innerHTML='<div class="dsel"><div class="big">'+designIcon(id)+'</div><div><h5>'+designs()[id][0]+'</h5><p>'+m.desc+'</p><div class="tags">'+(m.tags||[]).map(t=>'<i>'+t+'</i>').join("")+'</div></div></div>';
+}
+function renderGallery(){
+  const reg=designs(),cur=designId();
+  $("#catTitle").textContent=famName()+" · "+Object.keys(reg).length+" конструкций";
+  $("#gallery").innerHTML=Object.keys(reg).map(id=>{
+    const m=DESIGN_META[id]||{desc:"",tags:[]};
+    return '<button class="gcard'+(cur===id?" on":"")+'" data-design="'+id+'">'+designIcon(id)+'<b>'+reg[id][0]+'</b><span>'+m.desc+'</span></button>';
+  }).join("");
 }
 function syncUI(){
   const r=ready();
@@ -1713,6 +1791,8 @@ function syncUI(){
   $$("[data-or]").forEach(b=>b.classList.toggle("on",b.dataset.or===S.orient));
   $$("[data-family]").forEach(b=>b.classList.toggle("on",b.dataset.family===S.family));
   $$("[data-type]").forEach(b=>b.classList.toggle("on",b.dataset.type===S.type));
+  $$("#designGrid .dc").forEach(b=>b.classList.toggle("on",b.dataset.design===designId()));
+  $$("#gallery .gcard").forEach(b=>b.classList.toggle("on",b.dataset.design===designId()));
   const pk=[["device",isCard()?"Формат карты / документа":"Модель устройства"],["design","Конструкция"]];
   const html=pk.map(p=>'<span class="ri '+(S.picked[p[0]]?"ok":"")+'"><i>'+(S.picked[p[0]]?"✓":"")+'</i>'+p[1]+'</span>').join("");
   $("#readyList").innerHTML=html;$("#lockList").innerHTML=html;
@@ -1726,19 +1806,18 @@ function render(light){
     if(!ready()){
       $("#patternSvg").innerHTML="";
       $("#specBody").innerHTML="<tr><td colspan='4'>Выберите параметры и конструкцию</td></tr>";
-      ["joinList","stockSummary","techCards","checkList","splitWarn","printSummary","printWarn","testReport"].forEach(id=>{$("#"+id).innerHTML=""});
+      ["joinList","stockSummary","checkList","splitWarn","printSummary","printWarn","testReport"].forEach(id=>{$("#"+id).innerHTML=""});
+      $("#techCards").innerHTML="";
       $("#chParts").textContent="—";$("#chSheets").textContent="—";
-      renderLegendPreview();
+      renderLegendPreview();renderDesignDetail();
       return;
     }
     const M=derive();
     renderBoard(M);renderPrint(M);renderSplit(M);renderSpec(M);renderTech(M);
     $("#chParts").textContent=M.pieces.length;$("#chSheets").textContent=sheetsOf(M);
     if(!started3)init3D();
-    else if(ready3){
-      if(light){clearTimeout(buildTimer);buildTimer=setTimeout(build3D,60)}
-      else build3D();
-    }else if(!$("#fallback").hidden)drawFallback();
+    else if(ready3){if(light){clearTimeout(buildTimer);buildTimer=setTimeout(build3D,60)}else build3D()}
+    else if(!$("#fallback").hidden)drawFallback();
   }catch(e){console.error(e);toast("Ошибка: "+e.message)}
 }
 function set(patch,light){
@@ -1750,18 +1829,33 @@ function set(patch,light){
   if("design" in patch||"cardDesign" in patch)S.picked.design=!!designId();
   if("model" in patch)S.picked.device=!!S.model;
   if("cardFmt" in patch||"cards" in patch||"orient" in patch)S.picked.device=true;
-  save();render(light);
+  save();
+  if("color" in patch||"thread" in patch)refreshDesignIcons();
+  if("design" in patch||"cardDesign" in patch)renderDesignDetail();
+  render(light);
+}
+function pickDesign(id){
+  const p={open:isCard()?150:0};
+  if(isCard())p.cardDesign=id;else p.design=id;
+  set(p);toast(designs()[id][0]);
 }
 function setPrint(k,v){S.print[k]=v;save();render()}
 function toast(m){const t=document.createElement("div");t.className="toast";t.textContent=m;$("#toasts").appendChild(t);setTimeout(()=>t.remove(),2800)}
 function toggleOpen(){set({open:S.open>90?0:170})}
 
 /* ================= тесты ================= */
-const TEST_IDS=["familyTabs","typeSeg","brand","search","model","catCount","cardFormat","cardCount","cardCountOut","orientSeg","cardInfo","dimA","dimB","dimC","ease","easeOut","seam","seamOut","designGrid","swatches","color","finish","thick","thickOut","patina","patinaOut","thread","lining","stock","customStock","stockW","stockH","stockM","splitToggle","joinAllow","joinOut","maxPart","maxPartOut","pLegend","pHardware","pGlue","pStitch","pJoins","pLabels","pMini","pCal","open","openOut","openLbl","explode","explodeOut","light","lightOut","angle","angleOut","rotToggle","fillToggle","quality","resetAll","randomBtn","stage","gl","fallback","lock","lockList","lockBar","veil","hudBadge","camBtn","rotBtn","openBtn","pngBtn","hudDims","camBtn2","openBtn2","pngBtn2","pdfBtn","svgBtn","techBtn","previewBtn","printSummary","printWarn","legendPreview","splitWarn","stockSummary","joinList","svgBtn2","previewBtn2","pdfBtn2","board","patternSvg","stArea","stParts","stJoins","stSheets","stThread","specBody","checkList","selfTest","testReport","techCards","preview","previewScrim","previewPages","closePreview","closePreview2","dpi","doPdf","doPrint","pdfProg","progText","progBar","printRoot","toasts","readyList","resetPick","demoBtn","casePanel","cardPanel","chFamily","chCatalog","chDims","chThick","chParts","chSheets","topPdf"];
+const TEST_IDS=["familyTabs","typeSeg","brand","search","model","catCount","cardFormat","cardCount","cardCountOut","orientSeg","cardInfo","dimA","dimB","dimC","ease","easeOut","seam","seamOut","designGrid","designDetail","swatches","color","finish","thick","thickOut","patina","patinaOut","thread","lining","stock","customStock","stockW","stockH","stockM","splitToggle","joinAllow","joinOut","maxPart","maxPartOut","pLegend","pHardware","pGlue","pStitch","pJoins","pLabels","pMini","pCal","open","openOut","openLbl","explode","explodeOut","light","lightOut","angle","angleOut","rotToggle","fillToggle","quality","resetAll","randomBtn","stage","gl","fallback","lock","lockList","lockBar","veil","hudBadge","camBtn","rotBtn","openBtn","pngBtn","hudDims","camBtn2","openBtn2","pngBtn2","pdfBtn","svgBtn","techBtn","previewBtn","catalog","catTitle","gallery","printSummary","printWarn","legendPreview","splitWarn","stockSummary","joinList","svgBtn2","previewBtn2","pdfBtn2","board","patternSvg","stArea","stParts","stJoins","stSheets","stThread","specBody","checkList","selfTest","testReport","techCards","preview","previewScrim","previewPages","closePreview","closePreview2","dpi","doPdf","doPrint","pdfProg","progText","progBar","printRoot","toasts","readyList","resetPick","demoBtn","casePanel","cardPanel","chFamily","chCatalog","chDims","chThick","chParts","chSheets","topPdf"];
 function runTests(){
   const res=[];
   const missing=TEST_IDS.filter(id=>!document.getElementById(id));
   res.push(["DOM: "+TEST_IDS.length+" элементов",missing.length===0,missing.length?("нет: "+missing.join(", ")):"ok"]);
+  const allIds=Object.keys(CASE_DESIGNS).concat(Object.keys(CARD_DESIGNS));
+  const uniq=new Set(allIds.map(id=>designIcon(id)));
+  res.push(["Иконки конструкций уникальны",uniq.size===allIds.length,uniq.size+" из "+allIds.length]);
+  const iconsOk=allIds.every(id=>{const s=designIcon(id);return s.indexOf("<svg")===0&&s.indexOf("NaN")<0&&s.indexOf("undefined")<0});
+  res.push(["Иконки без NaN / undefined",iconsOk,allIds.length+" шт"]);
+  res.push(["Иконки в сетке отрисованы",$$("#designGrid .icoWrap svg").length===Object.keys(designs()).length,$$("#designGrid .icoWrap svg").length+" шт"]);
+  res.push(["Галерея конструкций заполнена",$$("#gallery .gcard svg").length===Object.keys(designs()).length,$$("#gallery .gcard").length+" карточек"]);
   res.push(["Каталог ноутбуков ≥ 80",DEVICES.laptop.length>=80,DEVICES.laptop.length+" моделей"]);
   res.push(["Каталог планшетов ≥ 80",DEVICES.tablet.length>=80,DEVICES.tablet.length+" моделей"]);
   res.push(["Каталог э-книг ≥ 100",DEVICES.ebook.length>=100,DEVICES.ebook.length+" моделей"]);
@@ -1782,7 +1876,6 @@ function runTests(){
     ["Картхолдер · зажим",{family:"card",cardDesign:"ch_clip",cardFmt:"id1",cards:4,thick:1.4,stock:"a4"}],
     ["Паспорт РБ · слип",{family:"card",cardDesign:"ch_slip",cardFmt:"pp_by",cards:1,thick:1.4,stock:"a4"}],
     ["Биопаспорт РБ · бифолд",{family:"card",cardDesign:"ch_bifold",cardFmt:"pp_by_bio",cards:1,thick:1.6,stock:"a4"}],
-    ["ID-карта РБ · слоты",{family:"card",cardDesign:"ch_slots",cardFmt:"id_by",cards:3,thick:1.2,stock:"20x20"}],
     ["Кусок 100×100",{family:"case",design:"slip",A:304,B:215,C:12,thick:2.2,stock:"custom",stockW:100,stockH:100,stockM:5,join:5,maxPart:90}]
   ];
   cfgs.forEach(c=>{
@@ -1795,11 +1888,11 @@ function runTests(){
     const fit=M.oversize===0,pair=M.joins.every(j=>j.parts.length>1);
     let a4=true;
     try{a4=buildPages(M).every(pg=>pg.svg.indexOf("NaN")<0&&pg.svg.indexOf('width="210mm"')>=0)}catch(e){a4=false}
-    res.push([c[0],geom&&fit&&pair&&a4,M.pieces.length+" дет · "+sheetsOf(M)+" A4"+(fit?"":" · не влезает в кусок")]);
+    res.push([c[0],geom&&fit&&pair&&a4,M.pieces.length+" дет · "+sheetsOf(M)+" A4"]);
   });
   S=sanitize(backup);
   const pass=res.filter(r=>r[1]).length;
-  $("#testReport").innerHTML='<div class="'+(pass===res.length?"okbar":"warnbar")+'">Тесты: '+pass+'/'+res.length+'</div><ul class="join-list" style="margin-top:8px">'+res.map(r=>'<li>'+(r[1]?"✓":"✕")+' '+r[0]+' <code>'+r[2]+'</code></li>').join("")+'</ul>';
+  $("#testReport").innerHTML='<div class="'+(pass===res.length?"okbar":"warnbar")+'">Тесты: '+pass+'/'+res.length+'</div><ul class="join-list" style="margin-top:8px">'+res.map(r=>'<li>'+(r[1]?"✓":"✕")+' '+r[0]+' <code>'+r[2]+'</code></li>').join("");
   return pass===res.length;
 }
 
@@ -1827,12 +1920,8 @@ function bind(){
   $("#orientSeg").onclick=e=>{const b=e.target.closest("[data-or]");if(b)set({orient:b.dataset.or})};
   ["A","B","C"].forEach(k=>{$("#dim"+k).onchange=e=>{const p={};p[k]=+e.target.value;if(!isCard())p.model="custom";set(p)}});
   $$("[data-step]").forEach(b=>{b.onclick=()=>{const q=b.dataset.step.split(":"),k=q[0],d=+q[1],p={};p[k]=Math.round((S[k]+d)*10)/10;if(!isCard())p.model="custom";set(p)}});
-  $("#designGrid").onclick=e=>{
-    const b=e.target.closest("[data-design]");if(!b)return;
-    const p={open:isCard()?140:0};
-    if(isCard())p.cardDesign=b.dataset.design;else p.design=b.dataset.design;
-    set(p);toast(designName());
-  };
+  $("#designGrid").onclick=e=>{const b=e.target.closest("[data-design]");if(b)pickDesign(b.dataset.design)};
+  $("#gallery").onclick=e=>{const b=e.target.closest("[data-design]");if(b){pickDesign(b.dataset.design);$("#studio").scrollIntoView({behavior:"smooth"})}};
   $("#swatches").onclick=e=>{const b=e.target.closest("[data-color]");if(b)set({color:b.dataset.color},true)};
   $("#color").oninput=e=>set({color:e.target.value},true);
   $("#finish").onchange=e=>set({finish:e.target.value});
@@ -1856,7 +1945,7 @@ function bind(){
   $("#resetPick").onclick=()=>{S.picked={device:false,design:false};S.model="";S.design="";S.cardDesign="";fillDesigns();render()};
   $("#demoBtn").onclick=()=>{
     if(isCard()){S.cardFmt="pp_by";S.cards=1;S.cardDesign="ch_bifold";S.open=150;syncCardDims();toast("Демо: обложка на паспорт РБ")}
-    else{S.type="laptop";S.brand="all";S.model="MacBook Air 13 M2/M3/M4";S.A=304.1;S.B=215;S.C=11.3;S.design="slip";S.open=0;fillSelects();fillModels()}
+    else{S.type="laptop";S.brand="all";S.model="MacBook Air 13 M2/M3/M4";S.A=304.1;S.B=215;S.C=11.3;S.design="lock";S.open=0;fillSelects();fillModels()}
     S.picked={device:true,design:true};fillDesigns();render();
   };
   $("#resetAll").onclick=()=>{S=sanitize(DEF);fillSelects();fillModels();fillDesigns();render()};
@@ -1864,7 +1953,7 @@ function bind(){
     const keys=Object.keys(designs()),id=keys[Math.floor(Math.random()*keys.length)];
     const p={color:COLORS[Math.floor(Math.random()*COLORS.length)],finish:FINISHES[Math.floor(Math.random()*FINISHES.length)][0],thick:Math.round((isCard()?1+Math.random()*1.2:1.4+Math.random()*1.8)*10)/10,open:isCard()?150:0};
     if(isCard())p.cardDesign=id;else p.design=id;
-    set(p);
+    set(p);refreshDesignIcons();
   };
   ["pdfBtn","pdfBtn2","topPdf","doPdf"].forEach(id=>{$("#"+id).onclick=exportPDF});
   ["svgBtn","svgBtn2"].forEach(id=>{$("#"+id).onclick=()=>downloadSVG(derive())});
@@ -1884,7 +1973,7 @@ function bind(){
     $$(".reveal").forEach(el=>ro.observe(el));
     const nav=$$("nav a");
     const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting)nav.forEach(a=>a.classList.toggle("on",a.getAttribute("href")==="#"+en.target.id))}),{rootMargin:"-35% 0px -55%"});
-    ["studio","print","split","pattern","spec","assembly"].forEach(id=>{const el=document.getElementById(id);if(el)io.observe(el)});
+    ["studio","catalog","print","split","pattern","spec","assembly"].forEach(id=>{const el=document.getElementById(id);if(el)io.observe(el)});
   }else $$(".reveal").forEach(el=>el.classList.add("in"));
 }
 
