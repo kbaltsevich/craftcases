@@ -310,7 +310,7 @@ footer b{color:var(--brass)}#printRoot{display:none}
 <p>Чехлы, картхолдеры и обложки для книг. Актуальные конструкции, адаптивная кромка, раскрой в миллиметрах, PDF-листы A4, расчёт рекомендуемой заготовки, 3D со слоями выкройки, 3D-сборка узлов, техкарта и генератор штампа для тиснения с экспортом STL.</p>
 <div class="fam" id="familyTabs">
 <button data-family="case" class="on"><svg viewBox="0 0 32 32"><rect x="4" y="7" width="24" height="18" rx="3"/><path d="M4 12h24"/></svg><span><b>Чехлы</b><span>слипкейс · ремешок · замок · косой клапан</span></span></button>
-<button data-family="card"><svg viewBox="0 0 32 32"><rect x="3" y="9" width="26" height="16" rx="3"/><rect x="7" y="13" width="18" height="4" rx="1"/></svg><span><b>Картхолдеры</b><span>банковские карты · опц. паспорт РБ</span></span></button>
+<button data-family="card"><svg viewBox="0 0 32 32"><rect x="3" y="9" width="26" height="16" rx="3"/><rect x="7" y="13" width="18" height="4" rx="1"/></svg><span><b>Картхолдеры</b><span>банковские карты · горизонтально и вертикально</span></span></button>
 <button data-family="book"><svg viewBox="0 0 32 32"><path d="M6 6h9a4 4 0 014 4v16a4 4 0 00-4-4H6z"/><path d="M26 6h-9a4 4 0 00-4 4v16a4 4 0 014-4h9z"/></svg><span><b>Обложки книг</b><span>размер · глубина · закладка</span></span></button>
 </div>
 <div class="chips">
@@ -329,6 +329,7 @@ footer b{color:var(--brass)}#printRoot{display:none}
 <aside id="controls">
 <div class="grp"><div class="gt"><em>00</em> Осталось выбрать</div><div class="ready" id="readyList"></div>
 <div class="row" style="margin-top:11px"><button class="btn ghost sm grow" id="bCustom">Свой размер</button><button class="btn ghost sm" id="resetPick">Сбросить выбор</button></div>
+<div class="row"><button class="btn brass sm grow" id="demoBtn">Демо-образ</button></div>
 <p class="hint">Остальные параметры заданы по умолчанию и запоминаются отдельно для каждой линии.</p></div>
 <div class="grp" id="casePanel"><div class="gt"><em>01</em> Устройство</div>
 <div class="row"><div class="seg grow" id="typeSeg"><button data-type="laptop" class="on">Ноутбуки</button><button data-type="tablet">Планшеты</button><button data-type="ebook">Э-книги</button></div></div>
@@ -338,6 +339,8 @@ footer b{color:var(--brass)}#printRoot{display:none}
 <div class="grp" id="cardPanel" hidden><div class="gt"><em>01</em> Банковские карты</div>
 <div class="badge ok">Базовый формат только ID-1: 85,60 × 53,98 мм.</div>
 <div class="sl" style="margin-top:11px"><label>Карт в стеке</label><input id="cardCount" type="range" min="1" max="14" step="1"><output id="cardCountOut"></output></div>
+<div class="row"><label>Ориентация</label><div class="seg grow" id="orientSeg"><button data-orient="h" class="on">Горизонтально</button><button data-orient="v">Вертикально</button></div></div>
+<div class="row"><label class="grow">Отсек для денег</label><button class="switch" id="moneyToggle" role="switch"></button></div>
 <div class="row"><label class="grow">Вкладыш паспорт РБ</label><button class="switch" id="passportToggle" role="switch"></button></div>
 <div class="sl"><label>Паспортов</label><input id="passportCount" type="range" min="1" max="3" step="1"><output id="passportCountOut"></output></div>
 <p class="hint" id="cardInfo"></p></div>
@@ -456,6 +459,8 @@ footer b{color:var(--brass)}#printRoot{display:none}
 <button class="dlcard" id="bDlSvg" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v16H4z"/><path d="M8 12h8M12 8v8"/></svg><b>SVG · вектор в мм</b><span>Единый файл в физических миллиметрах для Illustrator, Inkscape, лазерного реза.</span></button>
 <button class="dlcard" id="bDlPng" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><b>PNG · превью</b><span>Снимок 3D-сцены с подписью конструкции, кроя и толщины кожи.</span></button>
 </div>
+<div class="stats" id="printSummary" style="margin-top:16px"></div>
+<div id="printWarn"></div>
 <div class="dlhint" id="dlHint">Выберите параметры и конструкцию — кнопки станут активны.</div>
 </section>
 <section id="pattern" class="reveal">
@@ -469,6 +474,8 @@ footer b{color:var(--brass)}#printRoot{display:none}
 <p style="font-size:12px;color:var(--mut);margin-bottom:9px">Подгоните 100 мм под реальную линейку. На PDF не влияет — листы создаются в физических миллиметрах.</p>
 <div style="display:flex;gap:11px;align-items:center"><input id="rCal" type="range" min="60" max="170" step="0.5" class="grow"><output id="calOut" style="font:11.5px 'JetBrains Mono',monospace;color:var(--brass2);white-space:nowrap"></output></div></div>
 </div></div>
+<div class="card" style="margin-top:15px"><h4 style="font-size:13.5px;color:var(--brass2);margin-bottom:4px">Легенда линий выкройки</h4>
+<svg id="legendPreview" class="layer-svg" xmlns="http://www.w3.org/2000/svg"></svg></div>
 </section>
 <section id="spec" class="reveal">
 <div class="sh"><span class="tag">08 · Документация</span><h2>Спецификация и контроль</h2><span class="sub">Габариты кроя — с припуском, обхватом и толщиной кожи. Состав меняется вместе с конструкцией и делением.</span></div>
@@ -492,13 +499,17 @@ footer b{color:var(--brass)}#printRoot{display:none}
 </div>
 <div class="stats"><div class="stat"><div class="v" id="lvArea">—</div><div class="l">Чистая площадь</div></div><div class="stat"><div class="v" id="lvWaste">—</div><div class="l">С запасом</div></div><div class="stat"><div class="v" id="lvFt">—</div><div class="l">Фут²</div></div><div class="stat"><div class="v" id="lvVol">—</div><div class="l">Объём</div></div><div class="stat"><div class="v" id="lvWeight">—</div><div class="l">Вес ≈</div></div></div>
 <div id="compareBox"></div>
+<div class="card" style="margin-bottom:16px"><h4 style="color:var(--brass2);margin-bottom:10px">Кусок кожи мастера и стыки</h4>
+<div class="stats" id="stockSummary"></div>
+<ul class="join-list" id="joinList"></ul>
+<div id="splitWarn"></div></div>
 <div class="grid2">
 <div class="paper"><table><thead><tr><th>Формат</th><th>Размер · мм</th><th>По площади</th><th>Раскладка</th><th>Заполнение</th></tr></thead><tbody id="fmtBody"></tbody></table></div>
 <div class="card"><h4 style="font-size:13px;color:var(--brass2);margin-bottom:9px" id="nestTitle">Раскладка</h4><svg id="nestSvg" xmlns="http://www.w3.org/2000/svg"></svg><div class="legend" id="nestLegend"></div></div>
 </div>
 </section>
 <section id="catalog" class="reveal">
-<div class="sh"><span class="tag">10 · Конструкции</span><h2 id="catTitle">Все конструкции линии</h2><span class="sub">Иллюстрация показывает реальный крой: форму клапана, карманы, слоты, молнию, зажим, гофре или корешок.</span></div>
+<div class="sh"><span class="tag">10 · Конструкции</span><h2 id="catTitle">Все конструкции линии</h2><span class="sub">Иллюстрация показывает реальный крой: форму клапана, карманы, слоты, корешок или отсек для денег.</span></div>
 <div class="gallery" id="gallery"></div>
 </section>
 <section id="refs" class="reveal">
@@ -728,25 +739,18 @@ const TYPE_LABEL={laptop:"ноутбуков",tablet:"планшетов",ebook:
 const BANK_CARD={w:85.6,h:53.98,t:.8};
 const PASSPORT_BY={w:88,h:125,t:4};
 const CASE_DESIGNS={slip:["Слипкейс","slip"],strap:["С ремешком","flap band"],lock:["С замком","flap lock"],diag:["Косой клапан","flap diag"]};
-const CARD_DESIGNS={ch_slip:["Минимал-слип","slip"],ch_slots:["Слотовый","slots"],ch_pull:["С язычком","pull"],ch_bifold:["Бифолд","wrap"],ch_snap:["Конверт-кнопка","flap stud"],ch_mag:["Магнитный флип","wrap magnet"],ch_clip:["С зажимом","clip"],ch_zip:["На молнии","zip"],ch_acc:["Аккордеон","acc"],ch_long:["Лонг-кошелёк","wrap long"],ch_fan:["Веер","fan"]};
+const CARD_DESIGNS={ch_slip:["Минимал-слип","slip"],ch_slots:["Слотовый","slots"],ch_bifold:["Бифолд","wrap"],ch_long:["Лонг-кошелёк","wrap long"]};
 const BOOK_DESIGNS={book_cover:["Обложка для книги","book"]};
-const LARGE_CARD=["ch_bifold","ch_long","ch_zip","ch_acc","ch_mag"];
+const LARGE_CARD=["ch_bifold","ch_long"];
 const DESIGN_META={
 slip:{badge:"2 панели",desc:"Две панели, вход сверху. Шов по трём сторонам. Карманы добавляются опционально.",tags:["плоский крой","карманы опц."]},
 strap:{badge:"лента",desc:"Клапан заправляется под горизонтальную ленту — фиксация без металла.",tags:["лента","клапан","карманы опц."]},
 lock:{badge:"замок",desc:"Треугольный клапан с поворотным замком turn-lock и площадкой-усилителем.",tags:["turn-lock","овал 16×9"]},
 diag:{badge:"клапан",desc:"Клапан со скошенным срезом: асимметрия и быстрый доступ.",tags:["косой срез","карманы опц."]},
-ch_slip:{badge:"2 детали",desc:"Задняя панель и передняя с выемкой под большой палец. Только карты ID-1.",tags:["ID-1","выемка"]},
-ch_slots:{badge:"3 слота",desc:"Три каскадных слота со сдвигом 11 мм, карты видны лесенкой.",tags:["каскад 11 мм"]},
-ch_pull:{badge:"язычок",desc:"Вертикальный картхолдер: язычок в дне выталкивает карты вверх.",tags:["язычок 130×12"]},
-ch_bifold:{badge:"книжка",desc:"Складывается пополам: слоты на двух половинах и купюрное отделение. Возможен вкладыш паспорт РБ.",tags:["корешок","паспорт РБ опц."]},
-ch_snap:{badge:"кнопка",desc:"Конверт с треугольным клапаном на кнопке альфа и усилителем.",tags:["кнопка альфа"]},
-ch_mag:{badge:"магнит",desc:"Книжка с магнитным хлястиком 70×26. Возможен вкладыш паспорт РБ.",tags:["неодим 10×2","паспорт РБ опц."]},
-ch_clip:{badge:"зажим",desc:"Слоты под карты плюс металлический зажим 60×25 для купюр.",tags:["зажим 60×25","заклёпки Ø3"]},
-ch_zip:{badge:"молния",desc:"Замкнутая боковина и молния по трём сторонам. Возможен вкладыш паспорт РБ.",tags:["молния №3","боковина"]},
-ch_acc:{badge:"гофре",desc:"Аккордеон на 3–8 секций с разделителями. Возможен вкладыш паспорт РБ.",tags:["гофре","паспорт РБ опц."]},
-ch_long:{badge:"лонг",desc:"Длинный кошелёк: купюры без сгиба, слоты под карты. Возможен вкладыш паспорт РБ.",tags:["лонг","паспорт РБ опц."]},
-ch_fan:{badge:"ось",desc:"Пластины вращаются вокруг винта-поста — карты раскрываются веером.",tags:["винт-пост Ø4"]},
+ch_slip:{badge:"2 детали",desc:"Задняя панель и передняя с выемкой под большой палец. Только карты ID-1, горизонтально или вертикально. Опционально отсек для сложенных купюр.",tags:["ID-1","выемка","деньги опц."]},
+ch_slots:{badge:"3 слота",desc:"Три каскадных слота со сдвигом 11 мм, карты видны лесенкой. Опционально отсек для сложенных купюр на обороте.",tags:["каскад 11 мм","деньги опц."]},
+ch_bifold:{badge:"книжка",desc:"Складывается пополам: слоты на двух половинах и купюрное отделение между ними. Возможен вкладыш паспорт РБ.",tags:["корешок","купюры","паспорт РБ опц."]},
+ch_long:{badge:"лонг",desc:"Длинный кошелёк: купюры без сгиба, слоты под карты, разделитель купюр. Возможен вкладыш паспорт РБ.",tags:["лонг","купюры","паспорт РБ опц."]},
 book_cover:{badge:"книга",desc:"Обложка надевается на книгу и защищает её при чтении и переноске. Размер, ширина, глубина и высота задаются пользователем; припуски, клапаны и корешок считаются автоматически. Закладка-ляссе опциональна.",tags:["корешок","клапаны","закладка опц."]}
 };
 const COLORS=["#4a2e1c","#8a5a2b","#a4713a","#6e2f2a","#26201c","#5c5233","#c9a876","#2e3a4d"];
@@ -762,7 +766,7 @@ const BLANKS=[
 {id:"a1",name:"A1",w:594,h:841},{id:"hide",name:"Чепрак 140×100 см",w:1400,h:1000}];
 const POCKET_TYPES={card:{name:"Карта / пропуск",w:96,h:66},cables:{name:"Провода / зарядка",w:124,h:86},mixed:{name:"Смешанный",w:136,h:94}};
 const DEF={family:"case",type:"laptop",brand:"all",search:"",model:"",A:304,B:215,C:12,
-cardCount:4,passport:false,passportCount:1,bookW:150,bookH:220,bookD:25,bookmark:true,bookConfirmed:false,bookDesign:"book_cover",
+cardCount:4,passport:false,passportCount:1,cardOrient:"h",moneySlot:false,bookW:150,bookH:220,bookD:25,bookmark:true,bookConfirmed:false,bookDesign:"book_cover",
 design:"",cardDesign:"",pocketCount:0,pocketType:"card",ease:6,seam:6,thick:2.2,color:"#8a5a2b",finish:"crazy",patina:45,thread:"cream",lining:"suede",
 edgeMode:"auto",stock:"a4",stockW:250,stockH:350,stockM:8,split:true,join:8,maxPart:220,waste:15,format:"a4",
 view3d:"product",marks3d:true,open:0,explode:0,light:1.5,angle:35,autoRot:true,fill:true,quality:"high",
@@ -780,7 +784,7 @@ if(d.design&&!CASE_DESIGNS[d.design])d.design="";
 if(d.cardDesign&&!CARD_DESIGNS[d.cardDesign])d.cardDesign="";
 d.bookDesign="book_cover";
 if(!POCKET_TYPES[d.pocketType])d.pocketType="card";
-if(!STOCKS.some(s=>s.id===d.stock))d.stock="a4";
+if(d.stock!=="custom"&&!STOCKS.some(s=>s.id===d.stock))d.stock="a4";
 if(!STOCKS.some(s=>s.id===d.format))d.format="a4";
 if(!FINISHES.some(f=>f[0]===d.finish))d.finish="crazy";
 if(!THREADS.some(t=>t[0]===d.thread))d.thread="cream";
@@ -788,6 +792,8 @@ if(!LININGS.some(l=>l[0]===d.lining))d.lining="suede";
 if(["auto","flat","gusset"].indexOf(d.edgeMode)<0)d.edgeMode="auto";
 if(["product","flat","layers"].indexOf(d.view3d)<0)d.view3d="product";
 if(["low","med","high"].indexOf(d.quality)<0)d.quality="high";
+if(["h","v"].indexOf(d.cardOrient)<0)d.cardOrient="h";
+d.moneySlot=!!d.moneySlot;
 if(!/^#[0-9a-f]{6}$/i.test(d.color))d.color=DEF.color;
 const nums=["A","B","C","ease","seam","thick","stockW","stockH","stockM","join","maxPart","waste","open","explode","light","angle","patina","cardCount","passportCount","pocketCount","bookW","bookH","bookD"];
 nums.forEach(k=>{d[k]=nv(d[k],DEF[k])});
@@ -829,7 +835,7 @@ const liningName=()=>(LININGS.find(l=>l[0]===S.lining)||LININGS[0])[1];
 const finishName=()=>(FINISHES.find(f=>f[0]===S.finish)||FINISHES[0])[1];
 function skinFlex(){return (FINISHES.find(f=>f[0]===S.finish)||FINISHES[0])[2]*(LININGS.find(l=>l[0]===S.lining)||LININGS[0])[3]}
 function flatLimit(){if(isBook())return 999;if(isCard())return (5+3.4*S.thick)*skinFlex();return (10+3*S.thick)*skinFlex()}
-function forceGus(){if(isBook())return false;return /acc|zip/.test(def()[1])}
+function forceGus(){return false}
 function autoGus(){if(isBook())return false;if(forceGus())return true;return S.C>flatLimit()}
 function useGus(){
 if(isBook())return false;
@@ -840,7 +846,6 @@ return autoGus();
 }
 function edgeNoteText(){
 if(isBook())return "Для обложки книги боковина не используется: корешок, клапаны и подгибка входят в единую развёртку.";
-if(forceGus())return "Конструкция требует боковину по замыслу (замкнутый контур или гофре) — режим игнорируется.";
 if(S.edgeMode==="auto"){
 if(autoGus())return "Авто: толщина выше предела гибкости кожи — добавлена боковина.";
 return "Авто: тонкий "+(isCard()?"стек":"торец")+" — плоский крой, боковины нет.";
@@ -862,7 +867,7 @@ return "#"+[((n>>16)&255),((n>>8)&255),(n&255)].map(v=>Math.floor(v*.78).toStrin
 function fmtName(){
 if(isBook())return "Книга "+fmt(S.bookW)+"×"+fmt(S.bookH)+"×"+fmt(S.bookD)+" мм";
 if(isCard()){
-let s="ID-1 × "+S.cardCount;
+let s="ID-1 × "+S.cardCount+(S.cardOrient==="v"?" · вертикально":" · горизонтально");
 if(passportActive())s+=" + паспорт РБ × "+S.passportCount;
 return s;
 }
@@ -872,12 +877,15 @@ return "свой размер";
 function pitchOf(){if(isBook())return 3.5;if(isCard())return 3;if(S.thick<=2)return 3;if(S.thick<3)return 3.5;return 4}
 function syncCardDims(){
 S.C=Math.round(cardStack()*10)/10;
-if(passportActive()){S.A=Math.max(BANK_CARD.w,PASSPORT_BY.w);S.B=Math.max(BANK_CARD.h,PASSPORT_BY.h)}
-else{S.A=BANK_CARD.w;S.B=BANK_CARD.h}
+const vert=S.cardOrient==="v";
+const cw=vert?BANK_CARD.h:BANK_CARD.w;
+const ch=vert?BANK_CARD.w:BANK_CARD.h;
+if(passportActive()){S.A=Math.max(cw,PASSPORT_BY.w);S.B=Math.max(ch,PASSPORT_BY.h)}
+else{S.A=cw;S.B=ch}
 }
 function stock(){
-const s=STOCKS.find(x=>x.id===S.stock)||STOCKS[0];
 if(S.stock==="custom")return{id:"custom",name:"Свой кусок",w:S.stockW,h:S.stockH,m:S.stockM};
+const s=STOCKS.find(x=>x.id===S.stock)||STOCKS[0];
 return{id:s.id,name:s.name,w:s.w,h:s.h,m:S.stockM};
 }
 const formatOf=()=>STOCKS.find(x=>x.id===S.format)||STOCKS[0];
@@ -987,57 +995,40 @@ return finalize({family:"case",gusset:g,depth,finW:W,finH:H,cardW:S.A,cardH:S.B,
 function deriveCard(){
 const g=useGus(),t=S.thick,s=S.seam,e=S.ease,wa=wrapAllow(),P=[],kind=def()[1];
 const pass=passportActive();
-const cA=pass?Math.max(BANK_CARD.w,PASSPORT_BY.w):BANK_CARD.w;
-const cB=pass?Math.max(BANK_CARD.h,PASSPORT_BY.h):BANK_CARD.h;
+const vert=S.cardOrient==="v";
+const cardW=vert?BANK_CARD.h:BANK_CARD.w;
+const cardH=vert?BANK_CARD.w:BANK_CARD.h;
+const cA=pass?Math.max(cardW,PASSPORT_BY.w):cardW;
+const cB=pass?Math.max(cardH,PASSPORT_BY.h):cardH;
 const stack=cardStack();
 const W=cA+e+(g?0:wa),H=cB+e,depth=g?stack+2:stack,pw=W+2*s,ph=H+2*s;
-if(/zip/.test(kind)){
-P.push(piece("front","Передняя панель",pw,ph,roundedRect(0,0,pw,ph,7)));
-P.push(piece("back","Задняя панель",pw,ph,roundedRect(0,0,pw,ph,7)));
-const rr=Math.min(6,W/5,H/5),L=2*(W-2*rr)+2*(H-2*rr)+2*Math.PI*(rr+t/2),gw=depth+2*t+2*s;
-P.push(piece("gusset","Кромка молнии",L,gw,roundedRect(0,0,L,gw,3),{notches:[{x:L/2,label:"центр"},{x:W*.5,label:"начало молнии"},{x:L-W*.5,label:"конец молнии"}],notes:"замкнутый контур"}));
-P.push(piece("pull","Пуллер",50,18,roundedRect(0,0,50,18,4),{folds:[mark(25,0,25,18,"перегиб")],holes:[hole("circle",10,9,5,5,"Ø5")]}));
-P.push(piece("ziptab","Концевик молнии",22,14,roundedRect(0,0,22,14,3),{qty:2}));
-}else if(/wrap/.test(kind)){
+const slotH=cardH*.62+s+8;
+if(/wrap/.test(kind)){
 const long=/long/.test(kind);
 const lw=long?Math.max(160,cA+74):cA+e;
 const lh=long?Math.max(92,cB+38):H;
 const sp=depth+2*t,WW=2*lw+sp+2*s,HH=lh+2*s;
-const holes=/magnet/.test(kind)?[hole("slot",WW-s-22,HH/2-6,4,1.5,"магнит"),hole("slot",WW-s-22,HH/2+6,4,1.5,"")]:[];
-P.push(piece("wrap","Обёртка",WW,HH,roundedRect(0,0,WW,HH,8),{folds:[mark(s+lw,0,s+lw,HH,"сгиб 1"),mark(s+lw+sp,0,s+lw+sp,HH,"сгиб 2")],holes,notes:"корешок "+fmt(sp)+" мм"}));
-for(let i=0;i<4;i++){const sw2=lw-4+2*s,sh=BANK_CARD.h*.62+s+8;P.push(piece("slot"+i,"Слот "+(i+1),sw2,sh,roundedRect(0,0,sw2,sh,5),{folds:[mark(0,8,sw2,8,"подгибка")],notes:"банковская карта ID-1"}))}
-if(/magnet/.test(kind))P.push(piece("magtab","Магнитный хлястик",70,26,roundedRect(0,0,70,26,10),{folds:[mark(14,0,14,26,"пришить")],holes:[hole("slot",46,9,4,1.5,"магнит"),hole("slot",46,17,4,1.5,"")]}));
-}else if(/fan/.test(kind)){
-const n=clamp(S.cardCount,3,6),qw=BANK_CARD.w+10+2*s,qh=BANK_CARD.h+6+2*s;
-P.push(piece("plate","Пластина веера",qw,qh,roundedRect(0,0,qw,qh,5),{qty:n,holes:[hole("circle",12,qh-12,4,4,"ось Ø4")],notes:"банковская карта ID-1"}));
-P.push(piece("cover","Крышка веера",qw+2,qh+2,roundedRect(0,0,qw+2,qh+2,5),{qty:2,holes:[hole("circle",13,qh-11,4,4,"ось Ø4")]}));
-}else if(/acc/.test(kind)){
-P.push(piece("outer","Внешняя панель",pw,ph,roundedRect(0,0,pw,ph,7),{qty:2}));
-const gw=depth+2*t+2*s,gh=H-10+2*s,pl=clamp(S.cardCount,3,8),folds=[];
-for(let i=1;i<pl;i++)folds.push(mark(gw*i/pl,0,gw*i/pl,gh,i===1?"гофре":""));
-P.push(piece("side","Боковина-гофре",gw,gh,roundedRect(0,0,gw,gh,4),{qty:2,folds,notes:pl+" секций"}));
-P.push(piece("div","Разделитель",W-6+2*s,H-8+2*s,roundedRect(0,0,W-6+2*s,H-8+2*s,4),{qty:pl-1}));
+P.push(piece("wrap","Обёртка",WW,HH,roundedRect(0,0,WW,HH,8),{folds:[mark(s+lw,0,s+lw,HH,"сгиб 1"),mark(s+lw+sp,0,s+lw+sp,HH,"сгиб 2")],notes:"корешок "+fmt(sp)+" мм"}));
+for(let i=0;i<4;i++){
+const sw2=lw+2*s;
+P.push(piece("slot"+i,"Слот "+(i+1),sw2,slotH,roundedRect(0,0,sw2,slotH,5),{folds:[mark(0,8,sw2,8,"подгибка")],notes:"банковская карта ID-1 · сдвиг 11 мм"}));
+}
+if(long){
+P.push(piece("div","Разделитель купюр",lw-6+2*s,lh-10+2*s,roundedRect(0,0,lw-6+2*s,lh-10+2*s,4),{notes:"между купюрами и картами"}));
+}
 }else{
 P.push(piece("back","Задняя панель",pw,ph,roundedRect(0,0,pw,ph,7)));
-const fh=BANK_CARD.h*.72+e+2*s;
+const fh=cardH*.72+e+2*s;
 P.push(piece("front","Передняя панель",pw,fh,roundedRect(0,0,pw,fh,7),{notes:"ниже зада · выемка под палец"}));
-if(/slots|clip/.test(kind)){
-const n=/clip/.test(kind)?2:3;
-for(let i=0;i<n;i++){const sh=BANK_CARD.h*.62+s+8;P.push(piece("slot"+i,"Слот "+(i+1),pw,sh,roundedRect(0,0,pw,sh,5),{folds:[mark(0,8,pw,8,"подгибка")],notes:"банковская карта ID-1"}))}
+if(/slots/.test(kind)){
+for(let i=0;i<3;i++){
+P.push(piece("slot"+i,"Слот "+(i+1),pw,slotH,roundedRect(0,0,pw,slotH,5),{folds:[mark(0,8,pw,8,"подгибка")],notes:"банковская карта ID-1 · сдвиг каскада 11 мм"}));
 }
-if(/pull/.test(kind))P.push(piece("ribbon","Язычок-экстрактор",130,12,roundedRect(0,0,130,12,3),{folds:[mark(20,0,20,12,"перегиб")]}));
-if(/flap/.test(kind)){
-const flapH=cB*.45;
-let flapPoly;
-if(/stud/.test(kind)){
-flapPoly=[[0,0],[pw,0],[pw,flapH*.35],[pw/2,flapH],[0,flapH*.35]];
-}else{
-flapPoly=roundedRect(0,0,pw,flapH,8);
 }
-P.push(piece("flap","Клапан",pw,flapH,flapPoly,{holes:[hole("circle",pw/2-4.5,18,3.5,3.5,"кнопка Остров"),hole("circle",pw/2+4.5,18,3.5,3.5,"")]}));
-P.push(piece("studpad","Площадка кнопки",30,30,roundedRect(0,0,30,30,6),{holes:[hole("circle",10.5,15,3.5,3.5,"Остров"),hole("circle",19.5,15,3.5,3.5,"")],notes:"усилитель"}));
+if(S.moneySlot){
+const mh=(vert?60:45)+2*s;
+P.push(piece("money","Отсек для денег",pw,mh,roundedRect(0,0,pw,mh,5),{folds:[mark(0,8,pw,8,"подгибка")],notes:"для сложенных купюр · пришивается сзади"}));
 }
-if(/clip/.test(kind))P.push(piece("cliptab","Площадка зажима",70,26,roundedRect(0,0,70,26,5),{holes:[hole("circle",25,13,3,3,"заклёпка Остров"),hole("circle",45,13,3,3,"")],notes:"зажим 60×25 мм"}));
 }
 if(pass){
 const iw=PASSPORT_BY.w+2*s+8,ih=PASSPORT_BY.h+2*s+8;
@@ -1359,10 +1350,10 @@ return [
 {t:"Сгиб / подгибка",d:"Синий штрихпунктир. Согнуть, не резать.",g:'<line x1="0" y1="6" x2="26" y2="6" stroke="#3a6ea5" stroke-width="0.8" stroke-dasharray="3.2 1.4 0.7 1.4"/>'},
 {t:"Линия обхвата",d:"Синий пунктир. Кожа огибает торец изделия.",g:'<line x1="0" y1="6" x2="26" y2="6" stroke="#3a6ea5" stroke-width="0.7" stroke-dasharray="2 1.2"/>'},
 {t:"Отверстие фурнитуры",d:"Кружок с крестом и диаметром. Пробить до сшивки.",g:'<circle cx="13" cy="6" r="3.2" fill="none" stroke="#111" stroke-width="0.6"/><line x1="9" y1="6" x2="17" y2="6" stroke="#111" stroke-width="0.35"/><line x1="13" y1="2" x2="13" y2="10" stroke="#111" stroke-width="0.35"/>'},
-{t:"Прорезь / овал",d:"Замок turn-lock, магнит, лапки.",g:'<rect x="6" y="3.5" width="14" height="5" rx="0.8" fill="none" stroke="#111" stroke-width="0.6"/><line x1="9" y1="6" x2="17" y2="6" stroke="#111" stroke-width="0.35"/><line x1="13" y1="2" x2="13" y2="10" stroke="#111" stroke-width="0.35"/>'},
+{t:"Прорезь / овал",d:"Замок turn-lock, лапки.",g:'<rect x="6" y="3.5" width="14" height="5" rx="0.8" fill="none" stroke="#111" stroke-width="0.6"/><line x1="9" y1="6" x2="17" y2="6" stroke="#111" stroke-width="0.35"/><line x1="13" y1="2" x2="13" y2="10" stroke="#111" stroke-width="0.35"/>'},
 {t:"Зона склейки",d:"Янтарная полоса. Клей только внутри линии шва.",g:'<rect x="0" y="2" width="26" height="8" fill="#e0a437" fill-opacity="0.3"/><circle cx="6" cy="6" r="0.9" fill="#e0a437"/><circle cx="13" cy="6" r="0.9" fill="#e0a437"/><circle cx="20" cy="6" r="0.9" fill="#e0a437"/>'},
 {t:"Стык частей J",d:"Фиолетовый пунктир, метки A и B парные.",g:'<line x1="13" y1="0" x2="13" y2="12" stroke="#9b3fbf" stroke-width="0.9" stroke-dasharray="2.2 1.1"/><circle cx="13" cy="2" r="1.4" fill="#9b3fbf"/><circle cx="13" cy="10" r="1.4" fill="#9b3fbf"/>'},
-{t:"Метка совмещения",d:"Треугольники: центр низа, углы, концы молнии.",g:'<path d="M9,1 L17,1 L13,7 Z" fill="#111"/><line x1="13" y1="7" x2="13" y2="12" stroke="#bbb" stroke-width="0.3" stroke-dasharray="1 1.2"/>'},
+{t:"Метка совмещения",d:"Треугольники: центр низа, углы.",g:'<path d="M9,1 L17,1 L13,7 Z" fill="#111"/><line x1="13" y1="7" x2="13" y2="12" stroke="#bbb" stroke-width="0.3" stroke-dasharray="1 1.2"/>'},
 {t:"Крест листа",d:"Углы печатного поля. Совмещать при склейке.",g:'<line x1="7" y1="6" x2="19" y2="6" stroke="#111" stroke-width="0.4"/><line x1="13" y1="0" x2="13" y2="12" stroke="#111" stroke-width="0.4"/><circle cx="13" cy="6" r="1" fill="#111"/>'},
 {t:"Точка склейки V/H",d:"V — вертикальный шов листов, H — горизонтальный.",g:'<circle cx="13" cy="6" r="1.6" fill="#9b3fbf"/><circle cx="13" cy="6" r="3.4" fill="none" stroke="#9b3fbf" stroke-width="0.35"/>'}
 ];
@@ -1563,10 +1554,9 @@ if(isBook()){
 htm("compareBox",'<div class="card" style="margin-bottom:16px"><h4 style="color:var(--brass2);margin-bottom:10px">Обложка для книги</h4><p style="font-size:12.5px;color:var(--dim)">Сравнение «с кромкой / без кромки» не применяется: корешок и клапаны входят в единую развёртку. Меняйте толщину кожи, закладку и запас, чтобы увидеть расход.</p></div>');
 return;
 }
-const flat=deriveWith(false),gus=deriveWith(true),forced=forceGus();
+const flat=deriveWith(false),gus=deriveWith(true);
 const diff=gus.area-flat.area,pct=gus.area>0?diff/gus.area*100:0;
 let h='<div class="card" style="margin-bottom:16px"><h4 style="color:var(--brass2);margin-bottom:10px">Сравнение кроя · '+designName()+'</h4>';
-if(forced)h+='<p style="font-size:12.5px;color:#ecc27a;margin-bottom:10px">Конструкция требует боковину по замыслу — плоский вариант показан для справки.</p>';
 h+='<div class="paper"><table><thead><tr><th>Крой</th><th>Деталей</th><th>Площадь, дм²</th><th>Шов</th><th>Листов A4</th><th>Заготовка</th><th>Рекомендация</th></tr></thead><tbody>';
 const recFlat=!autoGus();
 [flat,gus].forEach((M,i)=>{
@@ -1607,22 +1597,18 @@ h.push("Книга: "+fmt(S.bookW)+"×"+fmt(S.bookH)+"×"+fmt(S.bookD)+" мм ·
 if(S.bookmark)h.push("Закладка-ляссе 18×"+fmt(S.bookH+90)+" мм");
 }else if(isCard()){
 h.push("Только банковские карты ID-1 · "+S.cardCount+" шт ("+fmt(S.cardCount*BANK_CARD.t)+" мм)");
-if(/slots|clip/.test(d))h.push("Шаг каскада слотов: <b>11 мм</b> — сдвиг каждого следующего слота вверх");
+h.push("Ориентация: "+(S.cardOrient==="v"?"вертикальная — карта входит короткой стороной":"горизонтальная — карта входит длинной стороной"));
+if(/slots/.test(d))h.push("Каскад слотов: сдвиг <b>11 мм</b> · видимая часть "+fmt((S.cardOrient==="v"?BANK_CARD.w:BANK_CARD.h)*.62)+" мм");
+if(/wrap/.test(d))h.push("Купюрное отделение между половинами обёртки"+(/long/.test(d)?" · разделитель купюр":""));
+if(S.moneySlot&&!/wrap/.test(d))h.push("Отсек для денег: "+(S.cardOrient==="v"?"60":"45")+" мм · для сложенных купюр");
 if(passportActive())h.push("Вкладыш паспорт РБ 88×125 мм · "+S.passportCount+" шт");
-if(S.passport&&!largeCard())h.push("Паспорт РБ недоступен для этой конструкции: выберите бифолд, лонг, молнию, аккордеон или магнитный флип.");
+if(S.passport&&!largeCard())h.push("Паспорт РБ недоступен для этой конструкции: выберите бифолд или лонг.");
 }else{
 if(S.pocketCount>0)h.push("Карманы: "+S.pocketCount+" × "+(POCKET_TYPES[S.pocketType]||POCKET_TYPES.card).name);
 if(!M.gusset)h.push("Прибавка на обхват торца: +"+fmt(wrapAllow())+" мм к ширине панелей");
 }
 if(/lock/.test(d))h.push("Замок turn-lock ~35×20 мм · овал 16×9, 2 прорези 3×1,5");
 if(/band/.test(d))h.push("Лента-ремешок: кожа "+fmt(M.finW+2*M.seam)+"×32 мм, фурнитура не нужна");
-if(/stud/.test(d))h.push("Кнопка 12,5 мм · 4 отв. Остров3,5 (клапан + площадка)");
-if(/magnet/.test(d))h.push("Неодим 10×2 мм, 4 шт · прорези 4×1,5 · проверить полярность");
-if(/zip/.test(d))h.push(isCard()?"Молния №3 · "+fmt(M.finW*2+M.finH)+" мм · пуллер Остров5, 2 концевика":"Молния №5 · "+fmt(M.finW+160)+" мм · пуллер Остров5, 2 концевика");
-if(/clip/.test(d))h.push("Зажим для денег 60×25 мм · заклёпки Остров3 — 2 шт");
-if(/fan/.test(d))h.push("Винт-пост Остров4 мм + шайба · ось веера, "+(clamp(S.cardCount,3,6)+2)+" слоёв");
-if(/acc/.test(d))h.push("Гофре: "+clamp(S.cardCount,3,8)+" секций · разделителей "+(clamp(S.cardCount,3,8)-1));
-if(/pull/.test(d))h.push("Лента-язычок 130×12 мм");
 h.push("Оценка времени: ≈ "+fmt(M.hours)+" ч");
 return h;
 }
@@ -1651,7 +1637,6 @@ const forcedGus=S.edgeMode==="gusset"&&!autoGus()&&!isBook();
 let noteEdge;
 if(isBook())noteEdge="корешок и клапаны в единой развёртке";
 else if(forcedFlat)noteEdge="отключена при C "+fmt(S.C)+" > предела "+fmt(M.flatLimit)+" мм";
-else if(forceGus())noteEdge="обязательна по конструкции";
 else if(M.gusset)noteEdge="C выше предела гибкости";
 else noteEdge="плоский крой, боковина не нужна";
 add(!forcedFlat,"Кромка: <b>"+edgeLabel(M.gusset)+"</b>",noteEdge,forcedFlat);
@@ -1671,7 +1656,8 @@ add(true,"PDF: <b>"+sheetsOf(M)+" лист. A4</b>",big?big+" дет. плитк
 const bl=blankAnalysis(M);
 add(bl.rows.some(r=>r.sheets===1&&r.over===0),"Заготовка подобрана",bl.single?("минимум: "+bl.single.b.name):"нужны несколько листов или деление",!bl.single);
 if(isCard()){
-add(M.finW>=BANK_CARD.w,"Банковские карты входят",fmt(M.finW)+" ≥ "+fmt(BANK_CARD.w)+" мм",M.finW<BANK_CARD.w);
+add(M.finW>=M.cardW-.01,"Банковские карты входят",fmt(M.finW)+" ≥ "+fmt(M.cardW)+" мм",M.finW<M.cardW-.01);
+if(/slots|wrap/.test(def()[1]))add(true,"Каскад слотов","сдвиг 11 мм · видимая часть "+fmt(M.cardH*.62)+" мм");
 if(S.passport&&!largeCard())add(false,"Паспорт РБ","недоступен для малых конструкций",true);
 else if(passportActive())add(true,"Вкладыш паспорт РБ",S.passportCount+" шт · 88×125 мм");
 }
@@ -1692,7 +1678,7 @@ return b;
 function runTests(){
 const res=[];
 const allIds=Object.keys(CASE_DESIGNS).concat(Object.keys(CARD_DESIGNS)).concat(Object.keys(BOOK_DESIGNS));
-res.push(["Конструкции: 4 + 11 + 1 = 16",allIds.length===16,allIds.length+" шт"]);
+res.push(["Конструкции: 4 + 4 + 1 = 9",allIds.length===9,allIds.length+" шт"]);
 const uniq=new Set(allIds.map(id=>designIcon(id)));
 res.push(["Иконки уникальны",uniq.size===allIds.length,uniq.size+"/"+allIds.length]);
 res.push(["Иконки без NaN/undefined",allIds.every(id=>{const s=designIcon(id);return s.indexOf("<svg")===0&&s.indexOf("NaN")<0&&s.indexOf("undefined")<0}),""]);
@@ -1710,12 +1696,11 @@ const cfgs=[
 ["Чехол · ремешок + 2 кармана",{family:"case",design:"strap",A:304,B:215,C:12,thick:2,stock:"a3",pocketCount:2,pocketType:"card"}],
 ["Чехол · замок + карман",{family:"case",design:"lock",A:310,B:220,C:15,thick:2.2,stock:"a4",pocketCount:1,pocketType:"cables"}],
 ["Чехол · косой + 3 кармана",{family:"case",design:"diag",A:280,B:200,C:14,thick:2.4,stock:"a4",pocketCount:3,pocketType:"mixed"}],
-["Картхолдер · слип",{family:"card",cardDesign:"ch_slip",cardCount:4,thick:1.4,stock:"a4",passport:false}],
-["Картхолдер · молния",{family:"card",cardDesign:"ch_zip",cardCount:6,thick:1.4,stock:"a4",passport:false}],
-["Картхолдер · аккордеон",{family:"card",cardDesign:"ch_acc",cardCount:10,thick:1.2,stock:"a4",passport:false}],
+["Картхолдер · слип горизонтальный",{family:"card",cardDesign:"ch_slip",cardCount:4,thick:1.4,stock:"a4",passport:false,cardOrient:"h"}],
+["Картхолдер · слип вертикальный",{family:"card",cardDesign:"ch_slip",cardCount:4,thick:1.4,stock:"a4",passport:false,cardOrient:"v"}],
+["Картхолдер · слотовый + деньги",{family:"card",cardDesign:"ch_slots",cardCount:6,thick:1.4,stock:"a4",passport:false,moneySlot:true}],
+["Картхолдер · слотовый вертикальный",{family:"card",cardDesign:"ch_slots",cardCount:5,thick:1.3,stock:"20x20",passport:false,cardOrient:"v"}],
 ["Картхолдер · бифолд",{family:"card",cardDesign:"ch_bifold",cardCount:6,thick:1.5,stock:"a4",passport:false}],
-["Картхолдер · веер",{family:"card",cardDesign:"ch_fan",cardCount:5,thick:1.3,stock:"20x20",passport:false}],
-["Картхолдер · зажим",{family:"card",cardDesign:"ch_clip",cardCount:4,thick:1.4,stock:"a4",passport:false}],
 ["Бифолд + паспорт РБ",{family:"card",cardDesign:"ch_bifold",cardCount:4,passport:true,passportCount:1,thick:1.6,stock:"a4"}],
 ["Лонг + 2 паспорта РБ",{family:"card",cardDesign:"ch_long",cardCount:6,passport:true,passportCount:2,thick:1.6,stock:"a3"}],
 ["Малый + паспорт РБ (игнор)",{family:"card",cardDesign:"ch_slip",cardCount:3,passport:true,passportCount:1,thick:1.2,stock:"a4"}],
@@ -1730,6 +1715,7 @@ let M=null,err="";
 try{M=derive()}catch(e){err=e.message}
 if(!M){res.push([c[0],false,err||"derive null"]);return}
 const geom=M.pieces.length>0&&M.pieces.every(p=>Number.isFinite(p.w)&&Number.isFinite(p.h)&&p.w>0&&p.h>0&&p.poly.length>=3&&p.poly.every(pt=>Number.isFinite(pt[0])&&Number.isFinite(pt[1])));
+const cardOk=!isCard()||M.finW>=M.cardW-.01;
 const fit=M.oversize===0,pair=M.joins.every(j=>j.parts.length>1);
 let a4=true,nums=true,blankOk=true,seamOk=true,edgeOk=true;
 try{
@@ -1746,7 +1732,7 @@ seamOk=Math.abs(mn-S.seam)<.4&&Math.abs(mx-S.seam)<.4;
 }
 edgeOk=M.pieces.some(p=>p.id==="gusset"||p.id==="side")===M.gusset;
 }catch(e){a4=false}
-res.push([c[0],geom&&fit&&pair&&a4&&nums&&blankOk&&seamOk&&edgeOk,M.pieces.length+" дет · "+sheetsOf(M)+" A4"+(fit?"":" · не влезает")+(seamOk?"":" · шов!")+(blankOk?"":" · заготовка!")]);
+res.push([c[0],geom&&cardOk&&fit&&pair&&a4&&nums&&blankOk&&seamOk&&edgeOk,M.pieces.length+" дет · "+sheetsOf(M)+" A4"+(fit?"":" · не влезает")+(cardOk?"":" · карты!")+(seamOk?"":" · шов!")+(blankOk?"":" · заготовка!")]);
 });
 S=sanitize(backup);
 const pass=res.filter(r=>r[1]).length;
@@ -1766,14 +1752,14 @@ htm("ruleBody",[["Малый том",18],["Средний роман",28],["Кр
 return;
 }
 txt("ruleIntro",isCard()
-?"Картхолдер в разрезе — та же линза. Пока стек банковских карт тоньше предела гибкости кожи, боковина не нужна. Гофре и молния требуют боковину по конструкции."
+?"Картхолдер в разрезе — та же линза. Пока стек банковских карт тоньше предела гибкости кожи, боковина не нужна."
 :"Плоский чехол в разрезе — «линза». Её полуобхват должен покрыть половину периметра торца устройства вместе с толщиной кожи.");
 htm("ruleFormula","предел = ("+(isCard()?"5 + 3,4":"10 + 3")+" × t) × k<br>t = "+fmt(S.thick)+" мм · k = "+fx(skinFlex(),2)+"<br>предел = <b>"+fmt(lim)+" мм</b><br>обхват = π/2 × (C + t) − C = <b>"+fmt(wrapAllow())+" мм</b><br>сгиб клапана = π × (depth/2 + t) + 2");
 htm("ruleExplain",autoGus()
 ?("Сейчас "+(isCard()?"стек":"торец")+" <b>"+fmt(S.C)+" мм</b> → <b style='color:#ecc27a'>кромка нужна</b>. Панели остаются по размеру, глубину задаёт полоса.")
 :("Сейчас "+(isCard()?"стек":"торец")+" <b>"+fmt(S.C)+" мм</b> → <b style='color:#b5cc82'>кромка не нужна</b>. Панели расширяются на "+fmt(wrapAllow())+" мм."));
 txt("rulePractice",isCard()
-?"Практика: 2–6 карт — плоский слип или слотовый. 8–14 карт — гофре/аккордеон или боковина. Паспорт РБ добавляется только как опциональный вкладыш в крупных конструкциях."
+?"Практика: 2–6 карт — плоский слип или слотовый. 12–14 карт — плоский крой уже впритык, проверяйте предел. Паспорт РБ добавляется только как вкладыш в бифолде и лонге."
 :"Практика: MacBook Air 11,3 мм, iPad 5–7 мм, Kindle 8–9 мм — плоский крой. MacBook Pro 16 (16,8 мм), игровые 22–30 мм — с боковиной. Crazy Horse тянется лучше сафьяна.");
 txt("ruleSkin",fmt(S.thick)+" мм · "+finishName()+" · "+liningName());
 txt("ruleCol1",isCard()?"Стек карт":"Устройство");
@@ -1807,17 +1793,12 @@ else st.push({t:"Усилители",d:"Подкладка не предусмо
 if(M.joins.length)st.push({t:"Стыковка разделённых деталей",d:"Совместить парные метки "+M.joins.map(j=>j.id).join(", ")+". Припуск стыка "+S.join+" мм: склеить, прошить, сверить общую длину с исходной деталью."});
 st.push({t:"Разметка линии шва",d:"Циркуль на "+fmt(S.seam)+" мм. "+(isCard()?"Низ и бока каждого слота отдельно, верх слота открыт.":"Все сшиваемые кромки, включая обе кромки полосы дна и карманы.")});
 st.push({t:"Пробивка отверстий",d:"Пробойник шаг "+fmt(M.pitch)+" мм перпендикулярно. Всего ≈ "+M.stitches+" стежков. "+(isCard()?"Пробивать по одному слою.":"Пробивать по 2 слоя, углы — шилом.")});
-if(M.holes>0)st.push({t:"Установка фурнитуры",d:"Отверстия по выкройке ("+M.holes+" шт). Кнопки, магниты, заклёпки, ось — СЕЙЧАС, до сшивания."});
-else st.push({t:"Установка фурнитуры",d:"Фурнитура в этой конструкции не предусмотрена — переходите к склейке."});
 st.push({t:"Склейка припусков",d:"Контактный клей полосой "+(isCard()?"3–4":"5")+" мм строго внутри линии шва (янтарная зона), подсушка 10–15 мин, прикатка роликом."});
 if(isCard()){
-if(/slots|clip/.test(kind))st.push({t:"Каскад слотов",d:"Нижний слот, затем следующий со сдвигом <b>11 мм</b> вверх. Каждый слот — свой шов по низу и бокам, верх не зашивать."});
-else if(/wrap/.test(kind))st.push({t:"Половины и корешок",d:"Слоты пришить к половинам, затем соединить обёрткой. Корешок увлажнить и продавить бифовкой по линиям сгиба."});
-else if(/acc/.test(kind))st.push({t:"Гофре",d:"Боковины сложить по линиям сгиба ("+clamp(S.cardCount,3,8)+" секций), вставить разделители, зафиксировать зажимами."});
-else if(/zip/.test(kind))st.push({t:"Молния и контур",d:"Молния №3 втачивается по контуру. Концевики и пуллер — до замыкания боковины."});
-else if(/fan/.test(kind))st.push({t:"Ось веера",d:"Собрать "+clamp(S.cardCount,3,6)+" пластин и 2 крышки на винт-пост Остров4. Затяжка свободная — пластины должны вращаться."});
-else if(/pull/.test(kind))st.push({t:"Язычок",d:"Ленту 130×12 сложить петлёй и вшить в дно между панелями, выступ 25–30 мм."});
+if(/slots/.test(kind))st.push({t:"Каскад слотов",d:"Нижний слот, затем следующий со сдвигом <b>11 мм</b> вверх. Каждый слот — свой шов по низу и бокам, верх не зашивать."});
+else if(/wrap/.test(kind))st.push({t:"Половины и корешок",d:"Слоты пришить к половинам (по 2 на каждую, сдвиг 11 мм), затем соединить обёрткой. Корешок увлажнить и продавить бифовкой по линиям сгиба."});
 else st.push({t:"Совмещение панелей",d:"Передняя панель ниже зада, выемка под палец уже в выкройке. Совместить по низу и бокам, верх открыт."});
+if(S.moneySlot&&!/wrap/.test(kind))st.push({t:"Отсек для денег",d:"Карман для сложенных купюр пришить на заднюю панель, верх открыт."});
 if(passportActive())st.push({t:"Вкладыш паспорт РБ",d:"Вкладыш 88×125 мм вшивается в крупную половину. Проверить, что паспорт входит без натяга и не мешает картам."});
 }else{
 if(S.pocketCount>0)st.push({t:"Карманы",d:"Пришить "+S.pocketCount+" карман(а) типа «"+(POCKET_TYPES[S.pocketType]||POCKET_TYPES.card).name+"» на переднюю панель по разметке. Верх кармана открыт."});
@@ -1833,22 +1814,20 @@ else st.push({t:"Формовка и контроль",d:"Вставить ус�
 return st;
 }
 function techWarn(M){
-const w=[],kind=def()[1];
+const w=[];
 if(isBook()){
 if(S.bookD>60)w.push("Очень толстый том: усилитель корешка обязателен, иначе корешок заломится.");
 if(S.thick<1.2)w.push("Тонкая кожа для обложки книги: добавьте подкладку или усилитель корешка.");
 if(!S.bookmark)w.push("Закладка отключена: книгу можно носить, но быстро отмечать страницу будет нечем.");
 return w;
 }
-if(S.edgeMode==="flat"&&autoGus()&&!forceGus())w.push("Кромка отключена вручную при C "+fmt(S.C)+" мм выше предела "+fmt(M.flatLimit)+" мм — посадка будет очень тугой, возможен разрыв по шву.");
-if(forceGus())w.push("Конструкция требует боковину по замыслу (замкнутый контур или гофре) — отключить кромку нельзя.");
+if(S.edgeMode==="flat"&&autoGus())w.push("Кромка отключена вручную при C "+fmt(S.C)+" мм выше предела "+fmt(M.flatLimit)+" мм — посадка будет очень тугой, возможен разрыв по шву.");
 if(S.edgeMode==="gusset"&&!autoGus())w.push("Кромка включена вручную для тонкого изделия ("+fmt(S.C)+" ≤ "+fmt(M.flatLimit)+" мм): допустимо, но расход кожи и время выше.");
 if(M.oversize>0)w.push(M.oversize+" дет. не помещаются в кусок "+M.stock.name+" — уменьшите припуск стыка или возьмите кусок больше.");
 if(isCard()&&M.t>2)w.push("Кожа "+fmt(M.t)+" мм толстовата для картхолдера: слоты получатся тугими. Рекомендуется 0,8–1,6 мм.");
-if(isCard()&&S.cardCount>8&&!M.gusset)w.push("Больше 8 карт в плоском крое — стек "+fmt(S.cardCount*BANK_CARD.t)+" мм. Рассмотрите аккордеон или боковину.");
-if(isCard()&&/fan/.test(kind))w.push("Ось веера: не перетягивать винт-пост, пластины должны вращаться. Поставить шайбу и фиксатор резьбы.");
-if(isCard()&&S.passport&&!largeCard())w.push("Паспорт РБ недоступен для малых конструкций. Выберите бифолд, лонг, молнию, аккордеон или магнитный флип.");
-if(/stud|lock|magnet|clip/.test(kind))w.push("Фурнитуру ставить ДО сшивания — после замыкания шва доступа к изнанке нет. Проверить полярность магнитов.");
+if(isCard()&&S.cardCount>8&&!M.gusset)w.push("Больше 8 карт в плоском крое — стек "+fmt(S.cardCount*BANK_CARD.t)+" мм близок к пределу, проверьте посадку на пробнике.");
+if(isCard()&&S.passport&&!largeCard())w.push("Паспорт РБ недоступен для малых конструкций. Выберите бифолд или лонг.");
+if(/lock/.test(def()[1]))w.push("Замок ставить ДО сшивания — после замыкания шва доступа к изнанке нет.");
 if(!isCard()&&M.t<1.2)w.push("Кожа "+fmt(M.t)+" мм не держит форму — нужен усилитель по панелям или подкладка кожей 0,8 мм.");
 if(!isCard()&&M.t>3)w.push("Кожа "+fmt(M.t)+" мм жёсткая: спускание обязательно, пробойник 4 мм, радиусы углов увеличить.");
 if(S.seam<(isCard()?3:5))w.push("Припуск "+fmt(S.seam)+" мм — узкая зона, край может прорезаться по шву.");
@@ -1860,13 +1839,11 @@ return w;
 function techTips(M){
 const bl=blankAnalysis(M);
 const tip1=bl.single?("Заготовка: "+bl.single.b.name+" — занятая область "+fmt(bl.single.usedW)+"×"+fmt(bl.single.usedH)+" мм."):("Заготовка из "+(bl.a4?bl.a4.sheets:"нескольких")+" листов A4 — детали целые, стыков нет.");
-const edgeTip="<b>Полировка уреза — последовательно:</b> 1) торцбил №1–2 (карты) или №2–3 (чехлы) снимает фаску. 2) Шлифовка наждачкой 400 → 800 → 1200 по влажной коже. 3) Тонкий слой Tokonole или CMC — дать впитаться 2–3 мин. 4) Деревянный или костяной сликер — 3–5 проходов с давлением до глянца. 5) Финал: воск + ткань (для veg-tan и Crazy Horse) или краска для уреза Edge Kote / Fenice (для сафьяна и хрома). Не полировать пересушенную кожу — пойдёт волнами. Для сафьяна воск не ложится — только краска.";
 if(isBook()){
 return [tip1,"Расходники с запасом "+S.waste+"%: кожа "+fmt(M.wasteArea)+" дм², нить "+fmt(M.threadM)+" м.",
 "Корешок формуется по книге: увлажните и дайте высохнуть надетым на книгу.",
 "Клапаны должны держать книгу, но не мешать открыванию — проверьте на самой книге до финальной склейки.",
 "Закладку-ляссе закрепляйте в корешке до замыкания подкладки.",
-edgeTip,
 "Уход: кондиционер раз в 3–6 месяцев, не мочить, не сушить на батарее."];
 }
 return [tip1,"Расходники с запасом "+S.waste+"%: кожа "+fmt(M.wasteArea)+" дм², нить "+fmt(M.threadM)+" м.",
@@ -1874,7 +1851,6 @@ M.gusset?"Кромка сажается по меткам от центра дн
 isCard()?"Картхолдер часто умещается в обрезок 20×20 см — проверьте этот формат первым.":"Пробивать по 2 слоя — стежок ложится ровно и линию не уводит.",
 "Клей только внутри линии шва: следы на лицевой стороне не удалить.",
 isCard()?"Верх слота всегда открыт и спущен — иначе карта не войдёт.":"Хранить изделие с болванкой внутри — кожа запоминает форму.",
-edgeTip,
 "Уход: кондиционер раз в 3–6 месяцев, не мочить, не сушить на батарее."];
 }
 function renderTech(M){
@@ -1886,7 +1862,8 @@ kv.push(["Книга",fmt(S.bookW)+"×"+fmt(S.bookH)+"×"+fmt(S.bookD)+" мм"],
 kv.push(["Габарит",fmt(S.A)+"×"+fmt(S.B)+"×"+fmt(S.C)+" мм"]);
 if(isCard()){
 kv.push(["Карты ID-1",S.cardCount+" шт · "+fmt(S.cardCount*BANK_CARD.t)+" мм"]);
-if(/slots|clip/.test(def()[1]))kv.push(["Шаг каскада слотов","11 мм"]);
+kv.push(["Ориентация",S.cardOrient==="v"?"вертикальная":"горизонтальная"]);
+if(S.moneySlot&&!/wrap/.test(def()[1]))kv.push(["Отсек для денег",(S.cardOrient==="v"?"60":"45")+" мм"]);
 if(passportActive())kv.push(["Паспорт РБ",S.passportCount+" шт · 88×125 мм"]);
 }else if(S.pocketCount>0){
 kv.push(["Карманы",S.pocketCount+" × "+(POCKET_TYPES[S.pocketType]||POCKET_TYPES.card).name]);
@@ -1903,7 +1880,7 @@ kv.push(["Шаг / иглы",fmt(M.pitch)+" мм · "+M.needle]);
 kv.push(["Стежков / нить","≈ "+M.stitches+" · "+fmt(M.threadM)+" м"]);
 kv.push(["Урез",fmt(M.edge)+" м"],["Вес",Math.round(M.weight)+" г"],["Печать","A4 · "+sheetsOf(M)+" лист."],["Время","≈ "+fmt(M.hours)+" ч"]);
 const w=techWarn(M),tips=techTips(M),steps=techSteps(M);
-const tools=["Пробойник ромбовидный, шаг <b>"+fmt(M.pitch)+" мм</b>","Иглы седельные <b>"+M.needle+"</b>, 2 шт","Шило ромбовидное, киянка, мат для пробивки","Нож круглый / косяк, металлическая линейка, лекала","Спускатель (skiving knife) или машинка для спуска","Циркуль-разметчик на <b>"+fmt(S.seam)+" мм</b>","Торцбил №"+(isCard()?"1–2":"2–3")+" для снятия фаски уреза","Шлифовка наждачная 400 / 800 / 1200","Tokonole или CMC — грунт для уреза","Сликер деревянный или костяной","Воск для уреза (veg-tan) или краска Edge Kote / Fenice (сафьян, хром)","Зажимы с прокладкой, ролик прикаточный, кость","Пресс или установщик кнопок, пробойники Остров по выкройке",isBook()?"Сама книга для формовки корешка":"Болванка по внутреннему размеру для формовки"];
+const tools=["Пробойник ромбовидный, шаг <b>"+fmt(M.pitch)+" мм</b>","Иглы седельные <b>"+M.needle+"</b>, 2 шт","Шило ромбовидное, киянка, мат для пробивки","Нож круглый / косяк, металлическая линейка, лекала","Спускатель (skiving knife) или машинка для спуска","Циркуль-разметчик на <b>"+fmt(S.seam)+" мм</b>","Торцбил №"+(isCard()?"1–2":"2–3")+", шлифовка 400/800/1200, сликер",isCard()?"Краска для уреза (edge paint) + кисть":"Воск / токенол для уреза","Зажимы с прокладкой, ролик прикаточный, кость","Пресс или установщик кнопок, пробойники Ø по выкройке",isBook()?"Сама книга для формовки корешка":"Болванка по внутреннему размеру для формовки"];
 htm("techBody",'<div class="grid3" style="margin-top:16px">'
 +'<div class="tcard"><h4><i>1</i>Карта изделия</h4>'+kv.map(k=>'<div class="kv"><span>'+k[0]+'</span><b>'+k[1]+'</b></div>').join("")+'</div>'
 +'<div class="tcard"><h4><i>2</i>Материалы и фурнитура</h4><ul>'+hardwareList(M).map(x=>'<li>'+x+'</li>').join("")+'</ul></div>'
@@ -1926,8 +1903,8 @@ L.push("Закладка: "+(S.bookmark?"да":"нет"));
 }else{
 L.push("Габарит: "+fmt(S.A)+"×"+fmt(S.B)+"×"+fmt(S.C)+" мм · предел кромки "+fmt(M.flatLimit)+" мм");
 if(isCard()){
-L.push("Карты ID-1: "+S.cardCount+" шт ("+fmt(S.cardCount*BANK_CARD.t)+" мм)");
-if(/slots|clip/.test(def()[1]))L.push("Шаг каскада слотов: 11 мм");
+L.push("Карты ID-1: "+S.cardCount+" шт ("+fmt(S.cardCount*BANK_CARD.t)+" мм) · ориентация "+(S.cardOrient==="v"?"вертикальная":"горизонтальная"));
+if(S.moneySlot)L.push("Отсек для денег: есть");
 if(passportActive())L.push("Вкладыш паспорт РБ: "+S.passportCount+" шт");
 }else if(S.pocketCount>0){
 L.push("Карманы: "+S.pocketCount+" × "+(POCKET_TYPES[S.pocketType]||POCKET_TYPES.card).name);
@@ -1947,12 +1924,6 @@ L.push("");L.push("МАТЕРИАЛЫ И ФУРНИТУРА:");
 hardwareList(M).forEach(x=>L.push("  - "+stripTags(x)));
 L.push("");L.push("ПОРЯДОК ИЗГОТОВЛЕНИЯ:");
 techSteps(M).forEach((s,i)=>{L.push("  "+(i+1)+". "+s.t);L.push("     "+stripTags(s.d))});
-L.push("");L.push("ПОЛИРОВКА УРЕЗА:");
-L.push("  1. Торцбил №1–2 (карты) или №2–3 (чехлы) — снять фаску");
-L.push("  2. Шлифовка наждачкой 400 → 800 → 1200 по влажной коже");
-L.push("  3. Тонкий слой Tokonole или CMC — дать впитаться 2–3 мин");
-L.push("  4. Деревянный или костяной сликер — 3–5 проходов до глянца");
-L.push("  5. Воск + ткань (veg-tan, Crazy Horse) или краска Edge Kote / Fenice (сафьян, хром)");
 L.push("");L.push("КРИТИЧНЫЕ МЕСТА:");
 const w=techWarn(M);
 if(w.length)w.forEach(x=>L.push("  ! "+x));else L.push("  нет");
@@ -1975,13 +1946,6 @@ M.pieces.forEach(p=>{const t=tilesOf(p.w,p.h);h+='<tr><td>'+p.name+'</td><td>'+f
 h+='</table><h2>Материалы и фурнитура</h2><ul>'+hardwareList(M).map(x=>'<li>'+x+'</li>').join("")+'</ul>';
 if(M.joins.length)h+='<h2>Стыки</h2><ul>'+M.joins.map(j=>'<li><b>'+j.id+'</b>: '+j.parts.join(" ↔ ")+' · припуск '+j.allow+' мм</li>').join("")+'</ul>';
 h+='</div><div class="tech-page"><h1>Порядок изготовления</h1><ol>'+techSteps(M).map(s=>'<li><b>'+s.t+'.</b> '+s.d+'</li>').join("")+'</ol>';
-h+='<h2>Полировка уреза (подробно)</h2><ol>';
-h+='<li><b>Торцбил.</b> Снять фаску инструментом №1–2 для картхолдеров (тонкая кожа) или №2–3 для чехлов и обложек (толстая кожа). Движения от центра к краю, без рывков.</li>';
-h+='<li><b>Шлифовка.</b> Слегка увлажнить урез водой из пульверизатора. Последовательно прошлифовать наждачной бумагой: 400 → 800 → 1200. Каждый следующий номер убирает риски от предыдущего.</li>';
-h+='<li><b>Грунт.</b> Нанести тонкий слой Tokonole (японский) или CMC (карбоксиметилцеллюлоза) мягкой тканью. Дать впитаться 2–3 минуты, но не давать высохнуть полностью.</li>';
-h+='<li><b>Сликер.</b> Полировать деревянным или костяным сликером быстрыми движениями 3–5 проходов с нарастающим давлением до появления глянца. Не перегревать — иначе кожа пойдёт волнами.</li>';
-h+='<li><b>Финиш.</b> Для veg-tan и Crazy Horse — натуральный воск + мягкая ткань, располировать. Для сафьяна и хрома — краска для уреза Edge Kote или Fenice, нанести тонким слоем кистью, дать высохнуть.</li>';
-h+='</ol>';
 const w=techWarn(M);
 if(w.length)h+='<h2>Критичные места</h2><ul>'+w.map(x=>'<li>'+x+'</li>').join("")+'</ul>';
 h+='<h2>Советы</h2><ul>'+techTips(M).map(x=>'<li>'+stripTags(x)+'</li>').join("")+'</ul></div>';
@@ -1999,7 +1963,7 @@ const n=parseInt(S.color.slice(1),16),r=(n>>16)&255,g=(n>>8)&255,b=n&255;
 return{b:S.color,
 d:"rgb("+Math.round(r*.58)+","+Math.round(g*.58)+","+Math.round(b*.58)+")",
 l:"rgb("+Math.min(255,Math.round(r*1.22+26))+","+Math.min(255,Math.round(g*1.22+24))+","+Math.min(255,Math.round(b*1.22+22))+")",
-t:threadHex(),br:"#e0b352",brd:"#8d6a1c",cd:"#ece7dd",cds:"#a9a29a",st:"#c3c8ce",std:"#8d949c",cash:"#cfe0c0",cashd:"#93ae82",mg:"#2b2b30"};
+t:threadHex(),br:"#e0b352",brd:"#8d6a1c",cd:"#ece7dd",cds:"#a9a29a",cash:"#cfe0c0",cashd:"#93ae82"};
 }
 function designIcon(id){
 const P=iconPal();
@@ -2029,35 +1993,10 @@ g+='<rect x="12" y="'+y+'" width="48" height="9" rx="1.5" fill="'+(i%2?P.b:P.l)+
 g+='<path d="M15 '+(y+3)+' H57" '+dash+' opacity=".8"/>';
 }
 break;}
-case "ch_pull":
-g='<rect x="22" y="8" width="28" height="36" rx="4" '+body+'/><rect x="26" y="3" width="20" height="11" rx="1.6" '+card+'/><path d="M31 9 V3.5 h10 V9" fill="none" stroke="'+P.t+'" stroke-width="2.4" stroke-linecap="round"/><path d="M22 21 h6 a8 5 0 0 0 16 0 h6 v23 h-28 z" '+light+'/><path d="M25 26 V41 H47 V26" '+dash+'/>';break;
 case "ch_bifold":
 g='<rect x="6" y="10" width="28" height="30" rx="3" '+body+'/><rect x="38" y="10" width="28" height="30" rx="3" '+body+'/><rect x="34" y="10" width="4" height="30" fill="'+P.d+'"/><path d="M36 12 V38" '+dash+' opacity=".7"/><rect x="10" y="15" width="20" height="7" rx="1.2" '+card+'/><rect x="42" y="15" width="20" height="7" rx="1.2" '+card+'/><rect x="9" y="20" width="22" height="8" rx="1.4" '+light+'/><rect x="41" y="20" width="22" height="8" rx="1.4" '+light+'/><rect x="9" y="29" width="22" height="8" rx="1.4" '+light+'/><rect x="41" y="29" width="22" height="8" rx="1.4" '+light+'/><path d="M12 23 H28 M12 32 H28 M44 23 H60 M44 32 H60" '+dash+' opacity=".85"/>';break;
-case "ch_snap":
-g='<rect x="14" y="13" width="44" height="29" rx="4" '+body+'/><rect x="19" y="7" width="34" height="10" rx="1.8" '+card+'/><path d="M14 18 a4 4 0 0 1 4-4 h36 a4 4 0 0 1 4 4 L36 32 Z" '+light+'/><path d="M18 20 L36 29.5 L54 20" '+dash+'/><circle cx="36" cy="27.5" r="3.7" '+brass+'/><circle cx="36" cy="27.5" r="1.7" fill="'+P.d+'" opacity=".55"/>';break;
-case "ch_mag":
-g='<rect x="8" y="10" width="26" height="30" rx="3" '+body+'/><rect x="38" y="10" width="26" height="30" rx="3" '+body+'/><rect x="34" y="10" width="4" height="30" fill="'+P.d+'"/><path d="M36 12 V38" '+dash+' opacity=".7"/><rect x="11" y="15" width="20" height="7" rx="1.2" '+card+'/><rect x="11" y="21" width="20" height="8" rx="1.4" '+light+'/><rect x="41" y="21" width="20" height="8" rx="1.4" '+light+'/><path d="M62 20 h6 a2 2 0 0 1 2 2 v6 a2 2 0 0 1 -2 2 h-6 z" '+light+'/><circle cx="60" cy="25" r="2.1" fill="'+P.mg+'"/><circle cx="66" cy="25" r="2.1" fill="'+P.mg+'"/><path d="M14 24 H28 M44 24 H58" '+dash+' opacity=".85"/>';break;
-case "ch_clip":
-g='<rect x="18" y="10" width="36" height="12" rx="1.5" fill="'+P.cash+'" stroke="'+P.cashd+'" stroke-width=".8"/><path d="M22 14 H50 M22 18 H44" stroke="'+P.cashd+'" stroke-width=".7" opacity=".8"/><rect x="14" y="17" width="44" height="25" rx="4" '+body+'/><rect x="24" y="6.5" width="24" height="11" rx="2" fill="'+P.st+'" stroke="'+P.std+'" stroke-width=".8"/><rect x="28" y="10.5" width="16" height="4" rx="1" fill="'+P.std+'"/><circle cx="28" cy="12" r="1.8" '+brass+'/><circle cx="44" cy="12" r="1.8" '+brass+'/><path d="M14 26 H58 M14 33 H58" stroke="'+P.d+'" stroke-width="1"/><path d="M17 29 H55 M17 36 H55" '+dash+' opacity=".8"/>';break;
-case "ch_zip":{
-let teeth="";for(let x=19;x<=53;x+=3)teeth+='<rect x="'+fx(x)+'" y="12.6" width="1.6" height="3.4" rx=".4" fill="'+P.br+'"/>';
-g='<rect x="12" y="15" width="48" height="27" rx="6" '+body+'/><path d="M12 24 V21 a6 6 0 0 1 6-6 H54 a6 6 0 0 1 6 6 V24" fill="none" stroke="'+P.br+'" stroke-width="2.2"/>'+teeth+'<rect x="49.5" y="11.6" width="7" height="6.4" rx="1.5" '+brass+'/><path d="M53 18 v4" stroke="'+P.br+'" stroke-width="1.5" stroke-linecap="round"/><rect x="51" y="21.6" width="4" height="5.6" rx="1.3" '+brass+'/><path d="M16 24 V38 H56 V24" '+dash+'/>';
-break;}
-case "ch_acc":
-g='<rect x="7" y="10" width="7.5" height="32" rx="2" '+body+'/><rect x="57.5" y="10" width="7.5" height="32" rx="2" '+body+'/><path d="M14.5 42 L20 12 L25.5 42 L31 12 L36.5 42 L42 12 L47.5 42 L53 12 L57.5 42 Z" fill="'+P.l+'" stroke="'+P.d+'" stroke-width="1"/><rect x="17" y="7" width="6" height="9" rx="1" '+card+'/><rect x="28" y="7" width="6" height="9" rx="1" '+card+'/><rect x="39" y="7" width="6" height="9" rx="1" '+card+'/><path d="M20 16 V38 M31 16 V38 M42 16 V38 M53 16 V38" '+dash+' opacity=".65"/>';break;
 case "ch_long":
 g='<rect x="5" y="14" width="62" height="24" rx="3" '+body+'/><path d="M36 16 V36" '+dash+' opacity=".8"/><rect x="9" y="17.5" width="24" height="17" rx="1.2" fill="'+P.cash+'" stroke="'+P.cashd+'" stroke-width=".8"/><path d="M13 22 H29 M13 26 H25 M13 30 H29" stroke="'+P.cashd+'" stroke-width=".7" opacity=".85"/><rect x="42" y="15.5" width="20" height="7" rx="1.2" '+card+'/><rect x="40" y="20" width="24" height="7.5" rx="1.4" '+light+'/><rect x="40" y="28.5" width="24" height="7.5" rx="1.4" '+light+'/><path d="M43 23 H61 M43 31.5 H61" '+dash+' opacity=".85"/>';break;
-case "ch_fan":{
-g="";
-for(let i=0;i<4;i++){
-const ang=-32+i*10.5;
-const f=(i===3)?P.l:P.b;
-g+='<g transform="rotate('+fx(ang)+' 20 38)"><rect x="17" y="12" width="38" height="26" rx="3" fill="'+f+'" stroke="'+P.d+'" stroke-width="1"/>';
-if(i===3)g+='<rect x="21" y="15" width="30" height="9" rx="1.4" '+card+'/><path d="M21 27 H51 M21 32 H51" '+dash+' opacity=".8"/>';
-g+='</g>';
-}
-g+='<circle cx="20" cy="38" r="3.4" '+brass+'/><circle cx="20" cy="38" r="1.5" fill="'+P.d+'"/>';
-break;}
 case "book_cover":
 g='<rect x="6" y="8" width="24" height="34" rx="3" '+body+'/><rect x="34" y="8" width="24" height="34" rx="3" '+body+'/><rect x="30" y="8" width="4" height="34" fill="'+P.d+'"/><path d="M32 10 V40" '+dash+' opacity=".7"/><path d="M6 14 H30 M34 14 H58 M6 36 H30 M34 36 H58" '+dash+' opacity=".5"/><path d="M32 8 V3" stroke="'+P.t+'" stroke-width="2" stroke-linecap="round"/>';break;
 default:
@@ -2105,7 +2044,7 @@ card:[
 {n:2,title:"Слотовый каскад",desc:"Три слота со сдвигом 11 мм, банковские карты.",p:{cardDesign:"ch_slots",color:"#8a5a2b",finish:"smooth",patina:30,thread:"cream",cardCount:4,thick:1.4,passport:false}},
 {n:3,title:"Бифолд + паспорт РБ",desc:"Крупная книжка: карты и опциональный вкладыш паспорт РБ.",p:{cardDesign:"ch_bifold",color:"#6e2f2a",finish:"smooth",patina:25,thread:"cream",cardCount:4,thick:1.5,passport:true,passportCount:1,open:150}},
 {n:4,title:"Лонг + паспорт РБ",desc:"Длинный кошелёк, купюры и вкладыш паспорт РБ.",p:{cardDesign:"ch_long",color:"#26201c",finish:"saffiano",patina:20,thread:"black",cardCount:6,thick:1.6,passport:true,passportCount:1,open:150}},
-{n:5,title:"Аккордеон",desc:"Много банковских карт, гофре, без документов как базового формата.",p:{cardDesign:"ch_acc",color:"#a4713a",finish:"crazy",patina:55,thread:"tone",cardCount:10,thick:1.4,passport:false}}],
+{n:5,title:"Слотовый + деньги",desc:"Шесть карт каскадом и отсек для сложенных купюр на обороте.",p:{cardDesign:"ch_slots",color:"#a4713a",finish:"crazy",patina:55,thread:"tone",cardCount:6,thick:1.4,passport:false,moneySlot:true}}],
 book:[
 {n:1,title:"Классическая обложка",desc:"Книга 150×220×25 мм, закладка включена.",p:{bookW:150,bookH:220,bookD:25,bookmark:true,color:"#6e2f2a",finish:"smooth",patina:30,thick:1.8,open:120,bookConfirmed:true,bookDesign:"book_cover"}},
 {n:2,title:"Толстый том",desc:"Книга 180×260×45 мм, усиленный корешок.",p:{bookW:180,bookH:260,bookD:45,bookmark:true,color:"#4a2e1c",finish:"crazy",patina:55,thick:2.2,open:120,bookConfirmed:true,bookDesign:"book_cover"}},
@@ -2153,7 +2092,7 @@ const cv=c.querySelector("canvas");
 if(cv&&r)refArt(cv.getContext("2d"),480,360,r,fam);
 const btn=c.querySelector(".apply");
 if(btn)btn.addEventListener("click",()=>{
-set(Object.assign({},r.p));
+set(Object.assign({},r.p,{picked:{device:true,design:true}}));
 toast("Референс применён · "+designName());
 const st=el("studio");if(st)st.scrollIntoView({behavior:REDUCED?"auto":"smooth"});
 });
@@ -2314,25 +2253,6 @@ const rad=Math.min(r===undefined?t*.42:r,Math.min(w,h)/2*.9,t/2*.92);
 const g=track(new RBG(Math.max(w,.001),Math.max(h,.001),Math.max(t,.0004),4,Math.max(rad,.0002)));
 const m=new T3.Mesh(g,mat);m.castShadow=true;m.receiveShadow=true;(parent||group).add(m);return m;
 }
-function extrudePoly(pts,depth,mat,parent,bevel){
-const shape=new T3.Shape();
-pts.forEach((p,i)=>{if(i===0)shape.moveTo(p[0],p[1]);else shape.lineTo(p[0],p[1])});
-shape.closePath();
-const geo=track(new T3.ExtrudeGeometry(shape,{
-depth:depth,
-bevelEnabled:!!bevel,
-bevelThickness:bevel?depth*.15:0,
-bevelSize:bevel?depth*.15:0,
-bevelSegments:bevel?2:0,
-curveSegments:8
-}));
-geo.translate(0,0,-depth/2);
-const mesh=new T3.Mesh(geo,mat);
-mesh.castShadow=true;
-mesh.receiveShadow=true;
-(parent||group).add(mesh);
-return mesh;
-}
 function rrPts(w,h,r,iv){
 const W=w/2-iv,H=h/2-iv,rr=Math.max(.0008,r-iv*.5),p=[];
 const cs=[[W-rr,H-rr,0],[-(W-rr),H-rr,Math.PI/2],[-(W-rr),-(H-rr),Math.PI],[W-rr,-(H-rr),1.5*Math.PI]];
@@ -2380,27 +2300,6 @@ const b=new T3.Mesh(g1,mat);b.rotation.x=Math.PI/2;b.position.set(x,y,z);b.castS
 const g2=track(new T3.SphereGeometry(r*.72,18,10,0,Math.PI*2,0,Math.PI/2));
 const c=new T3.Mesh(g2,mat);c.rotation.x=-Math.PI/2;c.position.set(x,y,z+.0012);c.castShadow=true;(parent||group).add(c);
 }
-function zipper(pts,z,mat,parent){
-let len=0;const segs=[];
-for(let i=0;i<pts.length-1;i++){const l=Math.hypot(pts[i+1][0]-pts[i][0],pts[i+1][1]-pts[i][1]);segs.push(l);len+=l}
-const n=Math.max(8,Math.floor(len/.0045));
-const g=track(new T3.BoxGeometry(.0022,.0026,.0034));
-const im=new T3.InstancedMesh(g,mat,n*2);track(im);im.castShadow=true;
-const M=new T3.Matrix4(),Q=new T3.Quaternion(),X=new T3.Vector3(1,0,0),T=new T3.Vector3(),P=new T3.Vector3(),Sc=new T3.Vector3(1,1,1);
-let k=0;
-for(let i=0;i<n;i++){
-const target=(i+.5)*len/n;let acc=0,si=0;
-while(si<segs.length-1&&acc+segs[si]<target){acc+=segs[si];si++}
-const t=segs[si]>1e-9?(target-acc)/segs[si]:0,a=pts[si],b=pts[si+1];
-const px=lerp(a[0],b[0],t),py=lerp(a[1],b[1],t);
-T.set(b[0]-a[0],b[1]-a[1],0);if(T.lengthSq()<1e-12)T.set(1,0,0);else T.normalize();
-Q.setFromUnitVectors(X,T);
-[-1,1].forEach(sg=>{P.set(px,py,z+sg*.0016);M.compose(P,Q,Sc);im.setMatrixAt(k++,M)});
-}
-im.instanceMatrix.needsUpdate=true;(parent||group).add(im);
-const sl=track(new T3.BoxGeometry(.008,.006,.006));
-const sm=new T3.Mesh(sl,mat);sm.position.set(pts[0][0],pts[0][1],z);sm.castShadow=true;(parent||group).add(sm);
-}
 function clear3D(){disp.forEach(o=>{if(o&&o.dispose)o.dispose()});disp=[];if(group)while(group.children.length)group.remove(group.children[0])}
 async function init3D(){
 if(started3)return;started3=true;
@@ -2433,7 +2332,7 @@ const dc=document.createElement("canvas");dc.width=dc.height=64;
 const dx=dc.getContext("2d"),gr=dx.createRadialGradient(32,32,2,32,32,30);
 gr.addColorStop(0,"rgba(255,235,200,1)");gr.addColorStop(1,"rgba(255,235,200,0)");
 dx.fillStyle=gr;dx.fillRect(0,0,64,64);
-dust=new T3.Points(dg,track(new T3.PointsMaterial({size:.005,map:new T3.CanvasTexture(dc),transparent:true,opacity:.45,depthWrite:false,blending:T3.AdditiveBlending,color:0xd9b98a})));
+dust=new T3.Points(dg,track(new T3.PointsMaterial({size:.005,map:track(new T3.CanvasTexture(dc)),transparent:true,opacity:.45,depthWrite:false,blending:T3.AdditiveBlending,color:0xd9b98a})));
 scene.add(dust);
 group=new T3.Group();scene.add(group);
 ready3=true;if(veil)veil.classList.add("off");
@@ -2579,23 +2478,23 @@ const front=raw.find(p=>p.id==="front")||raw[0];
 const back=raw.find(p=>p.id==="back")||raw[0];
 const wrapP=raw.find(p=>p.id==="wrap");
 const rad=Math.min(.008,W*.06,H*.06);
-const panelRad=(w,h)=>Math.min(.006,Math.min(w,h)/5);
 if(wrapP){
 const spineMm=isBook()?M.spine:Math.max(4,M.depth+2*S.thick);
 const spine=spineMm/1000;
-const hw=Math.max(.005,(W-spine)/2);
+const spanW=wrapP?(wrapP.w-2*M.seam)/1000:W;
+const hw=Math.max(.005,(spanW-spine)/2);
 const left=new T3.Group();group.add(left);left.position.set(-hw/2-spine/2,0,0);
-const lp=panel(hw,H,t,lm,left,panelRad(hw,H));projectMarks(wrapP,hw,H,t/2+.0005,lp,false);
-if(sd){const l=panel(hw-.008,H-.008,liningT()/1000,sd,left,panelRad(hw,H)*.9);l.position.z=-t/2-liningT()/2000}
+const lp=panel(hw,H,t,lm,left,Math.min(.006,hw/5));projectMarks(wrapP,hw,H,t/2+.0005,lp,false);
+if(sd){const l=panel(hw-.008,H-.008,liningT()/1000,sd,left,.005);l.position.z=-t/2-liningT()/2000}
 const piv=new T3.Group();group.add(piv);piv.position.set(spine/2,0,0);
 const right=new T3.Group();piv.add(right);right.position.set(hw/2,0,-(t+.0008));
-const rp=panel(hw,H,t,lm,right,panelRad(hw,H));projectMarks(wrapP,hw,H,t/2+.0005,rp,false);
+const rp=panel(hw,H,t,lm,right,Math.min(.006,hw/5));projectMarks(wrapP,hw,H,t/2+.0005,rp,false);
 piv.rotation.y=(op-180)*DEG;
 const spm=new T3.Mesh(track(new T3.BoxGeometry(spine,H,t)),lm2);spm.position.set(0,0,-t/2);spm.castShadow=true;group.add(spm);
 if(isBook()){
 const flapW=M.flapW/1000;
-const lf=panel(flapW,H*.92,t*.7,lm2,left,panelRad(flapW,H)*.7);lf.position.set(-hw/2-flapW/2,0,t*.22);lf.rotation.y=.35;
-const rf=panel(flapW,H*.92,t*.7,lm2,right,panelRad(flapW,H)*.7);rf.position.set(hw/2+flapW/2,0,t*.22);rf.rotation.y=-.35;
+const lf=panel(flapW,H*.92,t*.7,lm2,left,.004);lf.position.set(-hw/2-flapW/2,0,t*.22);lf.rotation.y=.35;
+const rf=panel(flapW,H*.92,t*.7,lm2,right,.004);rf.position.set(hw/2+flapW/2,0,t*.22);rf.rotation.y=-.35;
 if(S.bookmark){const bmsh=panel(.018,(S.bookH+90)/1000,.0012,lm2,group,.001);bmsh.position.set(0,H/2+.03,-.002)}
 frameModel(hw*2+spine+M.flapW/500,H,D);
 return;
@@ -2603,140 +2502,55 @@ return;
 raw.filter(p=>p.id.indexOf("slot")===0).forEach((p,i)=>{
 const side=i%2===0?left:right;
 const sw=(p.w-2*M.seam)/1000,sh=(p.h-2*M.seam)/1000;
-const slotIdx=Math.floor(i/2);
-const sl=panel(sw,sh,t*.7,lm2,side,panelRad(sw,sh)*.7);
-sl.position.set(0,-H/2+sh/2+.008+slotIdx*.011,t/2+.0016+ex+slotIdx*.0008);
+const sl=panel(sw,sh,t*.7,lm2,side,.003);
+sl.position.set(0,-H/2+sh/2+.006+Math.floor(i/2)*.011,t/2+.0016+ex+Math.floor(i/2)*.0005);
 projectMarks(p,sw,sh,t*.35+.0005,sl,false);
 });
-if(/magnet/.test(kind)){const tab=panel(.055,.020,t*.8,lm2,right,.006);tab.position.set(hw/2-.012,0,t/2+.002)}
 frameModel(hw*2+spine,H,D);
-return;
-}
-if(/fan/.test(kind)){
-const plate=raw.find(p=>p.id==="plate")||front;
-const pw=(plate.w-2*M.seam)/1000,ph=(plate.h-2*M.seam)/1000,n=clamp(S.cardCount,3,6);
-const px=-pw/2+.012,py=-ph/2+.012;
-const backM=panel(pw+.002,ph+.002,t,lm,group,panelRad(pw,ph));backM.position.z=-D/2-t/2-ex;
-for(let i=0;i<n;i++){
-const pv=new T3.Group();group.add(pv);
-pv.position.set(px,py,-D/2+(i+1)*(D/(n+1)));
-pv.rotation.z=-(op/180)*(i/(n-1||1))*.95;
-const pl=panel(pw,ph,t*.62,lm2,pv,panelRad(pw,ph)*.62);pl.position.set(pw/2-.012,ph/2-.012,0);
-projectMarks(plate,pw,ph,t*.31+.0005,pl,false);
-}
-const cv=new T3.Group();group.add(cv);
-cv.position.set(px,py,D/2+t/2+ex);cv.rotation.z=-(op/180)*1.05;
-const cm=panel(pw+.002,ph+.002,t,lm,cv,panelRad(pw,ph));cm.position.set(pw/2-.012,ph/2-.012,0);
-const riv=track(new T3.CylinderGeometry(.004,.004,.006,16));
-const rm=new T3.Mesh(riv,bm);rm.rotation.x=Math.PI/2;rm.position.set(px,py,D/2+t+.003);group.add(rm);
-frameModel(pw*1.5,ph*1.4,D);
-return;
-}
-if(/acc/.test(kind)){
-const pl=clamp(S.cardCount,3,8),spread=.3+.7*(op/180),totalW=W*spread;
-const outer=raw.find(p=>p.id==="outer")||front;
-const backM=panel(W,H,t,lm,group,panelRad(W,H));backM.position.z=-D/2-t/2-ex;projectMarks(outer,W,H,t/2+.0005,backM,false);
-const frontM=panel(W,H,t,lm,group,panelRad(W,H));frontM.position.z=D/2+t/2+ex;projectMarks(outer,W,H,t/2+.0005,frontM,false);
-for(let i=0;i<pl-1;i++){
-const x=-totalW/2+totalW*(i+1)/pl;
-const dv=panel(W*.94,H*.9,t*.55,lm2,group,panelRad(W,H)*.55);dv.position.set(x*.55,0,0);dv.rotation.y=Math.PI/2;
-}
-[-1,1].forEach(sg=>{const g=track(new T3.BoxGeometry(t*.6,H,totalW));const m=new T3.Mesh(g,lm2);m.position.set(sg*W/2,0,0);m.castShadow=true;group.add(m)});
-frameModel(W*1.3,H,D+totalW);
-return;
-}
-if(/zip/.test(kind)&&isCard()){
-const backM=panel(W,H,t,lm,group,panelRad(W,H));backM.position.z=-D/2+t/2;projectMarks(back,W,H,t/2+.0005,backM,false);
-const ring=new T3.Mesh(ringGeo(W,H,rad,t,Math.max(.001,D-2*t)),lm2);ring.castShadow=true;group.add(ring);
-const lid=new T3.Group();group.add(lid);lid.position.set(0,-H/2,D/2-t/2);
-const frontM=panel(W,H,t,lm,lid,panelRad(W,H));frontM.position.set(0,H/2,0);projectMarks(front,W,H,t/2+.0005,frontM,false);
-lid.rotation.x=-(op/180)*.85;
-zipper([[W/2-.004,H/2-.004],[-W/2+.004,H/2-.004],[-W/2+.004,-H/2+.004],[W/2-.004,-H/2+.004]],0,bm,group);
-frameModel(W,H,D);
 return;
 }
 const backH=(back.h-2*M.seam)/1000;
 const frontH=(front.h-2*M.seam)/1000;
-const isShaped=back.poly&&back.poly.length>4&&!isBook()&&/flap/.test(kind)&&(/lock|diag|stud/.test(kind));
-if(isShaped){
-const backPoly=back.poly.map(pt=>[(pt[0]-back.w/2)/1000,(back.h/2-pt[1])/1000]);
-const backM=extrudePoly(backPoly,t,lm,group,true);
-backM.position.set(0,(backH-H)/2,-D/2+t/2-ex);
-projectMarks(back,back.w/1000,backH,t/2+.0005,backM,false);
-if(sd){
-const lPoly=back.poly.map(pt=>[(pt[0]-back.w/2)/1000*.99,(back.h/2-pt[1])/1000*.99]);
-const l=extrudePoly(lPoly,liningT()/1000,sd,group,false);
-l.position.set(0,(backH-H)/2,-D/2-liningT()/2000-ex);
-}
-stitchRect(back.w/1000,backH,rad,seam,-D/2-.0006,tm,backM);
-}else{
-const backM=panel(W,backH,t,lm,group,panelRad(W,backH));backM.position.set(0,(backH-H)/2,-D/2+t/2-ex);
+const backM=panel(W,backH,t,lm,group,rad);backM.position.set(0,(backH-H)/2,-D/2+t/2-ex);
 projectMarks(back,W,backH,t/2+.0005,backM,false);
-if(sd){const l=panel(W-.008,backH-.008,liningT()/1000,sd,group,panelRad(W,backH)*.9);l.position.set(0,(backH-H)/2,-D/2-liningT()/2000-ex)}
+if(sd){const l=panel(W-.008,backH-.008,liningT()/1000,sd,group,.005);l.position.set(0,(backH-H)/2,-D/2-liningT()/2000-ex)}
 stitchRect(W,backH,rad,seam,-D/2-.0006,tm,backM);
-}
-const frontM=panel(W,frontH,t,lm,group,panelRad(W,frontH));frontM.position.set(0,-(H-frontH)/2,D/2-t/2+ex);
+const frontM=panel(W,frontH,t,lm,group,rad);frontM.position.set(0,-(H-frontH)/2,D/2-t/2+ex);
 projectMarks(front,W,frontH,t/2+.0005,frontM,false);
 stitchRect(W,frontH,rad,seam,D/2+.0006,tm,frontM);
 if(M.gusset){const ring=new T3.Mesh(ringGeo(W,H,rad,t,Math.max(.001,D-2*t)),lm2);ring.castShadow=true;ring.receiveShadow=true;group.add(ring)}
-if(/flap/.test(kind)&&!/lock|diag/.test(kind)){
-const flapPiece=raw.find(p=>p.id==="flap");
-if(flapPiece){
-const flW=flapPiece.w/1000,flH=flapPiece.h/1000;
-const isTriangle=flapPiece.poly&&flapPiece.poly.length>=5&&/stud/.test(kind);
-let flapMesh;
-if(isTriangle){
-const flapPoly=flapPiece.poly.map(pt=>[(pt[0]-flapPiece.w/2)/1000,(flapPiece.h/2-pt[1])/1000]);
-flapMesh=extrudePoly(flapPoly,t*.8,lm2,group,true);
-}else{
-flapMesh=panel(W*.98,flH,t*.8,lm2,group,panelRad(W,flH)*.8);
-}
-const pv=new T3.Group();group.add(pv);pv.position.set(0,H/2,D/2-t/2);
-pv.add(flapMesh);
-flapMesh.position.set(0,-flH/2,t*.6+.0012);
-projectMarks(flapPiece,flW,flH,t*.4+.0005,flapMesh,false);
-if(/stud/.test(kind)){
-snap(0,-flH*.7,t*.6+.0012+t*.4,bm,flapMesh,.006);
-snap(0,H/2-flH*.7,D/2+.002,bm,group,.006);
-}
-if(/band/.test(kind)){const bd=panel(W+.004,.022,t*.7,lm2,group,.003);bd.position.set(0,H/2-flH*.7,D/2+t*.5+.002)}
-pv.rotation.x=(op/180)*Math.PI*.95;
-}
-}
-if(/slots|clip/.test(kind)){
-const slotPieces=raw.filter(p=>p.id.indexOf("slot")===0);
-slotPieces.forEach((p,i)=>{
+if(isCard()&&/slots/.test(kind)){
+raw.filter(p=>p.id.indexOf("slot")===0).forEach((p,i)=>{
 const sw=(p.w-2*M.seam)/1000,sh=(p.h-2*M.seam)/1000;
-const sl=panel(sw,sh,t*.7,lm2,group,panelRad(sw,sh)*.7);
-sl.position.set(0,-H/2+sh/2+.008+i*.011,D/2+t*.4+.001+ex+i*.0008);
+const sl=panel(sw,sh,t*.7,lm2,group,Math.min(.004,Math.min(sw,sh)/5));
+sl.position.set(0,-H/2+sh/2+.004+i*.011,-D/2-t*.35-.0006-ex-i*.0004);
 projectMarks(p,sw,sh,t*.35+.0005,sl,false);
 });
 }
-if(/pull/.test(kind)){
-const ribbon=raw.find(p=>p.id==="ribbon");
-if(ribbon){
-const rw=ribbon.w/1000,rh=ribbon.h/1000;
-const rib=panel(rw,rh,t*.6,lm2,group,.002);
-rib.position.set(0,-H/2-rh/2+.005,0);
-rib.rotation.x=Math.PI/2;
-projectMarks(ribbon,rw,rh,t*.3,rib,false);
+if(isCard()&&S.moneySlot){
+const money=raw.find(p=>p.id==="money");
+if(money){
+const mw=(money.w-2*M.seam)/1000,mh=(money.h-2*M.seam)/1000;
+const mp2=panel(mw,mh,t*.7,lm2,group,Math.min(.004,Math.min(mw,mh)/5));
+mp2.position.set(0,-H/2+mh/2+.004,-D/2-t*.7-.0008-ex);
+projectMarks(money,mw,mh,t*.35+.0005,mp2,false);
 }
 }
-if(/clip/.test(kind)){
-const cliptab=raw.find(p=>p.id==="cliptab");
-if(cliptab){
-const cw=cliptab.w/1000,ch=cliptab.h/1000;
-const clip=panel(cw,ch,t*.5,lm2,group,.003);
-clip.position.set(0,H*.3,D/2+t*.5+.001+ex);
-projectMarks(cliptab,cw,ch,t*.25,clip,false);
-const bmClip=new T3.Mesh(track(new T3.BoxGeometry(.06,.025,.002)),bm);
-bmClip.position.set(0,H*.3,D/2+t*.5+.003+ex);
-group.add(bmClip);
+if(/flap/.test(kind)){
+const flL=H*.42;
+const pv=new T3.Group();group.add(pv);pv.position.set(0,H/2,D/2-t/2);
+const fl=panel(W*.98,flL,t,lm2,pv,.006);fl.position.set(0,-flL/2,t*.6+.0012);
+projectMarks(back,W*.98,flL,t/2+.0005,fl,false);
+if(/lock/.test(kind)){
+snap(0,-flL+.020,t*.6+.0012+t/2,bm,fl,.006);
+snap(0,H/2-flL+.020,D/2+.002,bm,group,.006);
 }
+if(/band/.test(kind)){const bd=panel(W+.004,.022,t*.7,lm2,group,.003);bd.position.set(0,H/2-flL*.7,D/2+t*.5+.002)}
+pv.rotation.x=(op/180)*Math.PI*.95;
 }
 raw.filter(p=>p.id==="pocket").forEach((p,i)=>{
 const pw=(p.w-2*M.seam)/1000,ph=(p.h-2*M.seam)/1000;
-const pk=panel(pw,ph,t*.75,lm2,group,panelRad(pw,ph)*.75);
+const pk=panel(pw,ph,t*.75,lm2,group,.005);
 pk.position.set(0,-H*.12+i*.014,D/2+t*.4+.001+ex);
 projectMarks(p,pw,ph,t*.38+.0005,pk,false);
 });
@@ -2797,10 +2611,10 @@ const ASTAGES=[
 {t:"Подкладка",d:"Подкладка приклеена водным клеем и обрезана на 1 мм уже детали."},
 {t:"Разметка",d:"Циркуль-разметчик выставлен на припуск и проведён по всем сшиваемым кромкам."},
 {t:"Пробивка",d:"Ромбовидный пробойник перпендикулярно, шаг по техкарте, углы — шилом."},
-{t:"Фурнитура",d:"Кнопки, магниты, заклёпки, ось, молния — ставятся ДО сшивания."},
+{t:"Фурнитура",d:"Кнопки и замки ставятся ДО сшивания."},
 {t:"Склейка",d:"Контактный клей полосой 3–5 мм строго внутри линии шва, подсушка, прикатка."},
 {t:"Стыковка частей",d:"Совмещение парных меток J, склейка и прошивка припуска стыка, контроль общей длины."},
-{t:"Сборка узлов",d:"Посадка кромки / каскад слотов / гофре / ось веера / корешок / клапаны — по конструкции."},
+{t:"Сборка узлов",d:"Посадка кромки / каскад слотов / корешок / клапаны — по конструкции."},
 {t:"Сшивание",d:"Седельный шов двумя иглами навстречу, обратный узел 3 стежка, равномерная затяжка."},
 {t:"Урез и формовка",d:"Торцбил, шлифовка 400→800→1200, грунт, воск, сликер. Формовка с наполнением 12–24 ч."}
 ];
@@ -2813,12 +2627,8 @@ out[10]={t:"Урез и примерка",d:"Обработать урез, на
 }else if(M.family==="card"){
 const kind=def()[1];
 let t="Совмещение панелей",d="Передняя панель ниже зада, выемка под палец уже в выкройке.";
-if(/wrap/.test(kind)){t="Корешок и половины";d="Слоты пришиваются к половинам, затем половины соединяются обёрткой через корешок."}
-else if(/acc/.test(kind)){t="Гофре и разделители";d="Боковины складываются гофре, разделители вставляются между секциями."}
-else if(/zip/.test(kind)){t="Молния и боковина";d="Молния втачивается по контуру, концевики и пуллер — до замыкания боковины."}
-else if(/fan/.test(kind)){t="Ось веера";d="Пластины и крышки собираются на винт-пост Остров4, затяжка свободная."}
-else if(/slots|clip/.test(kind)){t="Каскад слотов";d="Слоты пришиваются каскадом снизу вверх с шагом 11 мм, верх открыт."}
-else if(/pull/.test(kind)){t="Язычок";d="Лента-язычок вшивается в дно между панелями, выступ 25–30 мм."}
+if(/wrap/.test(kind)){t="Корешок и половины";d="Слоты пришиваются к половинам (по 2 на каждую, сдвиг 11 мм), затем половины соединяются обёрткой через корешок."}
+else if(/slots/.test(kind)){t="Каскад слотов";d="Слоты пришиваются каскадом снизу вверх с шагом 11 мм, верх открыт."}
 out[8]={t,d};
 out[10]={t:"Урез и проверка",d:"Торцбил №1–2, шлифовка, краска для уреза. Вставить банковские карты — вход и выход без усилия."};
 }else{
@@ -2978,12 +2788,13 @@ if(p.id==="stitch"&&!AS.stitch)vis=false;
 if(p.id==="glue"&&!AS.glue)vis=false;
 if(p.id==="hw"&&!AS.hw)vis=false;
 if(p.id==="fill"&&!S.fill)vis=false;
-if(p.id==="front"&&AS.cut&&st>=8)vis=false;
+if(p.id.indexOf("front")===0&&AS.cut&&st>=8)vis=false;
 p.mesh.visible=vis;
 const target=p.home.clone().add(p.dir.clone().multiplyScalar(ex));
 if(instant){p.mesh.position.copy(target);p.target=null}else p.target=target;
 });
-htm("asmStep","<b>"+(st+1)+"/"+stages.length+" · "+stages[st].t+"</b><span>"+stages[st].d+"</span>");
+const cur=stages[Math.min(st,stages.length-1)]||{t:"—",d:"—"};
+htm("asmStep","<b>"+(st+1)+"/"+stages.length+" · "+cur.t+"</b><span>"+cur.d+"</span>");
 qa("#asmChips .asc").forEach((c,i)=>{c.classList.toggle("on",i===st);c.classList.toggle("done",i<st)});
 val("asmExplode",Math.round(AS.explode*100));txt("asmExplodeOut",Math.round(AS.explode*100)+"%");
 }
@@ -3202,13 +3013,14 @@ function fillSelects(){
 const brands=["all"].concat(Array.from(new Set(DEVICES[S.type].map(d=>d[0]))));
 htm("brand",brands.map(b=>'<option value="'+b+'">'+(b==="all"?"Все бренды":b)+'</option>').join(""));
 val("brand",S.brand);
-htm("stock",STOCKS.map(s=>'<option value="'+s.id+'">'+s.name+(s.id==="custom"?"":" · "+s.w+"×"+s.h)+'</option>').join(""));
+htm("stock",STOCKS.map(s=>'<option value="'+s.id+'">'+s.name+' · '+s.w+"×"+s.h+'</option>').join("")+'<option value="custom">Свой кусок…</option>');
 htm("format",STOCKS.map(s=>'<option value="'+s.id+'">'+s.name+' · '+fmt(s.w)+'×'+fmt(s.h)+'</option>').join(""));
 htm("finish",FINISHES.map(f=>'<option value="'+f[0]+'">'+f[1]+'</option>').join(""));
 htm("thread",THREADS.map(t=>'<option value="'+t[0]+'">'+t[1]+'</option>').join(""));
 htm("lining",LININGS.map(l=>'<option value="'+l[0]+'">'+l[1]+'</option>').join(""));
 htm("swatches",COLORS.map(c=>'<button class="swatch" data-color="'+c+'" style="background:'+c+'" title="'+c+'"></button>').join(""));
 htm("stFont",Object.keys(FONTS).map(f=>'<option value="'+f+'">'+f+'</option>').join(""));
+val("stock",S.stock);val("format",S.format);val("finish",S.finish);val("thread",S.thread);val("lining",S.lining);val("stFont",ST.font);
 }
 function fillModels(){
 const sEl=el("search"),bEl=el("brand"),mEl=el("model");
@@ -3282,19 +3094,22 @@ const em=el("edgeMark");if(em)em.style.left=clamp((isBook()?100:lim)/scaleMax*10
 txt("edgeNote",edgeNoteText());
 let eh="Авто: кромка только при толщине выше предела гибкости кожи.";
 if(isBook())eh="Для обложек книг боковина не используется — корешок входит в развёртку.";
-else if(isCard())eh="Авто: кромка при толстом стеке. Молния и аккордеон всегда с боковиной. Паспорт РБ — только вкладыш в крупных конструкциях.";
+else if(isCard())eh="Авто: боковина добавляется только при толстом стеке карт. Паспорт РБ — только вкладыш в бифолде и лонге.";
 txt("edgeHint",eh);
 qa("#segEdge button").forEach(b=>{b.classList.toggle("on",b.dataset.edge===S.edgeMode);b.disabled=isBook()});
 val("pocketCount",S.pocketCount);txt("pocketCountOut",S.pocketCount+" шт");
 val("pocketType",S.pocketType);
 val("cardCount",S.cardCount);txt("cardCountOut",S.cardCount+" шт");
+qa("#orientSeg button").forEach(b=>b.classList.toggle("on",b.dataset.orient===S.cardOrient));
+atr("moneyToggle","aria-checked",String(S.moneySlot));
+dis("moneyToggle",!isCard()||/wrap/.test(def()[1]));
 atr("passportToggle","aria-checked",String(S.passport));
 val("passportCount",S.passportCount);txt("passportCountOut",S.passportCount+" шт");
 const ci=el("cardInfo");
 if(ci){
-let s="ID-1 85,60×53,98 · стек "+S.cardCount+"×"+fmt(BANK_CARD.t)+" = "+fmt(S.cardCount*BANK_CARD.t)+" мм · габарит "+fmt(S.A)+"×"+fmt(S.B)+" мм";
+let s="ID-1 85,60×53,98 · стек "+S.cardCount+"×"+fmt(BANK_CARD.t)+" = "+fmt(S.cardCount*BANK_CARD.t)+" мм · габарит "+fmt(S.A)+"×"+fmt(S.B)+" мм"+(S.cardOrient==="v"?" · вертикально":"");
 if(passportActive())s+=" · + паспорт РБ "+S.passportCount+" шт (88×125×4)";
-else if(S.passport)s+=" · паспорт РБ доступен только в крупных конструкциях";
+else if(S.passport)s+=" · паспорт РБ доступен только в бифолде и лонге";
 ci.textContent=s;
 }
 val("bookW",S.bookW);val("bookH",S.bookH);val("bookD",S.bookD);
@@ -3318,6 +3133,7 @@ val("maxPart",S.maxPart);txt("maxPartOut",S.maxPart+" мм");
 val("waste",S.waste);txt("wasteOut",S.waste+"%");
 val("color",S.color);val("finish",S.finish);val("thread",S.thread);val("lining",S.lining);
 val("stock",S.stock);val("format",S.format);val("quality",S.quality);
+if(S.stock==="custom"){val("stockW",S.stockW);val("stockH",S.stockH);val("stockM",S.stockM)}
 atr("splitToggle","aria-checked",String(S.split));
 atr("rotToggle","aria-checked",String(S.autoRot));
 atr("marksToggle","aria-checked",String(S.marks3d));
@@ -3425,7 +3241,7 @@ if(aReady)asmRebuild();
 function set(patch,light){
 const keys=Object.keys(patch);
 S=sanitize(Object.assign({},S,patch));
-if(isCard()&&(keys.indexOf("cardCount")>=0||keys.indexOf("passport")>=0||keys.indexOf("passportCount")>=0))syncCardDims();
+if(isCard()&&(keys.indexOf("cardCount")>=0||keys.indexOf("passport")>=0||keys.indexOf("passportCount")>=0||keys.indexOf("cardOrient")>=0))syncCardDims();
 if(keys.indexOf("design")>=0||keys.indexOf("cardDesign")>=0||keys.indexOf("bookDesign")>=0)S.picked.design=!!designId();
 if(keys.indexOf("model")>=0)S.picked.device=!!S.model;
 if(keys.indexOf("cardCount")>=0||keys.indexOf("passport")>=0||keys.indexOf("passportCount")>=0)S.picked.device=true;
@@ -3482,20 +3298,26 @@ const ts=el("typeSeg");
 if(ts)ts.addEventListener("click",e=>{
 const b=e.target.closest("[data-type]");if(!b)return;
 S.type=b.dataset.type;S.brand="all";S.model="";S.picked.device=false;
-fillSelects();fillModels();render();
+save();fillSelects();fillModels();render();
 });
 on("brand","change",e=>{S.brand=e.target.value;save();fillModels()});
 on("search","input",e=>{S.search=e.target.value;save();fillModels()});
 on("model","change",e=>{
 const v=e.target.value;
 if(v==="custom"){S.model="custom";S.picked.device=true}
-else if(v){const d=DEVICES[S.type][+v];S.model=d[1];S.A=d[2];S.B=d[3];S.C=d[4];S.picked.device=true;toast(d[1])}
+else if(v){const d=DEVICES[S.type][+v];if(!d)return;S.model=d[1];S.A=d[2];S.B=d[3];S.C=d[4];S.picked.device=true;toast(d[1])}
 else{S.model="";S.picked.device=false}
-render();
+save();render();
 });
 on("cardCount","input",e=>set({cardCount:+e.target.value},true));
+const orien=el("orientSeg");
+if(orien)orien.addEventListener("click",e=>{const b=e.target.closest("[data-orient]");if(b)set({cardOrient:b.dataset.orient})});
+on("moneyToggle","click",()=>{
+if(!isCard()||/wrap/.test(def()[1]))return;
+set({moneySlot:!S.moneySlot});
+});
 on("passportToggle","click",()=>{
-if(!largeCard()&&!S.passport){toast("Паспорт РБ доступен в крупных конструкциях");return}
+if(!largeCard()&&!S.passport){toast("Паспорт РБ доступен в бифолде и лонге");return}
 set({passport:!S.passport});
 });
 on("passportCount","input",e=>set({passportCount:+e.target.value},true));
@@ -3576,20 +3398,20 @@ Object.keys(pm).forEach(id=>on(id,"change",e=>setPrint(pm[id],e.target.checked))
 on("showStitch","change",e=>setPrint("stitch",e.target.checked));
 on("showLabels","change",e=>setPrint("labels",e.target.checked));
 on("rCal","input",e=>{cal=nv(e.target.value,100);save();renderCal();if(ready())renderBoard(derive())});
-on("resetPick","click",()=>{S.picked={device:false,design:false};S.model="";S.design="";S.cardDesign="";S.bookConfirmed=false;fillDesigns();render()});
+on("resetPick","click",()=>{S.picked={device:false,design:false};S.model="";S.design="";S.cardDesign="";S.bookConfirmed=false;save();fillModels();fillDesigns();render()});
 on("bCustom","click",()=>{
 S.dimT={A:true,B:true,C:true};
 if(!isCard()&&!isBook())S.model="custom";
 if(isBook())S.bookConfirmed=true;
-S.picked.device=true;save();render();toast("Свой размер подтверждён");
+S.picked.device=true;save();fillModels();render();toast("Свой размер подтверждён");
 });
 on("demoBtn","click",()=>{
 if(isBook()){S.bookW=150;S.bookH=220;S.bookD=25;S.bookmark=true;S.bookConfirmed=true;S.bookDesign="book_cover";S.open=130;S.thick=1.8;toast("Демо: обложка для книги")}
 else if(isCard()){S.cardCount=4;S.passport=false;S.cardDesign="ch_bifold";S.open=150;S.thick=1.4;syncCardDims();toast("Демо: бифолд на 4 карты")}
 else{S.type="laptop";S.brand="all";S.model="MacBook Air 13 M2/M3/M4";S.A=304.1;S.B=215;S.C=11.3;S.design="slip";S.open=0;S.pocketCount=1;S.thick=2.2;fillSelects();fillModels();toast("Демо: слипкейс + карман")}
-S.picked={device:true,design:true};fillDesigns();render();
+S.picked={device:true,design:true};save();fillDesigns();render();
 });
-on("resetAll","click",()=>{S=sanitize(DEF);fillSelects();fillModels();fillDesigns();buildRefs();render();toast("Всё сброшено к умолчаниям")});
+on("resetAll","click",()=>{S=sanitize(DEF);fillSelects();fillModels();fillDesigns();buildRefs();save();render();toast("Всё сброшено к умолчаниям")});
 on("randomBtn","click",()=>{
 const keys=Object.keys(designs()),id=keys[Math.floor(Math.random()*keys.length)];
 const p={color:COLORS[Math.floor(Math.random()*COLORS.length)],finish:FINISHES[Math.floor(Math.random()*FINISHES.length)][0],thick:Math.round((isCard()?1+Math.random()*1.2:1.4+Math.random()*1.8)*10)/10};
@@ -3683,7 +3505,7 @@ renderLegendPreview();
 renderDesignDetail();
 render(true);
 stampInit();
-runTests();
+setTimeout(()=>{try{runTests()}catch(e){console.warn(e)}},1600);
 window.__booted=true;
 }catch(e){
 console.error(e);
