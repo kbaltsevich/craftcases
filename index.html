@@ -3572,7 +3572,7 @@ function bind(){
   on("asmPrev","click",()=>{AS.auto=false;txt("asmPlay","▶ Проиграть");AS.step=Math.max(0,AS.step-1);applyAsmStage(false)});
   on("asmNext","click",()=>{AS.auto=false;txt("asmPlay","▶ Проиграть");AS.step=Math.min(10,AS.step+1);applyAsmStage(false)});
   on("asmPlay","click",()=>{AS.auto=!AS.auto;aLast=0;txt("asmPlay",AS.auto?"❚❚ Пауза":"▶ Проиграть")});
-  on("asmExplode","input",e=>{AS.auto=false;txt("asmPlay","▶ Проиграть");AS.explode=+e.target.value/100;applyAsmStage(false)}
+  on("asmExplode","input",e=>{AS.auto=false;txt("asmPlay","▶ Проиграть");AS.explode=+e.target.value/100;applyAsmStage(false)});
   on("asmExplode","input",e=>{AS.auto=false;txt("asmPlay","▶ Проиграть");AS.explode=nv(e.target.value,55)/100;applyAsmStage(false)});
   on("asmSpeed","input",e=>{AS.speed=nv(e.target.value,1);txt("asmSpeedOut",fx(AS.speed,1)+"×")});
   const asmTog={asmStitch:"stitch",asmGlue:"glue",asmHw:"hw",asmLining:"lining",asmFold:"fold",asmLabelsTgl:"labels",asmCut:"cut",asmWire:"wire"};
