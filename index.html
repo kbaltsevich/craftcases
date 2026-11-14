@@ -1,0 +1,1901 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ателье кожаных изделий — чехлы и картхолдеры · раскрой A4 · 3D</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23171009'/%3E%3Cpath d='M14 48 45 12' stroke='%23d9a441' stroke-width='6' stroke-linecap='round'/%3E%3Ccircle cx='15' cy='49' r='5' fill='%23c0453a'/%3E%3C/svg%3E">
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
+</script>
+<style>
+:root{--bg:#160f08;--paper:#f3ead8;--paper2:#e2d2b0;--ink:#f6ecd9;--dim:#cdb99b;--mut:#9b876c;--line:rgba(217,164,65,.22);--brass:#d9a441;--brass2:#f0c465;--cognac:#b07a3f;--ox:#c0453a;--verd:#3fa08c;--olive:#8fa653;--mag:#b065c9;--amber:#e0a437;--mat:#2e4b3f;--head:64px;--shadow:0 22px 60px -28px rgba(0,0,0,.8)}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font:15px/1.55 Manrope,system-ui,sans-serif;overflow-x:hidden}
+::selection{background:var(--brass);color:#241505}
+*{scrollbar-width:thin;scrollbar-color:#8a5a2b #1b120c}
+*::-webkit-scrollbar{width:10px;height:10px}
+*::-webkit-scrollbar-track{background:#1b120c;border-radius:10px}
+*::-webkit-scrollbar-thumb{background:linear-gradient(#a06a32,#6b4423);border-radius:10px;border:2px solid #1b120c}
+.bg{position:fixed;inset:0;z-index:-2;pointer-events:none;overflow:hidden}
+.bg i{position:absolute;border-radius:50%;filter:blur(90px);opacity:.45}
+.bg i:nth-child(1){width:62vw;height:62vw;left:-20vw;top:-24vw;background:radial-gradient(#6a3f1f,transparent 66%);animation:d1 44s ease-in-out infinite alternate}
+.bg i:nth-child(2){width:54vw;height:54vw;right:-18vw;top:22vh;background:radial-gradient(#552018,transparent 66%);animation:d2 38s ease-in-out infinite alternate}
+.bg i:nth-child(3){width:46vw;height:46vw;left:28vw;bottom:-26vw;background:radial-gradient(#1e463c,transparent 66%);opacity:.3}
+@keyframes d1{to{transform:translate(9vw,7vh) scale(1.13)}}
+@keyframes d2{to{transform:translate(-8vw,-6vh) scale(.96)}}
+body:after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.05;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E")}
+header{position:fixed;inset:0 0 auto;height:var(--head);z-index:60;display:flex;align-items:center;gap:14px;padding:0 20px;background:rgba(22,15,8,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none;flex-shrink:0}
+.brand svg{width:30px;height:30px}
+.brand b{font:800 17px Georgia,serif;white-space:nowrap}.brand i{font-style:normal;color:var(--brass)}
+nav{display:flex;gap:2px;margin-left:auto;overflow-x:auto;scrollbar-width:none}nav::-webkit-scrollbar{display:none}
+nav a{color:var(--dim);text-decoration:none;font-size:12.5px;font-weight:800;padding:8px 10px;border-radius:9px;white-space:nowrap}
+nav a:hover{color:var(--brass2);background:rgba(217,164,65,.08)}nav a.on{color:var(--brass)}
+.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid rgba(217,164,65,.36);cursor:pointer;background:linear-gradient(160deg,#7a4a26,#5a381d);color:#e8d9bd;font:800 12.5px Manrope;padding:9px 14px;border-radius:11px;transition:.18s;text-decoration:none}
+.btn:after{content:"";position:absolute;inset:3px;border:1px dashed rgba(232,217,189,.25);border-radius:8px;pointer-events:none}
+.btn:hover:not(:disabled){transform:translateY(-1px);border-color:var(--brass)}
+.btn.brass{background:linear-gradient(160deg,var(--brass2),#b07a2a);color:#241505;border-color:#f4d488}
+.btn.ghost{background:rgba(217,164,65,.06)}.btn.sm{padding:6px 10px;font-size:11.5px}.btn svg{width:15px;height:15px}
+.btn:disabled{opacity:.38;cursor:not-allowed;transform:none}
+main{max-width:1480px;margin:0 auto;padding:calc(var(--head) + 24px) 20px 46px}
+section{scroll-margin-top:calc(var(--head) + 16px)}
+.mast h1{font:800 clamp(30px,4.4vw,54px)/1.08 Georgia,serif}
+.mast h1 span{background:linear-gradient(92deg,var(--brass2),var(--cognac) 48%,var(--ox));-webkit-background-clip:text;background-clip:text;color:transparent}
+.mast p{color:var(--dim);max-width:940px;margin-top:10px;font-size:15px}
+.chips{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}
+.chip{display:inline-flex;align-items:center;gap:7px;background:linear-gradient(160deg,#2f2013,#241811);border:1px solid var(--line);padding:7px 13px;border-radius:99px;font-size:12px;color:var(--dim)}
+.chip b{font:700 12px ui-monospace,monospace;color:var(--brass2)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--verd);box-shadow:0 0 8px var(--verd)}
+.fam{display:flex;gap:10px;margin:18px 0 4px;flex-wrap:wrap}
+.fam button{position:relative;display:flex;align-items:center;gap:12px;border:1px solid rgba(217,164,65,.3);background:linear-gradient(160deg,#2c1e13,#20150d);color:var(--dim);border-radius:15px;padding:13px 18px;cursor:pointer;text-align:left;min-width:230px}
+.fam button.on{background:linear-gradient(160deg,var(--brass2),#b07a2a);color:#241505;border-color:#f4d488}
+.fam svg{width:32px;height:32px;stroke:currentColor;fill:none;stroke-width:1.7}
+.fam b{display:block;font-size:15px}.fam span{display:block;font-size:10.5px;opacity:.82;font-weight:700}
+.sh{display:flex;align-items:center;gap:13px;margin:44px 0 17px;flex-wrap:wrap}
+.tag{display:inline-flex;align-items:center;background:var(--paper2);color:#3a2712;font:800 11px ui-monospace,monospace;letter-spacing:1.3px;text-transform:uppercase;padding:7px 15px 7px 26px;border-radius:6px;position:relative}
+.tag:before{content:"";position:absolute;left:9px;top:50%;transform:translateY(-50%);width:8px;height:8px;border-radius:50%;background:#3a2712}
+.sh h2{font:800 clamp(21px,2.4vw,30px) Georgia,serif}
+.sh .sub{color:var(--mut);font-size:12.5px;width:100%;margin-top:-6px}
+.work{display:grid;grid-template-columns:412px 1fr;gap:22px;align-items:start}
+#controls{position:sticky;top:calc(var(--head) + 14px);max-height:calc(100vh - var(--head) - 28px);overflow-y:auto;padding:2px 8px 22px 2px}
+.grp{position:relative;background:linear-gradient(165deg,#2c1e13,#231710);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
+.grp:after{content:"";position:absolute;inset:5px;border:1px dashed rgba(232,217,189,.1);border-radius:12px;pointer-events:none}
+.gt{display:flex;align-items:center;gap:7px;font:800 10.5px ui-monospace,monospace;letter-spacing:1.5px;text-transform:uppercase;color:var(--brass);margin-bottom:13px}
+.gt em{font-style:normal;color:var(--mut)}
+.row{display:flex;align-items:center;gap:10px;margin-bottom:11px}.row:last-child{margin-bottom:0}
+.row label{font-size:12.5px;color:var(--dim);font-weight:800;flex-shrink:0}.grow{flex:1}
+.seg{display:flex;background:#1d130c;border:1px solid var(--line);border-radius:10px;padding:3px;gap:3px}
+.seg button{flex:1;border:0;background:transparent;color:var(--mut);font:800 11.5px Manrope;padding:7px 3px;border-radius:8px;cursor:pointer;white-space:nowrap}
+.seg button.on{background:linear-gradient(160deg,#8a5a2b,#6b4423);color:#e8d9bd}
+select,input[type=number],input[type=text]{background:#1d130c;border:1px solid rgba(217,164,65,.25);color:var(--ink);border-radius:9px;padding:8px 10px;font:13px ui-monospace,monospace;width:100%}
+select{font:700 12.5px Manrope;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23d9a441' fill='none' stroke-width='1.6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px;cursor:pointer}
+input[type=text]{font:700 12.5px Manrope}
+.dims{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.dim label{display:block;font-size:10.5px;color:var(--mut);font-weight:800;margin-bottom:4px}
+.step{display:flex}
+.step button{width:26px;border:1px solid rgba(217,164,65,.25);background:#241811;color:var(--brass);font-weight:900;cursor:pointer;flex-shrink:0}
+.step button:first-child{border-radius:9px 0 0 9px}.step button:last-child{border-radius:0 9px 9px 0}
+.step input{border-radius:0;border-left:0;border-right:0;text-align:center;padding:8px 2px;min-width:0}
+input[type=number]::-webkit-inner-spin-button{display:none}
+.sl{display:grid;grid-template-columns:98px 1fr 60px;align-items:center;gap:10px;margin-bottom:11px}
+.sl label{font-size:12px;color:var(--dim);font-weight:800}
+.sl output{font:12px ui-monospace,monospace;color:var(--brass2);text-align:right}
+input[type=range]{appearance:none;width:100%;height:22px;background:transparent;cursor:pointer}
+input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:4px;background:linear-gradient(90deg,#5a381d,var(--cognac) 60%,var(--brass))}
+input[type=range]::-webkit-slider-thumb{appearance:none;width:18px;height:18px;border-radius:50%;margin-top:-6px;background:radial-gradient(circle at 35% 30%,var(--brass2),#a06a32);border:2px solid #241505}
+input[type=range]::-moz-range-track{height:6px;border-radius:4px;background:linear-gradient(90deg,#5a381d,var(--cognac),var(--brass))}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--brass2);border:2px solid #241505}
+.ready{display:grid;gap:6px}
+.ri{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800;color:var(--mut);background:#1d130c;border:1px solid rgba(217,164,65,.15);border-radius:8px;padding:8px 10px}
+.ri i{font-style:normal;width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;border:1px solid var(--mut);flex-shrink:0}
+.ri.ok{color:#b5cc82;border-color:rgba(143,166,83,.35);background:rgba(143,166,83,.08)}
+.ri.ok i{background:var(--olive);color:#1d130c;border-color:var(--olive)}
+.hint{font-size:10.5px;color:var(--mut);margin-top:9px;line-height:1.45}
+.warnbar{margin-top:12px;padding:11px 14px;border-radius:11px;background:rgba(224,164,55,.1);border:1px solid rgba(224,164,55,.4);color:#ecc27a;font-size:12px;font-weight:800;line-height:1.5}
+.okbar{margin-top:12px;padding:11px 14px;border-radius:11px;background:rgba(143,166,83,.1);border:1px solid rgba(143,166,83,.35);color:#cfe0ab;font-size:12px;font-weight:800}
+.errbar{margin-top:12px;padding:11px 14px;border-radius:11px;background:rgba(192,69,58,.12);border:1px solid rgba(192,69,58,.4);color:#e8b8b2;font-size:12px;font-weight:800}
+.dg{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:7px}
+.dc{border:1px solid rgba(217,164,65,.22);background:#20150d;border-radius:10px;padding:8px 5px;cursor:pointer;text-align:center;color:var(--dim)}
+.dc svg{width:42px;height:30px;display:block;margin:0 auto 4px;stroke:currentColor;fill:none;stroke-width:1.6}
+.dc span{font-size:9.8px;font-weight:800;line-height:1.2;display:block}
+.dc.on{border-color:var(--brass);background:linear-gradient(170deg,#3a2712,#241811);color:var(--brass2);box-shadow:0 0 0 1px var(--brass)}
+.sw{display:flex;flex-wrap:wrap;gap:8px}
+.swatch{width:28px;height:28px;border-radius:50%;border:2px solid rgba(0,0,0,.5);cursor:pointer}
+.swatch.on{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--brass)}
+input[type=color]{width:28px;height:28px;border-radius:50%;border:2px dashed var(--brass);background:transparent;cursor:pointer;padding:0}
+.switch{position:relative;width:42px;height:23px;border-radius:99px;border:1px solid rgba(217,164,65,.35);background:#1d130c;cursor:pointer;flex-shrink:0}
+.switch:after{content:"";position:absolute;top:2px;left:2px;width:17px;height:17px;border-radius:50%;background:#7a6248;transition:.2s}
+.switch[aria-checked=true]{background:linear-gradient(90deg,#8a5a2b,var(--brass))}
+.switch[aria-checked=true]:after{left:21px;background:var(--brass2)}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.stage{position:relative;height:min(72vh,760px);min-height:440px;border-radius:20px;overflow:hidden;border:1px solid rgba(217,164,65,.22);background:radial-gradient(90% 70% at 50% 110%,#0d0803,transparent 55%),linear-gradient(175deg,#2c1d11,#191009 70%);box-shadow:var(--shadow)}
+.stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
+.lock{position:absolute;inset:0;z-index:7;display:flex;align-items:center;justify-content:center;background:rgba(14,8,3,.9);backdrop-filter:blur(7px);padding:20px}
+.lockcard{width:min(440px,100%);text-align:center}
+.lockcard svg{width:44px;height:44px;color:var(--brass);margin-bottom:10px}
+.lockcard h3{font:800 21px Georgia,serif;margin-bottom:5px}
+.lockcard p{font-size:12.5px;color:var(--dim);margin-bottom:13px}
+.lprog{height:8px;border-radius:5px;background:#1d130c;border:1px solid var(--line);overflow:hidden}
+.lprog i{display:block;height:100%;background:linear-gradient(90deg,var(--cognac),var(--brass2));transition:width .3s}
+#veil{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:rgba(23,16,9,.72);transition:opacity .5s}
+#veil.off{opacity:0;pointer-events:none}
+.spin{width:50px;height:50px;border-radius:50%;border:2.5px dashed var(--brass);animation:sp 2.6s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.hud{position:absolute;z-index:4;top:13px;left:13px;right:13px;display:flex;justify-content:space-between;pointer-events:none}
+.hud>*{pointer-events:auto}
+.hb{display:inline-flex;align-items:center;gap:6px;background:rgba(20,13,7,.75);border:1px solid var(--line);border-radius:99px;padding:6px 12px;font:10.5px ui-monospace,monospace;color:var(--brass2)}
+.hbtns{display:flex;gap:5px}
+.ib{width:34px;height:34px;border-radius:9px;border:1px solid rgba(217,164,65,.3);background:rgba(20,13,7,.75);color:var(--dim);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px}
+.ib.on{color:#241505;background:linear-gradient(160deg,var(--brass2),#b07a2a)}
+.ib:disabled{opacity:.35;cursor:not-allowed}
+.hdims{position:absolute;left:13px;bottom:13px;z-index:4;background:rgba(20,13,7,.78);border:1px solid var(--line);border-radius:9px;padding:6px 11px;font:11px ui-monospace,monospace;color:var(--dim);max-width:74%}
+.hdims b{color:var(--brass2)}
+.hhint{position:absolute;right:13px;bottom:13px;z-index:4;font-size:10.5px;color:var(--mut);background:rgba(20,13,7,.6);padding:5px 10px;border-radius:8px}
+.stb,.dlbar,.toolbar{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+.stb{margin-top:12px}
+.dlbar{margin-top:11px;background:linear-gradient(160deg,#33230f,#241811);border:1px solid rgba(217,164,65,.3);border-radius:13px;padding:11px 13px}
+.dlbar .lbl{font:900 11px ui-monospace,monospace;letter-spacing:1.2px;text-transform:uppercase;color:var(--brass)}
+.check{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:800;color:var(--dim);cursor:pointer}
+.check input{appearance:none;width:17px;height:17px;border-radius:5px;border:1.5px solid rgba(217,164,65,.45);background:#1d130c;cursor:pointer;position:relative;flex-shrink:0}
+.check input:checked{background:var(--brass)}
+.check input:checked:after{content:"✓";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#241505;font-size:11px;font-weight:900}
+.card{background:linear-gradient(165deg,#2c1e13,#231710);border:1px solid var(--line);border-radius:15px;padding:17px}
+.grid2{display:grid;grid-template-columns:1.2fr 1fr;gap:18px;align-items:start}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+#board{background:var(--mat);border:1px solid #3c5c4d;border-radius:17px;padding:24px;overflow:auto;max-height:680px;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:24px 24px}
+#board svg{display:block}
+.paper{background:var(--paper);border-radius:15px;padding:6px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;color:#33240f;font-size:12.5px}
+thead th{background:#e2d2b0;font-size:10px;letter-spacing:.9px;text-transform:uppercase;color:#6b4c22;padding:10px 11px;text-align:left}
+tbody td{padding:9px 11px;border-top:1px solid #d8c6a0;vertical-align:top}
+td.mono{font:700 12px ui-monospace,monospace;white-space:nowrap;color:#6b3f16}
+td .note{display:block;font-size:11px;color:#8a6b42;margin-top:2px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:11px;margin-bottom:16px}
+.stat{background:var(--paper);color:#3a2712;border-radius:12px;padding:13px 15px}
+.stat .v{font:800 18px ui-monospace,monospace;color:#6b3f16}
+.stat .l{font-size:10px;font-weight:900;letter-spacing:.5px;text-transform:uppercase;color:#8a6b42;margin-top:2px}
+.join-list{list-style:none;font-size:12px;color:var(--dim)}
+.join-list li{padding:7px 0;border-bottom:1px dashed rgba(232,217,189,.12)}
+.join-list b{color:var(--brass2)}
+.join-list code{font:700 11px ui-monospace,monospace;color:#f0c465}
+.tcard{background:linear-gradient(165deg,#2c1e13,#231710);border:1px solid var(--line);border-radius:15px;padding:17px}
+.tcard h4{font:800 15px Georgia,serif;color:var(--brass2);margin-bottom:10px}
+.tcard ul,.tcard ol{padding-left:18px;font-size:12.5px;color:var(--dim);line-height:1.6}
+.tcard li{margin-bottom:6px}
+.kv{display:flex;justify-content:space-between;gap:10px;font-size:12px;padding:5px 0;border-bottom:1px dashed rgba(232,217,189,.1)}
+.kv:last-child{border:0}
+.kv b{font:700 12px ui-monospace,monospace;color:var(--brass2);text-align:right}
+.overlay{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:18px}
+.scrim{position:absolute;inset:0;background:rgba(10,6,3,.78);backdrop-filter:blur(5px)}
+.modal{position:relative;width:min(1100px,100%);max-height:92vh;display:flex;flex-direction:column;background:linear-gradient(170deg,#2e2013,#221610);border:1px solid rgba(217,164,65,.35);border-radius:19px;overflow:hidden}
+.modal .mh{display:flex;align-items:center;gap:11px;padding:16px 20px;border-bottom:1px solid var(--line)}
+.modal .mh h3{font:800 19px Georgia,serif;flex:1}
+.modal .mb{flex:1;overflow:auto;padding:16px 20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px}
+.modal .mf{display:flex;gap:9px;padding:14px 20px;border-top:1px solid var(--line);flex-wrap:wrap;align-items:center}
+.thumb{background:#fff;border-radius:7px;overflow:hidden;border:1px solid #d8c6a0}
+.thumb svg{display:block;width:100%;height:auto}
+.cap{font-size:10.5px;color:var(--mut);text-align:center;padding:5px 3px 0;font-weight:800}
+#toasts{position:fixed;right:18px;bottom:18px;z-index:140;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{background:linear-gradient(160deg,#3a2712,#241811);border:1px solid rgba(217,164,65,.45);font-size:12.5px;font-weight:800;padding:10px 14px;border-radius:11px;max-width:360px}
+.reveal{opacity:0;transform:translateY(20px);transition:.7s}.reveal.in{opacity:1;transform:none}
+footer{border-top:2px dashed rgba(232,217,189,.14);margin-top:50px;padding:24px 20px 32px;text-align:center;color:var(--mut);font-size:12px}
+#printRoot{display:none}
+#bootError{position:fixed;left:14px;right:14px;bottom:14px;z-index:999;background:#7a2e2a;color:#fff;padding:12px 16px;border-radius:11px;font:700 13px Manrope,sans-serif}
+@media(max-width:1120px){.work,.grid2{grid-template-columns:1fr}#controls{position:static;max-height:none;overflow:visible;order:2}.stagecol{order:1}.stage{height:56vh;min-height:380px}}
+@media(max-width:640px){main{padding-left:11px;padding-right:11px}header{padding:0 11px;gap:8px}.brand b{display:none}.hhint{display:none}.fam button{min-width:0;flex:1;padding:10px 12px}.opts{grid-template-columns:1fr}}
+@media print{body>*:not(#printRoot){display:none!important}#printRoot{display:block!important}.print-page{page-break-after:always;break-after:page;width:210mm;height:297mm;overflow:hidden}.print-page svg{display:block}}
+@page{size:A4;margin:0}
+</style>
+</head>
+<body>
+<div class="bg"><i></i><i></i><i></i></div>
+<header>
+  <a class="brand" href="#studio"><svg viewBox="0 0 32 32" fill="none"><path d="M6 26L22 6" stroke="#d9a441" stroke-width="2.4" stroke-linecap="round"/><circle cx="6" cy="26" r="2" fill="#c0453a"/></svg><b>Ателье кожаных <i>изделий</i></b></a>
+  <nav><a href="#studio" class="on">Конфигуратор</a><a href="#print">Печать</a><a href="#split">Разделение</a><a href="#pattern">Раскрой</a><a href="#spec">Спецификация</a><a href="#assembly">Сборка</a></nav>
+  <button class="btn brass sm" id="topPdf" disabled>Скачать A4</button>
+</header>
+
+<main>
+<section class="mast reveal in">
+  <h1>Ателье кожаных <span>изделий</span></h1>
+  <p>Чехлы для ноутбуков, планшетов и э-книг + картхолдеры и обложки на документы РБ. Печать всегда на A4: легенда условных обозначений, места крепления фурнитуры и зоны склейки включаются по желанию. Крупные детали автоматически раскладываются на несколько листов A4 с метками совмещения.</p>
+  <div class="fam" id="familyTabs">
+    <button data-family="case" class="on"><svg viewBox="0 0 32 32"><rect x="4" y="7" width="24" height="18" rx="3"/><path d="M4 12h24"/></svg><span><b>Чехлы</b><span>ноутбуки · планшеты · э-книги</span></span></button>
+    <button data-family="card"><svg viewBox="0 0 32 32"><rect x="3" y="9" width="26" height="16" rx="3"/><rect x="7" y="13" width="18" height="4" rx="1"/></svg><span><b>Картхолдеры</b><span>карты · паспорта РБ · купюры</span></span></button>
+  </div>
+  <div class="chips">
+    <span class="chip"><span class="dot"></span><b id="chFamily">—</b></span>
+    <span class="chip">Каталог: <b id="chCatalog">—</b></span>
+    <span class="chip">Габарит: <b id="chDims">—</b></span>
+    <span class="chip">Кожа: <b id="chThick">—</b></span>
+    <span class="chip">Частей: <b id="chParts">—</b></span>
+    <span class="chip">Листов A4: <b id="chSheets">—</b></span>
+  </div>
+</section>
+
+<section id="studio" class="work">
+<aside id="controls">
+  <div class="grp"><div class="gt"><em>00</em> Выбор</div><div class="ready" id="readyList"></div>
+    <div class="row" style="margin-top:11px"><button class="btn ghost sm grow" id="resetPick">Сбросить выбор</button><button class="btn ghost sm" id="demoBtn">Демо</button></div></div>
+
+  <div class="grp" id="casePanel"><div class="gt"><em>01</em> Устройство</div>
+    <div class="row"><div class="seg grow" id="typeSeg"><button data-type="laptop" class="on">Ноутбуки</button><button data-type="tablet">Планшеты</button><button data-type="ebook">Э-книги</button></div></div>
+    <div class="row"><input id="search" type="text" placeholder="Поиск: air 2015, ipad 2, kindle…"></div>
+    <div class="row"><select id="brand"></select></div>
+    <div class="row"><select id="model"></select></div>
+    <p class="hint" id="catCount"></p></div>
+
+  <div class="grp" id="cardPanel" hidden><div class="gt"><em>01</em> Карта / документ</div>
+    <div class="row"><select id="cardFormat"></select></div>
+    <div class="sl"><label>Штук в стеке</label><input id="cardCount" type="range" min="1" max="14" step="1"><output id="cardCountOut"></output></div>
+    <div class="row"><div class="seg grow" id="orientSeg"><button data-or="h" class="on">Без поворота</button><button data-or="v">Поворот 90°</button></div></div>
+    <p class="hint" id="cardInfo"></p></div>
+
+  <div class="grp"><div class="gt"><em>02</em> Размеры</div>
+    <div class="dims">
+      <div class="dim"><label>A · ширина</label><div class="step"><button data-step="A:-1">−</button><input id="dimA" type="number" min="40" max="420" step="1"><button data-step="A:1">+</button></div></div>
+      <div class="dim"><label>B · высота</label><div class="step"><button data-step="B:-1">−</button><input id="dimB" type="number" min="30" max="320" step="1"><button data-step="B:1">+</button></div></div>
+      <div class="dim"><label>C · толщина</label><div class="step"><button data-step="C:-0.5">−</button><input id="dimC" type="number" min="0.5" max="35" step="0.5"><button data-step="C:0.5">+</button></div></div>
+    </div>
+    <div style="height:11px"></div>
+    <div class="sl"><label>Посадка</label><input id="ease" type="range" min="0" max="12" step="0.5"><output id="easeOut"></output></div>
+    <div class="sl"><label>Припуск</label><input id="seam" type="range" min="2" max="12" step="0.5"><output id="seamOut"></output></div></div>
+
+  <div class="grp"><div class="gt"><em>03</em> Конструкция</div><div class="dg" id="designGrid"></div></div>
+
+  <div class="grp"><div class="gt"><em>04</em> Кожа</div>
+    <div class="row"><div class="sw grow" id="swatches"></div><input type="color" id="color"></div>
+    <div class="row"><label>Отделка</label><select id="finish" class="grow"></select></div>
+    <div class="sl"><label>Толщина</label><input id="thick" type="range" min="0.6" max="4" step="0.1"><output id="thickOut"></output></div>
+    <div class="sl"><label>Патина</label><input id="patina" type="range" min="0" max="100" step="1"><output id="patinaOut"></output></div>
+    <div class="row"><label>Нить</label><select id="thread" class="grow"></select></div>
+    <div class="row"><label>Подкладка</label><select id="lining" class="grow"></select></div></div>
+
+  <div class="grp"><div class="gt"><em>05</em> Кусок кожи мастера</div>
+    <div class="row"><select id="stock"></select></div>
+    <div class="dims" id="customStock" hidden>
+      <div class="dim"><label>Ширина</label><input id="stockW" type="number" min="60" max="1600" step="1"></div>
+      <div class="dim"><label>Высота</label><input id="stockH" type="number" min="60" max="1600" step="1"></div>
+      <div class="dim"><label>Поле</label><input id="stockM" type="number" min="0" max="30" step="1"></div>
+    </div>
+    <div class="row"><label class="grow">Делить детали</label><button class="switch" id="splitToggle" role="switch"></button></div>
+    <div class="sl"><label>Стык</label><input id="joinAllow" type="range" min="3" max="18" step="1"><output id="joinOut"></output></div>
+    <div class="sl"><label>Макс. часть</label><input id="maxPart" type="range" min="60" max="420" step="5"><output id="maxPartOut"></output></div>
+    <p class="hint">Размер куска влияет только на деление деталей. Печать всегда A4.</p></div>
+
+  <div class="grp"><div class="gt"><em>06</em> Печать A4 · опции</div>
+    <div class="opts">
+      <label class="check"><input type="checkbox" id="pLegend">Легенда</label>
+      <label class="check"><input type="checkbox" id="pHardware">Фурнитура</label>
+      <label class="check"><input type="checkbox" id="pGlue">Зоны склейки</label>
+      <label class="check"><input type="checkbox" id="pStitch">Линии шва</label>
+      <label class="check"><input type="checkbox" id="pJoins">Стыки J</label>
+      <label class="check"><input type="checkbox" id="pLabels">Подписи</label>
+      <label class="check"><input type="checkbox" id="pMini">Мини-легенда</label>
+      <label class="check"><input type="checkbox" id="pCal">Калибровка</label>
+    </div>
+    <p class="hint">Лист всегда A4 210×297 мм, поле 10 мм. Деталь больше поля печатается несколькими листами с перекрытием 8 мм и метками V/H.</p></div>
+
+  <div class="grp"><div class="gt"><em>07</em> 3D</div>
+    <div class="sl"><label id="openLbl">Раскрытие</label><input id="open" type="range" min="0" max="180" step="1"><output id="openOut"></output></div>
+    <div class="sl"><label>Разнесение</label><input id="explode" type="range" min="0" max="100" step="1"><output id="explodeOut"></output></div>
+    <div class="sl"><label>Свет</label><input id="light" type="range" min="0.2" max="2.5" step="0.05"><output id="lightOut"></output></div>
+    <div class="sl"><label>Угол</label><input id="angle" type="range" min="0" max="360" step="1"><output id="angleOut"></output></div>
+    <div class="row"><label class="grow">Автоповорот</label><button class="switch" id="rotToggle" role="switch"></button></div>
+    <div class="row"><label class="grow">Наполнение</label><button class="switch" id="fillToggle" role="switch"></button></div>
+    <div class="row"><label>Качество</label><select id="quality" class="grow"><option value="high">Высокое</option><option value="med">Среднее</option><option value="low">Эконом</option></select></div>
+    <div class="row" style="margin-top:11px"><button class="btn ghost sm grow" id="resetAll">Сбросить всё</button><button class="btn ghost sm" id="randomBtn">Random</button></div></div>
+</aside>
+
+<div class="stagecol">
+  <div class="stage" id="stage">
+    <canvas id="gl"></canvas><canvas id="fallback" hidden></canvas>
+    <div class="lock" id="lock"><div class="lockcard">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
+      <h3>Выберите изделие</h3><p>Нужно выбрать модель/формат и конструкцию. После этого откроются 3D, раскрой и экспорт.</p>
+      <div id="lockList" class="ready"></div><div class="lprog" style="margin-top:12px"><i id="lockBar"></i></div>
+    </div></div>
+    <div id="veil" class="off"><div class="spin"></div><p>Загружаем 3D…</p></div>
+    <div class="hud"><span class="hb" id="hudBadge"><span class="dot"></span>WebGL · PBR</span><div class="hbtns"><button class="ib" id="camBtn" disabled title="Сброс камеры">⟳</button><button class="ib on" id="rotBtn" disabled title="Автоповорот">↻</button><button class="ib" id="openBtn" disabled title="Раскрыть / закрыть">⇱</button><button class="ib" id="pngBtn" disabled title="PNG">📷</button></div></div>
+    <div class="hdims" id="hudDims">—</div><div class="hhint">ЛКМ — вращение · колесо — масштаб</div>
+  </div>
+  <div class="stb"><button class="btn sm" id="camBtn2" disabled>Сброс камеры</button><button class="btn sm" id="openBtn2" disabled>Раскрыть / закрыть</button><button class="btn sm" id="pngBtn2" disabled>PNG превью</button></div>
+  <div class="dlbar"><span class="lbl">Экспорт</span><button class="btn brass" id="pdfBtn" disabled>PDF · A4</button><button class="btn" id="svgBtn" disabled>SVG выкройки</button><button class="btn" id="techBtn" disabled>TXT техкарта</button><button class="btn ghost" id="previewBtn" disabled>Листы</button></div>
+</div>
+</section>
+
+<section id="print" class="reveal">
+  <div class="sh"><span class="tag">05 · Печать</span><h2>Документ на печать — всегда A4</h2><span class="sub">Состав документа настраивается. Легенда объясняет все условные обозначения, фурнитура и зоны склейки показываются только если включены.</span></div>
+  <div class="grid2">
+    <div class="card"><h4 style="color:var(--brass2);margin-bottom:10px">Состав пакета</h4><div id="printSummary" class="stats"></div><div id="printWarn"></div></div>
+    <div class="card"><h4 style="color:var(--brass2);margin-bottom:10px">Условные обозначения</h4><svg id="legendPreview" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 250" style="width:100%;height:auto;background:var(--paper);border-radius:12px"></svg></div>
+  </div>
+</section>
+
+<section id="split" class="reveal">
+  <div class="sh"><span class="tag">06 · Разделение</span><h2>Деление деталей под кусок кожи</h2><span class="sub">Кромка режется по длине, панели — по оптимальной оси. Стыки помечены парными метками J…A / J…B и припуском.</span></div>
+  <div id="splitWarn"></div>
+  <div class="grid2" style="margin-top:14px">
+    <div class="card"><h4 style="color:var(--brass2);margin-bottom:10px">Кусок мастера</h4><div id="stockSummary" class="stats"></div></div>
+    <div class="card"><h4 style="color:var(--brass2);margin-bottom:10px">Стыки</h4><ul class="join-list" id="joinList"></ul></div>
+  </div>
+</section>
+
+<section id="pattern" class="reveal">
+  <div class="sh"><span class="tag">07 · Раскрой</span><h2>Выкройка на экране</h2><span class="sub">Сплошная — рез · красный пунктир — шов · синий — сгиб/обхват · фиолетовый J — стык · янтарная зона — склейка · кружок с крестом — фурнитура.</span></div>
+  <div class="toolbar"><span class="grow"></span><button class="btn sm" id="svgBtn2" disabled>SVG</button><button class="btn sm" id="previewBtn2" disabled>Листы A4</button><button class="btn brass sm" id="pdfBtn2" disabled>PDF A4</button></div>
+  <div id="board"><svg id="patternSvg" xmlns="http://www.w3.org/2000/svg"></svg></div>
+</section>
+
+<section id="spec" class="reveal">
+  <div class="sh"><span class="tag">08 · Спецификация</span><h2>Детали, расход, проверка</h2><span class="sub">Состав учитывает деление. Листы A4 считаются с учётом раскладки крупных деталей.</span></div>
+  <div class="stats"><div class="stat"><div class="v" id="stArea">—</div><div class="l">Кожи</div></div><div class="stat"><div class="v" id="stParts">—</div><div class="l">Частей</div></div><div class="stat"><div class="v" id="stJoins">—</div><div class="l">Стыков</div></div><div class="stat"><div class="v" id="stSheets">—</div><div class="l">Листов A4</div></div><div class="stat"><div class="v" id="stThread">—</div><div class="l">Нити</div></div></div>
+  <div class="grid2"><div class="paper"><table><thead><tr><th>Деталь</th><th>Размер</th><th>Стыки</th><th>A4</th></tr></thead><tbody id="specBody"></tbody></table></div>
+  <div class="card"><h4 style="color:var(--brass2);margin-bottom:10px">Самопроверка</h4><ul class="join-list" id="checkList"></ul><button class="btn sm" id="selfTest" style="margin-top:12px;width:100%">Прогнать тесты</button><div id="testReport"></div></div></div>
+</section>
+
+<section id="assembly" class="reveal">
+  <div class="sh"><span class="tag">09 · Сборка</span><h2>Техкарта</h2><span class="sub">Порядок операций адаптируется под конструкцию, деление и фурнитуру.</span></div>
+  <div class="grid3" id="techCards"></div>
+</section>
+</main>
+
+<footer>Ателье кожаных изделий · печать A4 · легенда / фурнитура / склейка опционально · 3D-раскрытие</footer>
+<div id="printRoot"></div><div id="toasts"></div>
+
+<div class="overlay" id="preview" hidden><div class="scrim" id="previewScrim"></div><div class="modal">
+  <div class="mh"><h3>Листы A4 · 210×297 мм</h3><button class="ib" id="closePreview">×</button></div>
+  <div style="margin:13px 20px 0;padding:10px 14px;border-radius:10px;background:rgba(224,164,55,.1);border:1px solid rgba(224,164,55,.35);color:#ecc27a;font-size:12px;font-weight:800">Печать 100%, поля «Нет», колонтитулы выключить. Первый лист — калибровка.</div>
+  <div class="mb" id="previewPages"></div>
+  <div class="mf"><select id="dpi" style="width:auto"><option value="200">200 dpi</option><option value="300" selected>300 dpi</option><option value="400">400 dpi</option></select><button class="btn brass" id="doPdf">Скачать PDF</button><button class="btn" id="doPrint">Печать</button><span class="grow"></span><button class="btn ghost" id="closePreview2">Закрыть</button></div>
+</div></div>
+
+<div id="pdfProg" hidden style="position:fixed;inset:0;z-index:130;display:flex;align-items:center;justify-content:center;background:rgba(10,6,3,.82)"><div style="width:min(420px,90vw);background:linear-gradient(165deg,#2e2013,#221610);border:1px solid rgba(217,164,65,.4);border-radius:16px;padding:24px;text-align:center"><h4 style="font:800 17px Georgia,serif;margin-bottom:8px">Собираем PDF A4</h4><p id="progText" style="font-size:12px;color:var(--dim);margin-bottom:14px">Подготовка…</p><div style="height:10px;border-radius:6px;background:#1d130c;overflow:hidden;border:1px solid var(--line)"><i id="progBar" style="display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cognac),var(--brass2));transition:width .2s"></i></div></div></div>
+
+<script>
+window.__booted=false;
+window.addEventListener("error",function(e){var b=document.getElementById("bootError");if(!b){b=document.createElement("div");b.id="bootError";document.body.appendChild(b)}b.textContent="Ошибка: "+(e.message||"")+(e.lineno?" · строка "+e.lineno+":"+e.colno:"")});
+</script>
+
+<script type="module">
+/* ================= утилиты ================= */
+const $=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(s));
+const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+const nv=(v,d=0)=>Number.isFinite(Number(v))?Number(v):d;
+const fmt=n=>Number(nv(n)).toLocaleString("ru-RU",{maximumFractionDigits:1});
+const fx=(n,d=1)=>Number(nv(n)).toFixed(d);
+const lerp=(a,b,t)=>a+(b-a)*t;
+const DEG=Math.PI/180;
+
+/* ================= каталог устройств (полный) ================= */
+const DEVICES={
+laptop:[
+["Apple","MacBook 13 Unibody (2008–2010)",330,231,27.4],["Apple","MacBook 12 (2015–2017)",280.5,196.5,13.1],
+["Apple","MacBook Air 11 (2010–2015)",300,192,17],["Apple","MacBook Air 13 (2010–2017)",325,227,17],
+["Apple","MacBook Air 13 Retina (2018–2019)",304.1,212.4,15.6],["Apple","MacBook Air 13 M1 (2020)",304.1,212.4,16.1],
+["Apple","MacBook Air 13 M2/M3/M4",304.1,215,11.3],["Apple","MacBook Air 15 M2/M3/M4",340.4,237.6,11.5],
+["Apple","MacBook Pro 13 (2009–2012)",325,227,24.1],["Apple","MacBook Pro 13 Retina (2012–2015)",314,219,18],
+["Apple","MacBook Pro 13 Touch Bar (2016–2020)",304.1,212.4,14.9],["Apple","MacBook Pro 13 M1/M2",304.1,212.4,15.6],
+["Apple","MacBook Pro 14 M1/M2 Pro",312.6,221.2,15.5],["Apple","MacBook Pro 14 M3/M4/M5",312.6,221.2,15.5],
+["Apple","MacBook Pro 15 Retina (2012–2015)",358.9,247.1,18],["Apple","MacBook Pro 15 Touch Bar (2016–2019)",349.3,240.7,15.5],
+["Apple","MacBook Pro 16 Intel (2019)",357.9,245.9,16.2],["Apple","MacBook Pro 16 M1–M4",355.7,248.1,16.8],
+["Apple","MacBook Pro 17 (2009–2011)",393,267,25],
+["Dell","XPS 13 9343/9350 (2015)",304,200,15],["Dell","XPS 13 9360 (2016–2017)",304,200,15],
+["Dell","XPS 13 9370/9380 (2018–2019)",302,199,11.6],["Dell","XPS 13 9300/9310 (2020)",296,199,14.8],
+["Dell","XPS 13 9315 (2022)",295,199,14.8],["Dell","XPS 13 Plus 9320",295.3,199,15.3],
+["Dell","XPS 14 9440 (2024)",320,216,19],["Dell","XPS 16 9640 (2024)",358,240,18.7],
+["Dell","XPS 15 9550/9560",357,235,17],["Dell","XPS 15 9570/7590",357,235,17],
+["Dell","XPS 15 9500/9510",344.7,230,18],["Dell","XPS 17 9700/9710",374.4,248,19.5],
+["Dell","Latitude 7440 (2023)",321,212,17],["Dell","Latitude 7490 (2018)",331,220,17.5],
+["Dell","Inspiron 15 3000",380,260,21],["Dell","Precision 5570",344.7,230,18],
+["HP","Spectre x360 13 (2017–2020)",306,218,14.5],["HP","Spectre x360 14 (2021–2024)",313,220,16.9],
+["HP","Spectre 13 (2016–2019)",325,229,10.4],["HP","Envy 13 (2018–2021)",307,212,14.9],
+["HP","Envy x360 15",357,229,18.4],["HP","Pavilion 15",360,234,17.9],
+["HP","ProBook 450 G8",360,236,19.9],["HP","EliteBook 840 G5/G6",326,234,17.7],
+["HP","EliteBook 840 G9/G10",315,211,19],["HP","ZBook Firefly 14",315,215,19.9],
+["Lenovo","ThinkPad X220/X230",305,206.5,26.6],["Lenovo","ThinkPad X270",305.5,208.5,20.3],
+["Lenovo","ThinkPad T480",336.6,232.5,19.95],["Lenovo","ThinkPad T14 Gen3",329,227,17.9],
+["Lenovo","ThinkPad X1 Carbon G6–G9",323.5,217.1,15.95],["Lenovo","ThinkPad X1 Carbon G10–G12",315.6,222.5,15.4],
+["Lenovo","Yoga Slim 7 14",312,221,14.9],["Lenovo","Yoga 9i 14",316,220,15.9],
+["Lenovo","IdeaPad Slim 5 16",356,229,16.9],["Lenovo","IdeaPad 3 15",359,236,19.9],
+["Lenovo","Legion 5 16",363,260,25],["Lenovo","Legion Slim 7",355,259,17.6],
+["ASUS","Zenbook UX305",324,226,12.3],["ASUS","Zenbook UX330/UX331",323,225,13.9],
+["ASUS","Zenbook 14 OLED",313,220,16.9],["ASUS","Zenbook S13 OLED",296,210,10.9],
+["ASUS","ROG Zephyrus G14",311,220,18.5],["ASUS","ROG Zephyrus G15",355,243,19.9],
+["ASUS","Vivobook 15",359,235,19.9],["ASUS","Vivobook S14",315,222,15.9],
+["ASUS","TUF Gaming 15",354,251,24.9],["ASUS","ProArt Studiobook 16",362,264,21.9],
+["Acer","Swift 3 14",319,208,15.9],["Acer","Swift Go 14",312,214,14.9],
+["Acer","Swift X 14",322,212,17.9],["Acer","Aspire 5 15",362,237,17.9],
+["Acer","Aspire E15",381,259,30],["Acer","Nitro 5 15",363,255,23.9],
+["Acer","Predator Helios 300",363,255,22.9],["Acer","TravelMate P2 14",323,223,19.9],
+["Huawei","MateBook X Pro (2018–2020)",304,217,14.6],["Huawei","MateBook X Pro (2022–2024)",310,222,13.5],
+["Huawei","MateBook 13",286,211,14.9],["Huawei","MateBook 14",307,223,15.9],
+["Huawei","MateBook 16",351,254,17.8],["Huawei","MateBook D14",322,214,15.9],
+["Huawei","MateBook D15",357,229,16.9],["Huawei","MateBook D16",356,248,17],
+["Microsoft","Surface Laptop 1/2 13.5",308,223,14.5],["Microsoft","Surface Laptop 3/4 13.5",308,223,14.5],
+["Microsoft","Surface Laptop 5 13.5",308,223,14.5],["Microsoft","Surface Laptop 7 13.8",301,220,17.5],
+["Microsoft","Surface Laptop 15",339.5,244,14.7],["Microsoft","Surface Book 2 13.5",312,232,23],
+["Microsoft","Surface Book 3 15",343,251,23],["Microsoft","Surface Laptop Studio",323,230,18.9],
+["MSI","Prestige 14",319,219,15.9],["MSI","Stealth 16",358,259,19.9],
+["MSI","Katana 15",359,259,24.9],["MSI","GS66 Stealth",358,248,19.8],["MSI","Modern 14",319,219,19.3],
+["Razer","Blade Stealth 13",304,210,15.3],["Razer","Blade 14",310,228,17.9],
+["Razer","Blade 15",355,235,16.9],["Razer","Blade 16",355,244,21.9],
+["Samsung","Galaxy Book Ion 15",355,228,12.9],["Samsung","Galaxy Book2 Pro 15",355,226,11.7],
+["Samsung","Galaxy Book3 Pro 14",312,223,11.3],["Samsung","Galaxy Book4 Pro 14",312,223,11.6],
+["Samsung","Galaxy Book4 Pro 16",355,250,12.5],
+["LG","Gram 14",312,214,16.8],["LG","Gram 15",356,228,16.8],["LG","Gram 16",355,242,16.8],
+["LG","Gram 17",380,259,17.8],["LG","Gram Style 15",355,227,15.9]
+],
+tablet:[
+["Apple","iPad (2010)",242.8,189.7,13.4],["Apple","iPad 2 (2011)",241.2,185.7,8.8],
+["Apple","iPad 3/4 (2012)",241.2,185.7,9.4],["Apple","iPad 5 (2017)",240,169.5,7.5],
+["Apple","iPad 6 (2018)",240,169.5,7.5],["Apple","iPad 7 (2019)",250.6,174.1,7.5],
+["Apple","iPad 8 (2020)",250.6,174.1,7.5],["Apple","iPad 9 (2021)",250.6,174.1,7.5],
+["Apple","iPad 10 (2022)",248.6,179.5,7],["Apple","iPad A16 (2025)",248.6,179.5,7],
+["Apple","iPad Air (2013)",240,169.5,7.5],["Apple","iPad Air 2 (2014)",240,169.5,6.1],
+["Apple","iPad Air 3 (2019)",250.6,174.1,6.1],["Apple","iPad Air 4/5",247.6,178.5,6.1],
+["Apple","iPad Air 11 M2/M3",247.6,178.5,6.1],["Apple","iPad Air 13 M2/M3",280.6,214.9,6.1],
+["Apple","iPad mini (2012)",200,134.7,7.2],["Apple","iPad mini 2/3",200,134.7,7.5],
+["Apple","iPad mini 4 (2015)",203.2,134.8,6.1],["Apple","iPad mini 5 (2019)",203.2,134.8,6.1],
+["Apple","iPad mini 6 (2021)",195.4,134.8,6.3],["Apple","iPad mini 7 A17 Pro",195.4,134.8,6.3],
+["Apple","iPad Pro 9.7 (2016)",240,169.5,6.1],["Apple","iPad Pro 10.5 (2017)",250.6,174.1,6.1],
+["Apple","iPad Pro 12.9 (2015–2017)",305.7,220.6,6.9],["Apple","iPad Pro 12.9 (2018–2022)",280.6,214.9,6.4],
+["Apple","iPad Pro 11 (2018–2022)",247.6,178.5,5.9],["Apple","iPad Pro 11 M4/M5",249.7,177.5,5.3],
+["Apple","iPad Pro 13 M4/M5",281.6,215.5,5.1],
+["Samsung","Galaxy Tab 7.0 (2010)",190.1,120.5,12],["Samsung","Galaxy Tab 10.1 (2011)",256.7,175.3,8.6],
+["Samsung","Galaxy Tab 2 7.0",193.7,122.4,10.5],["Samsung","Galaxy Tab 2 10.1",256.6,175.3,9.7],
+["Samsung","Galaxy Tab 3 7.0",188,111.5,9.9],["Samsung","Galaxy Tab 3 8.0",209.8,136.5,7.4],
+["Samsung","Galaxy Tab 3 10.1",243.4,176.1,8],["Samsung","Galaxy Tab 4 10.1",243.4,176.4,8],
+["Samsung","Galaxy Tab A 8.0 (2019)",210,124.4,8],["Samsung","Galaxy Tab A 10.1 (2019)",245,149.4,7.5],
+["Samsung","Galaxy Tab A7 10.4",247.6,157.4,7],["Samsung","Galaxy Tab A8 10.5",246.8,161.9,6.9],
+["Samsung","Galaxy Tab A9 8.7",211,124.7,8],["Samsung","Galaxy Tab A9+ 11",257.1,168.7,6.9],
+["Samsung","Galaxy Tab S 8.4",212.8,125.6,6.6],["Samsung","Galaxy Tab S 10.5",247.3,177.3,6.6],
+["Samsung","Galaxy Tab S2 9.7",240,169,5.6],["Samsung","Galaxy Tab S3 9.7",237.3,169,6],
+["Samsung","Galaxy Tab S4 10.5",249.3,164.3,7.1],["Samsung","Galaxy Tab S5e",245,160,5.5],
+["Samsung","Galaxy Tab S6",244.5,159.5,5.7],["Samsung","Galaxy Tab S6 Lite",244.5,154.3,7],
+["Samsung","Galaxy Tab S7 11",253.8,165.3,6.3],["Samsung","Galaxy Tab S7+/S8+ 12.4",285,185,5.7],
+["Samsung","Galaxy Tab S7 FE",284.8,185,6.3],["Samsung","Galaxy Tab S8 11",253.8,165.3,6.3],
+["Samsung","Galaxy Tab S8 Ultra",326.4,208.6,5.5],["Samsung","Galaxy Tab S9 11",254.3,165.8,5.9],
+["Samsung","Galaxy Tab S9 FE",254.3,165.8,6.5],["Samsung","Galaxy Tab S9+ 12.4",285.4,185.4,5.7],
+["Samsung","Galaxy Tab S9 Ultra",326.4,208.6,5.5],["Samsung","Galaxy Tab S10+",285.4,185.4,5.6],
+["Samsung","Galaxy Tab S10 Ultra",326.4,208.6,5.4],["Samsung","Galaxy Tab S11",253.8,165.3,5],
+["Xiaomi","Mi Pad 1 (2014)",202.1,135.4,8.5],["Xiaomi","Mi Pad 2/3",200.4,132.6,6.95],
+["Xiaomi","Mi Pad 4",200.2,120.3,7.9],["Xiaomi","Pad 5",254.7,166.3,6.85],
+["Xiaomi","Pad 6",254,165.2,6.5],["Xiaomi","Pad 7 / 7 Pro",251.2,173.4,6.2],
+["Huawei","MediaPad M5 8.4",212.6,124.8,7.3],["Huawei","MediaPad M5 10.8",258.7,171.8,7.3],
+["Huawei","MediaPad M6 10.8",257,170,7.2],["Huawei","MatePad 10.4",245.2,154.9,7.35],
+["Huawei","MatePad 11",253.8,165.3,7.25],["Huawei","MatePad 11.5",260,176,6.85],
+["Huawei","MatePad Pro 10.8",246,159,7.2],["Huawei","MatePad Pro 11",249.2,160.4,5.9],
+["Huawei","MatePad Pro 12.6",286.5,184.7,6.7],["Huawei","MatePad Pro 13.2",289,196,5.5],
+["Lenovo","Tab M8",199.9,121.8,8.15],["Lenovo","Tab M10",244,153.3,8.2],
+["Lenovo","Tab M10 Plus Gen3",251.2,158.8,7.45],["Lenovo","Tab M11",255,166,7.15],
+["Lenovo","Tab P11",258.4,163,7.5],["Lenovo","Tab P11 Pro",264.3,171.4,5.8],
+["Lenovo","Tab P12",293,190,6.9],["Lenovo","Tab P12 Pro",285.6,184.5,5.6],
+["Lenovo","Yoga Tab 11",256.8,169,7.9],["Lenovo","Yoga Tab 13",293,203,24.9],
+["Microsoft","Surface RT",274.6,172,9.3],["Microsoft","Surface Pro 3",292.1,201.4,9.1],
+["Microsoft","Surface Pro 4/5/6",292.1,201.4,8.5],["Microsoft","Surface Pro 7",292,201,8.5],
+["Microsoft","Surface Pro 8",287,208,9.3],["Microsoft","Surface Pro 9/11",287,209,9.3],
+["Microsoft","Surface Go 1/2/3",245,175,8.3],
+["Google","Nexus 7 (2012)",198.5,120,10.5],["Google","Nexus 9 (2014)",228.2,153.7,8],
+["Google","Pixel Slate",290.9,202.1,7],["Google","Pixel Tablet",258,169,8.1],
+["OnePlus","Pad Go",254.5,180.4,6.9],["OnePlus","Pad",258,189,6.5],["OnePlus","Pad 2",268.7,195.1,6.5],
+["Honor","Pad 8",278.5,180.1,6.9],["Honor","Pad X9",268.6,168.6,6.9],
+["Honor","Pad 9",278,180,6.9],["Honor","MagicPad 13",291.6,196.6,6.5],
+["Realme","Pad",246.1,155.9,6.9],["Realme","Pad X",246.1,155.9,7.1],["Realme","Pad 2",258,169,6.9],
+["Amazon","Fire 7 (2022)",180.7,117.6,9.7],["Amazon","Fire HD 8",202,137,9.7],
+["Amazon","Fire HD 10 / Plus",246,165,9.8],["Amazon","Fire Max 11",259.1,180.6,7.5],
+["Amazon","Kindle Fire HDX 7",186,128,9],
+["Nokia","N1",200.7,138.6,6.9],["Nokia","T21",248.6,157.3,7.5]
+],
+ebook:[
+["Amazon Kindle","Kindle 1 (2007)",135,190.5,18],["Amazon Kindle","Kindle 2 (2009)",135,203,9.1],
+["Amazon Kindle","Kindle DX / DX Graphite",183,264,9.7],["Amazon Kindle","Kindle Keyboard 3",123,190,8.5],
+["Amazon Kindle","Kindle 4 (2011)",114,166,8.7],["Amazon Kindle","Kindle Touch",120,172,10.1],
+["Amazon Kindle","Kindle 5 (2012)",114,166,8.7],["Amazon Kindle","Paperwhite 1 (2012)",117,169,9.1],
+["Amazon Kindle","Paperwhite 2 (2013)",117,169,9.1],["Amazon Kindle","Kindle Voyage",115,162,7.6],
+["Amazon Kindle","Kindle 7 (2014)",119,169,10.2],["Amazon Kindle","Paperwhite 3 (2015)",117,169,9.1],
+["Amazon Kindle","Kindle Oasis 1 (2016)",122,143,8.5],["Amazon Kindle","Kindle 8 (2016)",115,160,9.1],
+["Amazon Kindle","Kindle Oasis 2 (2017)",141,159,8.4],["Amazon Kindle","Paperwhite 4 (2018)",116,167,8.2],
+["Amazon Kindle","Kindle Oasis 3 (2019)",141,159,8.4],["Amazon Kindle","Kindle 10 (2019)",113,160,8.7],
+["Amazon Kindle","Paperwhite 5 (2021)",125,174,8.1],["Amazon Kindle","Kindle 11 (2022)",113,160,8.7],
+["Amazon Kindle","Kindle Scribe (2022)",196,229,5.8],["Amazon Kindle","Kindle 12 (2024)",113,160,8.7],
+["Amazon Kindle","Paperwhite 6 (2024)",127.5,176.7,7.8],["Amazon Kindle","Paperwhite Signature (2024)",127.5,176.7,7.8],
+["Amazon Kindle","Kindle Colorsoft (2024)",127.5,176.7,7.8],["Amazon Kindle","Kindle Scribe (2024)",196,229,5.7],
+["Amazon Kindle","Scribe Colorsoft (2025)",196,229,5.8],
+["PocketBook","301 Plus (2009)",110,175,9],["PocketBook","302 (2010)",128,197,10],
+["PocketBook","360 (2010)",110,175,9],["PocketBook","602 / 603",110,175,9],
+["PocketBook","611 Basic",110,175,9],["PocketBook","612 Basic 2",110,175,9],
+["PocketBook","614 Basic 3",108,161.3,8],["PocketBook","622 Touch",110,175,9],
+["PocketBook","623 Touch Lux",108,161.3,8],["PocketBook","624 Touch Lux 2",108,161.3,8],
+["PocketBook","625 Basic Lux",108,161.3,8],["PocketBook","626 Touch Lux 3",108,161.3,8],
+["PocketBook","627 Touch Lux 4",108,161.3,8],["PocketBook","628 Touch Lux 5",108,161.3,8],
+["PocketBook","630 Sense",108,161.3,8],["PocketBook","631 Touch HD",108,161.3,8],
+["PocketBook","632 Touch HD 3",108,161.3,8],["PocketBook","633 Color",108,161.3,8],
+["PocketBook","640 Aqua",108,161.3,8],["PocketBook","641 Aqua 2",108,161.3,8],
+["PocketBook","650 Ultra",110,175,9],["PocketBook","606 Basic 3",108,161.3,8],
+["PocketBook","616 Basic 4",108,161.3,8],["PocketBook","617 Basic Lux 3",108,161.3,8],
+["PocketBook","618 Verse / Basic Lux 4",108,161.3,8],["PocketBook","634 Verse Pro",108,161.3,8],
+["PocketBook","634K Verse Pro Color",108,161.3,8],["PocketBook","700 Era",154.5,174,7.8],
+["PocketBook","700K Era Color",154.5,174,7.8],["PocketBook","840 InkPad 2",161.5,195,8],
+["PocketBook","740 InkPad 3",161.5,195,8],["PocketBook","741 InkPad 3 Pro",161.5,195,8],
+["PocketBook","742 InkPad Color",161.5,195,8],["PocketBook","743 InkPad 4",161.5,195,7.8],
+["PocketBook","743K3 InkPad Color 3",161.5,195,7.8],["PocketBook","Color Note",161.5,195,8],
+["PocketBook","1040 InkPad X",174,248.5,8],["PocketBook","InkPad X Pro",174,248.5,8],
+["PocketBook","InkPad Eo",174,226.4,7.1],
+["ONYX BOOX","Darwin / Darwin 9",116,162,8.7],["ONYX BOOX","Vasco da Gama 2/3",116,162,8.7],
+["ONYX BOOX","James Cook / Cook 2",116,162,8.7],["ONYX BOOX","Livingstone / Livingstone 3",116,162,8.7],
+["ONYX BOOX","Columbus / Columbus 2",116,162,8.7],["ONYX BOOX","Magellan",116,162,8.7],
+["ONYX BOOX","Cortes",116,162,8.7],["ONYX BOOX","Faust 5",116,162,8.7],
+["ONYX BOOX","Dickens",116,162,8.7],["ONYX BOOX","i62HD",116,162,8.7],
+["ONYX BOOX","C67ML",116,162,8.7],["ONYX BOOX","T62",116,162,8.7],
+["ONYX BOOX","Poke 2 (2020)",108,148,6.8],["ONYX BOOX","Poke 3",108,148,6.8],
+["ONYX BOOX","Poke 4",108,148,6.8],["ONYX BOOX","Poke 5",108,148,6.8],["ONYX BOOX","Poke 6",108,148,6.8],
+["ONYX BOOX","Palma",80,159,8],["ONYX BOOX","Palma 2",80,159,8],
+["ONYX BOOX","Leaf",137,162,6.9],["ONYX BOOX","Leaf 2",137,162,6.9],
+["ONYX BOOX","Leaf 3 / Go 7",137,156.5,6.8],["ONYX BOOX","Go Color 7",137,156.5,6.8],
+["ONYX BOOX","Page",137,156.5,6.8],["ONYX BOOX","Nova (2019)",137,197.3,7.7],
+["ONYX BOOX","Nova 2 / 3",137,197.3,7.7],["ONYX BOOX","Nova Air",136.5,194,6.3],
+["ONYX BOOX","Nova Air 2",136.5,194,6.3],["ONYX BOOX","Note (2018)",195,225,6.8],
+["ONYX BOOX","Note 2",195,225,6.8],["ONYX BOOX","Note 3",195,225,5.8],
+["ONYX BOOX","Note Air",195,225,5.8],["ONYX BOOX","Note Air 2 Plus",195,225,5.8],
+["ONYX BOOX","Note Air 3",195,225,5.8],["ONYX BOOX","Note Air 4 C",195,225,5.8],
+["ONYX BOOX","Go 10.3",195,225,5.8],["ONYX BOOX","Tab Ultra",195,225,6.6],
+["ONYX BOOX","Tab Ultra C Pro",195,225,6.6],["ONYX BOOX","Max 2",226,283,6.3],
+["ONYX BOOX","Max 3",226,283,6.3],["ONYX BOOX","Max Lumi",226,283,6.3],
+["ONYX BOOX","Max Lumi 2",226,283,6.3],["ONYX BOOX","Tab X",226,283,6.3],
+["ONYX BOOX","Note Max",225.6,300.6,5.9],
+["Kobo","Original (2010)",130,180,10],["Kobo","Touch (2011)",114,165,10],
+["Kobo","Glo (2012)",114,165,10],["Kobo","Mini (2012)",102,133,10],
+["Kobo","Aura (2013)",115,157,9.2],["Kobo","Aura HD (2013)",128,175,10.4],
+["Kobo","Aura H2O (2014)",129,172,8.8],["Kobo","Glo HD (2015)",115,157,9.2],
+["Kobo","Aura Edition 2",115,157,9.2],["Kobo","Aura One (2016)",138.5,195,6.9],
+["Kobo","Clara HD (2018)",112,159,8.6],["Kobo","Forma (2018)",160,177.7,8.5],
+["Kobo","Libra H2O (2019)",144.6,161.6,9],["Kobo","Nia (2020)",112,159,9.2],
+["Kobo","Libra 2 (2021)",144.6,161.6,9],["Kobo","Sage (2021)",160.5,189.4,7.5],
+["Kobo","Elipsa (2021)",189,227,7.5],["Kobo","Clara 2E (2022)",112,159,8.6],
+["Kobo","Elipsa 2E (2023)",189,227,7.5],["Kobo","Clara BW (2024)",112,159,8.6],
+["Kobo","Clara Colour (2024)",112,159,8.6],["Kobo","Libra Colour (2024)",144.6,161.6,8.3],
+["Tolino","Shine (2013)",115,157,9.2],["Tolino","Vision 2 (2013)",115,157,9.2],
+["Tolino","Shine 2 HD (2015)",115,157,9.2],["Tolino","Vision 3 HD (2015)",115,157,9.2],
+["Tolino","Vision 4 HD (2017)",115,157,9.2],["Tolino","Epos 1 (2017)",138.5,195,7.5],
+["Tolino","Page (2018)",115,157,9.2],["Tolino","Shine 3 (2018)",112,159,8.6],
+["Tolino","Vision 5 (2019)",112,159,8.6],["Tolino","Epos 2 (2019)",138.5,195,7.5],
+["Tolino","Page 2 (2020)",115,157,9.2],["Tolino","Vision 6 (2021)",112,161.6,8.6],
+["Tolino","Shine 4 (2022)",112,159,8.6],["Tolino","Epos 3 (2022)",138.5,195,7.5],
+["Barnes & Noble","Nook Classic (2009)",124,196,12],["Barnes & Noble","Nook Simple Touch",127,165,12],
+["Barnes & Noble","Nook GlowLight (2013)",127,165,12],["Barnes & Noble","Nook GlowLight Plus",113,163,8.6],
+["Barnes & Noble","Nook GlowLight 3",113,163,8.6],["Barnes & Noble","Nook GlowLight 4",112,162.6,8.6],
+["Barnes & Noble","Nook GlowLight 4e",112,159,8.6],["Barnes & Noble","Nook GlowLight 4 Plus",127,181,7.6],
+["Sony","PRS-500 (2006)",122,175,13],["Sony","PRS-505 (2007)",122,175,7.5],
+["Sony","PRS-700 (2008)",127,175,10],["Sony","PRS-300 (2009)",104,145,7.1],
+["Sony","PRS-600 (2009)",122,175,10],["Sony","PRS-900 (2009)",140,203,10],
+["Sony","PRS-350 (2010)",104,145,9.1],["Sony","PRS-650 (2010)",122,175,9.1],
+["Sony","PRS-T1 (2011)",110,165,8.7],["Sony","PRS-T2 (2012)",110,165,8.7],
+["Sony","PRS-T3 (2013)",110,158,9.4],
+["Digma","R650",114,160,9],["Digma","K2",115,161,8.7],["Digma","E600",116,164,9],
+["Digma","S650",116,164,8.7],["Digma","Q650",116,164,9],["Digma","e63S",116,164,8.7],
+["Ritmix","RBK-615",115,160,9],["Ritmix","RBK-616",115,160,9],["Ritmix","RBK-670",116,164,9],["Ritmix","RBK-680",116,164,8.7],
+["teXet","TB-138",116,164,9],["teXet","TB-146",116,164,9],["teXet","TB-170",116,164,9],["teXet","TB-176",116,164,9.5]
+]
+};
+const TYPE_LABEL={laptop:"ноутбуков",tablet:"планшетов",ebook:"электронных книг"};
+
+const CARD_FORMATS=[
+{id:"id1",group:"Карты",name:"Банковская карта ID-1",w:85.6,h:53.98,t:.8},
+{id:"id1e",group:"Карты",name:"ID-1 с эмбоссированием",w:85.6,h:53.98,t:1},
+{id:"biz",group:"Карты",name:"Визитка 90×50",w:90,h:50,t:.35},
+{id:"pass",group:"Карты",name:"Пропуск / транспортная",w:85.6,h:54,t:1.2},
+{id:"pp_by",group:"Документы РБ",name:"Паспорт РБ (книжка)",w:88,h:125,t:4},
+{id:"pp_by_bio",group:"Документы РБ",name:"Биометрический паспорт РБ",w:88,h:125,t:5},
+{id:"id_by",group:"Документы РБ",name:"ID-карта РБ (2021+)",w:85.6,h:54,t:.9},
+{id:"dl_by",group:"Документы РБ",name:"Права РБ 105×74",w:105,h:74,t:1},
+{id:"pp_by_open",group:"Документы РБ",name:"Паспорт РБ в развороте",w:176,h:125,t:4},
+{id:"pp",group:"Документы РФ",name:"Паспорт РФ (книжка)",w:88,h:125,t:4},
+{id:"lic",group:"Документы РФ",name:"Права РФ 105×74",w:105,h:74,t:1}
+];
+const CASE_DESIGNS={slip:["Слипкейс","slip"],pocket:["С карманом","pocket"],strap:["С ремешком","flap band"],lock:["С замком","flap lock"],diag:["Косой клапан","flap diag"],zip:["На молнии","zip"],handle:["С ручкой","flap handle"],folio:["Фолио","wrap"],stud:["На кнопке","flap stud"],roll:["Скрутка","wrap roll"],organizer:["Органайзер","flap pocket org"]};
+const CARD_DESIGNS={ch_slip:["Минимал-слип","slip"],ch_slots:["Слотовый","slots"],ch_pull:["С язычком","pull"],ch_bifold:["Бифолд","wrap"],ch_snap:["Конверт-кнопка","flap stud"],ch_mag:["Магнитный флип","wrap magnet"],ch_clip:["С зажимом","clip"],ch_zip:["На молнии","zip"],ch_acc:["Аккордеон","acc"],ch_long:["Лонг-кошелёк","wrap long"],ch_fan:["Веер","fan"]};
+const COLORS=["#4a2e1c","#8a5a2b","#a4713a","#6e2f2a","#26201c","#5c5233","#c9a876","#2e3a4d"];
+const FINISHES=[["crazy","Crazy Horse",1],["smooth","Гладкая",.92],["saffiano","Сафьян",.82]];
+const THREADS=[["cream","Кремовая","#e8d9bd"],["tone","В тон",null],["black","Чёрная","#221a14"],["red","Красная","#b0453a"]];
+const LININGS=[["none","Без подкладки",0,1],["suede","Замша 0,7 мм",.7,.95],["thin","Кожа 0,8 мм",.8,.9]];
+const STOCKS=[{id:"a4",name:"A4",w:210,h:297},{id:"a3",name:"A3",w:297,h:420},{id:"a2",name:"A2",w:420,h:594},{id:"20x20",name:"Обрезок 20×20 см",w:200,h:200},{id:"30x30",name:"Кусок 30×30 см",w:300,h:300},{id:"30x40",name:"Кусок 30×40 см",w:300,h:400},{id:"custom",name:"Свой размер",w:250,h:350}];
+const SHEET={w:210,h:297,m:10,ov:8};
+SHEET.pw=SHEET.w-2*SHEET.m;SHEET.ph=SHEET.h-2*SHEET.m;
+
+const DEF={family:"case",type:"laptop",brand:"all",search:"",model:"",A:304,B:215,C:12,cardFmt:"id1",cards:4,orient:"h",design:"",cardDesign:"",ease:6,seam:6,thick:2.2,color:"#8a5a2b",finish:"crazy",patina:45,thread:"cream",lining:"suede",stock:"a4",stockW:250,stockH:350,stockM:8,split:true,join:8,maxPart:220,open:0,explode:0,light:1.5,angle:35,autoRot:true,fill:true,quality:"high",print:{legend:true,hardware:true,glue:true,stitch:true,joins:true,labels:true,mini:true,cal:true},picked:{device:false,design:false}};
+function sanitize(x){
+  const d=Object.assign({},DEF,x||{});
+  d.picked=Object.assign({},DEF.picked,(x&&x.picked)||{});
+  d.print=Object.assign({},DEF.print,(x&&x.print)||{});
+  if(d.family!=="case"&&d.family!=="card")d.family="case";
+  if(!DEVICES[d.type])d.type="laptop";
+  if(d.design&&!CASE_DESIGNS[d.design])d.design="";
+  if(d.cardDesign&&!CARD_DESIGNS[d.cardDesign])d.cardDesign="";
+  if(!CARD_FORMATS.some(f=>f.id===d.cardFmt))d.cardFmt="id1";
+  if(!STOCKS.some(s=>s.id===d.stock))d.stock="a4";
+  if(!FINISHES.some(f=>f[0]===d.finish))d.finish="crazy";
+  if(!THREADS.some(t=>t[0]===d.thread))d.thread="cream";
+  if(!LININGS.some(l=>l[0]===d.lining))d.lining="suede";
+  if(d.orient!=="h"&&d.orient!=="v")d.orient="h";
+  if(["low","med","high"].indexOf(d.quality)<0)d.quality="high";
+  if(!/^#[0-9a-f]{6}$/i.test(d.color))d.color=DEF.color;
+  ["A","B","C","ease","seam","thick","stockW","stockH","stockM","join","maxPart","open","explode","light","angle","patina","cards"].forEach(k=>{d[k]=nv(d[k],DEF[k])});
+  d.cards=clamp(Math.round(d.cards),1,14);
+  d.A=clamp(d.A,40,420);d.B=clamp(d.B,30,320);d.C=clamp(d.C,.5,35);
+  d.thick=clamp(d.thick,.6,4);d.join=clamp(d.join,3,18);d.maxPart=clamp(d.maxPart,60,420);d.stockM=clamp(d.stockM,0,30);
+  d.open=clamp(d.open,0,180);d.explode=clamp(d.explode,0,100);
+  d.split=!!d.split;d.autoRot=!!d.autoRot;d.fill=!!d.fill;
+  Object.keys(DEF.print).forEach(k=>{d.print[k]=!!d.print[k]});
+  d.picked.device=!!d.picked.device;d.picked.design=!!d.picked.design;
+  return d;
+}
+let S=sanitize(null);
+try{S=sanitize(JSON.parse(localStorage.getItem("atelierA4v1")||"null"))}catch(e){}
+function save(){setTimeout(()=>{try{localStorage.setItem("atelierA4v1",JSON.stringify(S))}catch(e){}},120)}
+
+const isCard=()=>S.family==="card";
+const famName=()=>isCard()?"Картхолдеры":"Чехлы";
+const designId=()=>isCard()?S.cardDesign:S.design;
+const designs=()=>isCard()?CARD_DESIGNS:CASE_DESIGNS;
+const def=()=>designs()[designId()]||["",""];
+const designName=()=>{const d=designs()[designId()];return d?d[0]:"Конструкция не выбрана"};
+const edgeLabel=g=>g?"С кромкой":"Без кромки";
+const ready=()=>!!(S.picked.device&&S.picked.design);
+const cardFmt=()=>CARD_FORMATS.find(f=>f.id===S.cardFmt)||CARD_FORMATS[0];
+const liningT=()=>(LININGS.find(l=>l[0]===S.lining)||LININGS[0])[2];
+const skinFlex=()=>(FINISHES.find(f=>f[0]===S.finish)||FINISHES[0])[2]*(LININGS.find(l=>l[0]===S.lining)||LININGS[0])[3];
+function syncCardDims(){const f=cardFmt();let w=f.w,h=f.h;if(S.orient==="v"){w=f.h;h=f.w}S.A=Math.round(w*10)/10;S.B=Math.round(h*10)/10;S.C=Math.round(S.cards*f.t*10)/10}
+function stock(){const s=STOCKS.find(x=>x.id===S.stock)||STOCKS[0];return S.stock==="custom"?{id:"custom",name:"Свой кусок",w:S.stockW,h:S.stockH,m:S.stockM}:{id:s.id,name:s.name,w:s.w,h:s.h,m:S.stockM}}
+const flatLimit=()=>(isCard()?5+3.4*S.thick:10+3*S.thick)*skinFlex();
+const forceGus=()=>/acc|zip/.test(def()[1]);
+const useGus=()=>forceGus()||S.C>flatLimit();
+const wrapAllow=()=>Math.PI/2*(S.C+S.thick)-S.C;
+function threadHex(){const t=THREADS.find(x=>x[0]===S.thread)||THREADS[0];if(t[2])return t[2];const n=parseInt(S.color.slice(1),16);return "#"+[((n>>16)&255),((n>>8)&255),(n&255)].map(v=>Math.floor(v*.78).toString(16).padStart(2,"0")).join("")}
+const fmtName=()=>isCard()?cardFmt().name:(S.model&&S.model!=="custom"?S.model:"свой размер");
+
+/* ================= геометрия ================= */
+function roundedRect(x,y,w,h,r){
+  r=Math.max(0,Math.min(r,w/2,h/2));const p=[];
+  const cs=[[x+w-r,y+r,-Math.PI/2,0],[x+w-r,y+h-r,0,Math.PI/2],[x+r,y+h-r,Math.PI/2,Math.PI],[x+r,y+r,Math.PI,Math.PI*1.5]];
+  cs.forEach(c=>{for(let i=0;i<=8;i++){const a=lerp(c[2],c[3],i/8);p.push([c[0]+r*Math.cos(a),c[1]+r*Math.sin(a)])}});
+  return p;
+}
+function inset(poly,d){
+  let area=0;
+  for(let i=0;i<poly.length;i++){const a=poly[i],b=poly[(i+1)%poly.length];area+=a[0]*b[1]-b[0]*a[1]}
+  const sg=area>0?1:-1,lines=[];
+  for(let i=0;i<poly.length;i++){
+    const a=poly[i],b=poly[(i+1)%poly.length];let dx=b[0]-a[0],dy=b[1]-a[1];const l=Math.hypot(dx,dy)||1;dx/=l;dy/=l;
+    lines.push({p:[a[0]+(sg>0?-dy:dy)*d,a[1]+(sg>0?dx:-dx)*d],d:[dx,dy]});
+  }
+  return lines.map((L,i)=>{
+    const P=lines[(i-1+lines.length)%lines.length],den=P.d[0]*L.d[1]-P.d[1]*L.d[0];
+    if(Math.abs(den)<1e-9)return L.p.slice();
+    const t=((L.p[0]-P.p[0])*L.d[1]-(L.p[1]-P.p[1])*L.d[0])/den;
+    return [P.p[0]+P.d[0]*t,P.p[1]+P.d[1]*t];
+  });
+}
+const path=p=>"M"+p.map(q=>fx(q[0],2)+","+fx(q[1],2)).join("L")+"Z";
+function plen(p){let l=0;for(let i=0;i<p.length;i++){const a=p[i],b=p[(i+1)%p.length];l+=Math.hypot(b[0]-a[0],b[1]-a[1])}return l}
+function dotsAlong(poly,step){
+  const out=[];let acc=0;
+  for(let i=0;i<poly.length;i++){
+    const a=poly[i],b=poly[(i+1)%poly.length],l=Math.hypot(b[0]-a[0],b[1]-a[1]);
+    let t=0;
+    while(acc+l*(t+ (step-acc%step)/l )<=l){}
+    let d=step-(acc%step);
+    while(d<l){out.push([lerp(a[0],b[0],d/l),lerp(a[1],b[1],d/l)]);d+=step}
+    acc+=l;
+  }
+  return out;
+}
+const hole=(type,x,y,w,h,label)=>({type,x,y,w,h,label:label||""});
+const mark=(x1,y1,x2,y2,label)=>({x1,y1,x2,y2,label:label||""});
+function piece(id,name,w,h,poly,o){o=o||{};return{id,name,w,h,poly,qty:o.qty||1,notes:o.notes||"",holes:o.holes||[],folds:o.folds||[],marks:o.marks||[],notches:o.notches||[],stitch:inset(poly,S.seam),joins:[]}}
+
+function deriveRaw(){
+  const g=useGus(),t=S.thick,s=S.seam,e=S.ease,wa=wrapAllow(),P=[],kind=def()[1];
+  if(isCard()){
+    const A=S.A,B=S.B,W=A+e+(g?0:wa),H=B+e,depth=g?S.C+2:S.C,pw=W+2*s,ph=H+2*s;
+    if(/zip/.test(kind)){
+      P.push(piece("front","Передняя панель",pw,ph,roundedRect(0,0,pw,ph,7)));
+      P.push(piece("back","Задняя панель",pw,ph,roundedRect(0,0,pw,ph,7)));
+      const rr=Math.min(6,W/5,H/5),L=2*(W-2*rr)+2*(H-2*rr)+2*Math.PI*(rr+t/2),gw=depth+2*t+2*s;
+      P.push(piece("gusset","Кромка молнии",L,gw,roundedRect(0,0,L,gw,3),{notches:[{x:L/2,label:"центр"},{x:W*.5,label:"начало молнии"},{x:L-W*.5,label:"конец молнии"}],notes:"замкнутый контур"}));
+      P.push(piece("pull","Пуллер",50,18,roundedRect(0,0,50,18,4),{folds:[mark(25,0,25,18,"перегиб")],holes:[hole("circle",10,9,5,5,"Ø5")]}));
+      P.push(piece("ziptab","Концевик молнии",22,14,roundedRect(0,0,22,14,3),{qty:2}));
+    }else if(/wrap/.test(kind)){
+      const long=/long/.test(kind),lw=long?Math.max(160,A+74):A+e,lh=long?Math.max(92,B+38):H,sp=depth+2*t,WW=2*lw+sp+2*s,HH=lh+2*s;
+      const holes=/magnet/.test(kind)?[hole("slot",WW-s-22,HH/2-6,4,1.5,"магнит"),hole("slot",WW-s-22,HH/2+6,4,1.5,"")]:[];
+      P.push(piece("wrap","Обёртка",WW,HH,roundedRect(0,0,WW,HH,8),{folds:[mark(s+lw,0,s+lw,HH,"сгиб 1"),mark(s+lw+sp,0,s+lw+sp,HH,"сгиб 2")],holes,notes:"корешок "+fmt(sp)+" мм"}));
+      for(let i=0;i<4;i++){const sw=lw-4+2*s,sh=B*.62+s+8;P.push(piece("slot"+i,"Слот "+(i+1),sw,sh,roundedRect(0,0,sw,sh,5),{folds:[mark(0,8,sw,8,"подгибка")]}))}
+      if(/magnet/.test(kind))P.push(piece("magtab","Магнитный хлястик",70,26,roundedRect(0,0,70,26,10),{folds:[mark(14,0,14,26,"пришить")],holes:[hole("slot",46,9,4,1.5,"магнит"),hole("slot",46,17,4,1.5,"")]}));
+    }else if(/fan/.test(kind)){
+      const n=clamp(S.cards,3,6),qw=A+10+2*s,qh=B+6+2*s;
+      P.push(piece("plate","Пластина веера",qw,qh,roundedRect(0,0,qw,qh,5),{qty:n,holes:[hole("circle",12,qh-12,4,4,"ось Ø4")]}));
+      P.push(piece("cover","Крышка веера",qw+2,qh+2,roundedRect(0,0,qw+2,qh+2,5),{qty:2,holes:[hole("circle",13,qh-11,4,4,"ось Ø4")]}));
+    }else if(/acc/.test(kind)){
+      P.push(piece("outer","Внешняя панель",pw,ph,roundedRect(0,0,pw,ph,7),{qty:2}));
+      const gw=depth+2*t+2*s,gh=H-10+2*s,pl=clamp(S.cards,3,8),folds=[];
+      for(let i=1;i<pl;i++)folds.push(mark(gw*i/pl,0,gw*i/pl,gh,i===1?"гофре":""));
+      P.push(piece("side","Боковина-гофре",gw,gh,roundedRect(0,0,gw,gh,4),{qty:2,folds,notes:pl+" секций"}));
+      P.push(piece("div","Разделитель",W-6+2*s,H-8+2*s,roundedRect(0,0,W-6+2*s,H-8+2*s,4),{qty:pl-1}));
+    }else{
+      P.push(piece("back","Задняя панель",pw,ph,roundedRect(0,0,pw,ph,7)));
+      const fh=B*.72+e+2*s;
+      P.push(piece("front","Передняя панель",pw,fh,roundedRect(0,0,pw,fh,7),{notes:"ниже зада · выемка под палец"}));
+      if(/slots|clip/.test(kind)){const n=/clip/.test(kind)?2:3;for(let i=0;i<n;i++){const sh=B*.62+s+8;P.push(piece("slot"+i,"Слот "+(i+1),pw,sh,roundedRect(0,0,pw,sh,5),{folds:[mark(0,8,pw,8,"подгибка")]}))}}
+      if(/pull/.test(kind))P.push(piece("ribbon","Язычок-экстрактор",130,12,roundedRect(0,0,130,12,3),{folds:[mark(20,0,20,12,"перегиб")]}));
+      if(/flap/.test(kind)){
+        P.push(piece("flap","Клапан",pw,B*.45,roundedRect(0,0,pw,B*.45,8),{holes:[hole("circle",pw/2-4.5,18,3.5,3.5,"кнопка Ø3,5"),hole("circle",pw/2+4.5,18,3.5,3.5,"")]}));
+        P.push(piece("studpad","Площадка кнопки",30,30,roundedRect(0,0,30,30,6),{holes:[hole("circle",10.5,15,3.5,3.5,"Ø3,5"),hole("circle",19.5,15,3.5,3.5,"")],notes:"усилитель"}));
+      }
+      if(/clip/.test(kind))P.push(piece("cliptab","Площадка зажима",70,26,roundedRect(0,0,70,26,5),{holes:[hole("circle",25,13,3,3,"заклёпка Ø3"),hole("circle",45,13,3,3,"")],notes:"зажим 60×25 мм"}));
+    }
+    return finish({family:"card",gusset:g,depth,finW:W,finH:H,cardW:A,cardH:B,outer:{w:W+2*t,h:H+2*t,c:depth+2*t},pieces:P});
+  }
+  const Wi=S.A+e,Hi=S.B+e,Ci=S.C+4,depth=g?Ci:S.C,W=g?Wi:Wi+wa,H=g?Hi:Hi+wa*.5,pw=W+2*s,ph=H+2*s;
+  if(/wrap/.test(kind)){
+    const sp=depth+2*t,WW=2*W+sp+2*s;
+    P.push(piece("wrap","Обёртка",WW,ph,roundedRect(0,0,WW,ph,12),{folds:[mark(s+W,0,s+W,ph,"сгиб 1"),mark(s+W+sp,0,s+W+sp,ph,"сгиб 2")]}));
+    const iw=W-20+2*s,ih=H*.55+s+12;
+    P.push(piece("inner","Внутренний карман",iw,ih,roundedRect(0,0,iw,ih,6),{folds:[mark(0,12,iw,12,"подгибка")]}));
+  }else{
+    P.push(piece("front","Передняя панель",pw,ph,roundedRect(0,0,pw,ph,12+s),{marks:g?[]:[mark(s+wa/2,s,s+wa/2,ph-s,"обхват"),mark(pw-s-wa/2,s,pw-s-wa/2,ph-s,"")]}));
+    const bh=ph+(/flap/.test(kind)?H*.42:0);
+    P.push(piece("back","Задняя панель"+(/flap/.test(kind)?" + клапан":""),pw,bh,roundedRect(0,0,pw,bh,12+s),{holes:/stud|lock/.test(kind)?[hole("circle",pw/2,24,4,4,"фурнитура")]:[]}));
+    if(g){
+      const r=Math.min(12,Wi/4,Hi/4),L=2*(Hi-2*r)+(Wi-2*r)+2*Math.PI*(r+t/2),gw=Ci+2*t+2*s;
+      P.push(piece("gusset","Кромка · дно и бока",L,gw,roundedRect(0,0,L,gw,4),{notches:[{x:L/2,label:"центр низа"},{x:L*.25,label:"угол"},{x:L*.75,label:"угол"}],notes:"длинная полоса"}));
+    }
+  }
+  if(/pocket|org/.test(kind)){const qw=W*.55+2*s,qh=H*.32+2*s+12;P.push(piece("pocket","Накладной карман",qw,qh,roundedRect(0,0,qw,qh,8),{folds:[mark(0,12,qw,12,"подгибка")]}))}
+  if(/zip/.test(kind)){
+    P.push(piece("pull","Пуллер молнии",60,20,roundedRect(0,0,60,20,5),{folds:[mark(30,0,30,20,"перегиб")],holes:[hole("circle",12,10,5,5,"Ø5")]}));
+    P.push(piece("ziptab","Концевик молнии",25,16,roundedRect(0,0,25,16,3),{qty:2}));
+  }
+  if(/stud|lock/.test(kind))P.push(piece("hwpad","Площадка фурнитуры",36,36,roundedRect(0,0,36,36,8),{holes:[hole("circle",13.5,18,3.5,3.5,"Ø3,5"),hole("circle",22.5,18,3.5,3.5,"")],notes:"усилитель"}));
+  if(/handle/.test(kind)){
+    P.push(piece("handle","Ручка",280,30,roundedRect(0,0,280,30,8),{folds:[mark(22,0,22,30,"перегиб"),mark(258,0,258,30,"перегиб")],holes:[hole("circle",18,15,4,4,"Ø4"),hole("circle",262,15,4,4,"Ø4")]}));
+    P.push(piece("hpad","Усилитель ручки",50,32,roundedRect(0,0,50,32,6),{qty:2,holes:[hole("circle",17,16,4,4,"Ø4"),hole("circle",33,16,4,4,"")]}));
+  }
+  if(/org/.test(kind))P.push(piece("penloop","Петля для ручки",60,18,roundedRect(0,0,60,18,3),{qty:2,folds:[mark(6,0,6,18,"перегиб"),mark(54,0,54,18,"перегиб")]}));
+  return finish({family:"case",gusset:g,depth,finW:W,finH:H,outer:{w:W+2*t,h:H+2*t,c:depth+2*t},pieces:P});
+}
+function finish(M){
+  M.t=S.thick;M.s=S.seam;M.flatLimit=flatLimit();M.area=0;M.stitchLen=0;M.edge=0;
+  M.pieces.forEach(p=>{M.area+=p.w*p.h*p.qty;M.stitchLen+=plen(p.stitch)*p.qty;M.edge+=plen(p.poly)*p.qty});
+  M.area/=10000;M.edge/=1000;M.weight=M.area*100*(M.t/10)*.86;M.pitch=isCard()?3:3.5;M.stitches=Math.round(M.stitchLen/M.pitch);
+  return M;
+}
+function clipPoly(poly,rect){
+  let out=poly.slice();
+  const edges=[["x",rect.x,1],["x",rect.x+rect.w,-1],["y",rect.y,1],["y",rect.y+rect.h,-1]];
+  const inter=(a,b,axis,val)=>{const k=axis==="x"?0:1,t=(val-a[k])/((b[k]-a[k])||1e-9);return[lerp(a[0],b[0],t),lerp(a[1],b[1],t)]};
+  edges.forEach(e=>{
+    const axis=e[0],val=e[1],sign=e[2],inp=out;out=[];
+    if(!inp.length)return;
+    const inside=p=>sign>0?p[axis==="x"?0:1]>=val:p[axis==="x"?0:1]<=val;
+    for(let i=0;i<inp.length;i++){
+      const a=inp[i],b=inp[(i+1)%inp.length],ia=inside(a),ib=inside(b);
+      if(ia&&ib)out.push(b);else if(ia&&!ib)out.push(inter(a,b,axis,val));
+      else if(!ia&&ib){out.push(inter(a,b,axis,val));out.push(b)}
+    }
+  });
+  return out;
+}
+function transformMarks(arr,dx,dy,rect){
+  const out=[];
+  arr.forEach(m=>{
+    const hasX=Number.isFinite(m.x),hasY=Number.isFinite(m.y);
+    const cx=hasX?m.x:(Number.isFinite(m.x1)&&Number.isFinite(m.x2)?(m.x1+m.x2)/2:null);
+    const cy=hasY?m.y:(Number.isFinite(m.y1)&&Number.isFinite(m.y2)?(m.y1+m.y2)/2:null);
+    if(cx===null||cx<rect.x-.01||cx>rect.x+rect.w+.01)return;
+    if(cy!==null&&(cy<rect.y-.01||cy>rect.y+rect.h+.01))return;
+    const o=Object.assign({},m);
+    if(hasX)o.x=m.x-dx;if(hasY)o.y=m.y-dy;
+    if(Number.isFinite(m.x1))o.x1=m.x1-dx;if(Number.isFinite(m.x2))o.x2=m.x2-dx;
+    if(Number.isFinite(m.y1))o.y1=m.y1-dy;if(Number.isFinite(m.y2))o.y2=m.y2-dy;
+    out.push(o);
+  });
+  return out;
+}
+function splitPieces(M){
+  const st=stock(),uw=Math.max(30,st.w-2*st.m),uh=Math.max(30,st.h-2*st.m);
+  const limX=Math.max(40,Math.min(uw,S.maxPart)),limY=Math.max(40,Math.min(uh,S.maxPart));
+  const jm=new Map();let seq=0;const out=[];
+  M.stock=st;M.rawPieces=M.pieces;
+  if(!S.split){
+    M.pieces.forEach(p=>{for(let q=0;q<p.qty;q++)out.push(Object.assign({},p,{uid:p.id+"_"+q,name:p.name+(p.qty>1?" · экз. "+(q+1):""),partOf:null,joins:[]}))});
+    M.pieces=out;M.joins=[];M.oversize=out.filter(p=>p.w>uw+.01||p.h>uh+.01).length;return M;
+  }
+  M.pieces.forEach(p=>{
+    for(let q=0;q<p.qty;q++){
+      let items=[{poly:p.poly,w:p.w,h:p.h,holes:p.holes,folds:p.folds,marks:p.marks,notches:p.notches,joins:[]}];
+      for(let pass=0;pass<4;pass++){
+        const next=[];let changed=false;
+        items.forEach(it=>{
+          const ox=it.w>limX+.01,oy=it.h>limY+.01;
+          if(!ox&&!oy){next.push(it);return}
+          let axis;
+          if(/gusset|side|ribbon|handle|tie|wrap/.test(p.id)&&ox)axis="x";
+          else if(ox&&oy)axis=(it.w/limX>=it.h/limY)?"x":"y";else axis=ox?"x":"y";
+          const lim=axis==="x"?limX:limY,usable=lim-2*S.join;
+          if(usable<20){next.push(it);return}
+          const len=axis==="x"?it.w:it.h,n=Math.max(2,Math.ceil(len/usable)),step=len/n,ids=[];
+          for(let i=0;i<n-1;i++){seq++;const id="J"+seq;ids.push(id);jm.set(id,{id,axis,allow:S.join,parts:[]})}
+          for(let i=0;i<n;i++){
+            const a=i*step,b=(i+1)*step,aa=i>0?a-S.join:a,bb=i<n-1?b+S.join:b;
+            const rect=axis==="x"?{x:aa,y:0,w:bb-aa,h:it.h}:{x:0,y:aa,w:it.w,h:bb-aa};
+            const poly=clipPoly(it.poly,rect).map(pt=>[pt[0]-rect.x,pt[1]-rect.y]);
+            if(poly.length<3)continue;
+            const nj=[];
+            it.joins.forEach(j=>{
+              if(j.axis===axis){const pos=j.pos-(axis==="x"?rect.x:rect.y);if(pos>=-.01&&pos<=(axis==="x"?rect.w:rect.h)+.01)nj.push({axis:j.axis,pos,id:j.id,side:j.side})}
+              else nj.push({axis:j.axis,pos:j.pos,id:j.id,side:j.side});
+            });
+            if(i>0)nj.push({axis,pos:a-aa,id:ids[i-1],side:"A"});
+            if(i<n-1)nj.push({axis,pos:b-aa,id:ids[i],side:"B"});
+            next.push({poly,w:rect.w,h:rect.h,holes:transformMarks(it.holes,rect.x,rect.y,rect),folds:transformMarks(it.folds,rect.x,rect.y,rect),marks:transformMarks(it.marks,rect.x,rect.y,rect),notches:transformMarks(it.notches,rect.x,rect.y,rect),joins:nj});
+          }
+          changed=true;
+        });
+        items=next;if(!changed)break;
+      }
+      items.forEach((it,i)=>{
+        const name=p.name+(items.length>1?" · часть "+(i+1)+"/"+items.length:"")+(p.qty>1?" · экз. "+(q+1):"");
+        it.joins.forEach(j=>{const r=jm.get(j.id);if(r&&r.parts.indexOf(name)<0)r.parts.push(name)});
+        out.push({id:p.id,uid:p.id+"_"+q+"_"+i,name,w:it.w,h:it.h,poly:it.poly,stitch:inset(it.poly,S.seam),qty:1,notes:items.length>1?"Стык "+S.join+" мм · совмещать J":p.notes,holes:it.holes,folds:it.folds,marks:it.marks,notches:it.notches,joins:it.joins,partOf:items.length>1?p.id:null});
+      });
+    }
+  });
+  M.pieces=out;M.joins=Array.from(jm.values()).filter(j=>j.parts.length>1);
+  M.oversize=out.filter(p=>p.w>uw+.01||p.h>uh+.01).length;
+  return M;
+}
+const derive=()=>splitPieces(deriveRaw());
+function tilesOf(w,h){return{nx:Math.max(1,Math.ceil((w-SHEET.ov)/(SHEET.pw-SHEET.ov))),ny:Math.max(1,Math.ceil((h-SHEET.ov)/(SHEET.ph-SHEET.ov)))}}
+const sheetsOf=M=>M.pieces.reduce((a,p)=>{const t=tilesOf(p.w,p.h);return a+t.nx*t.ny},0)+(S.print.cal?1:0)+(S.print.legend?1:0);
+
+/* ================= SVG деталей ================= */
+function pieceSVG(p,o){
+  o=o||{};
+  const print=!!o.print;
+  const cut=print?"#111":"#3a2a1a",paper=print?"#fff":"#f3ead8",stc=print?"#b03030":"#a04a3a",fold=print?"#3a6ea5":"#4f6d8a",jc="#9b3fbf",gl="#e0a437";
+  let g="";
+  if(o.glue){
+    g+='<path d="'+path(p.poly)+" "+path(p.stitch)+'" fill="'+gl+'" fill-opacity="0.2" fill-rule="evenodd" stroke="none"/>';
+    dotsAlong(inset(p.poly,Math.max(1.2,S.seam/2)),11).forEach(d=>{g+='<circle cx="'+fx(d[0],2)+'" cy="'+fx(d[1],2)+'" r="0.7" fill="'+gl+'" fill-opacity="0.85"/>'});
+    p.joins.forEach(j=>{
+      if(j.axis==="x")g+='<rect x="'+fx(j.pos-S.join/2)+'" y="0" width="'+fx(S.join)+'" height="'+fx(p.h)+'" fill="'+gl+'" fill-opacity="0.22"/>';
+      else g+='<rect x="0" y="'+fx(j.pos-S.join/2)+'" width="'+fx(p.w)+'" height="'+fx(S.join)+'" fill="'+gl+'" fill-opacity="0.22"/>';
+    });
+  }
+  g+='<path d="'+path(p.poly)+'" fill="'+(o.glue?"none":paper)+'" stroke="'+cut+'" stroke-width="0.55"/>';
+  if(o.stitch)g+='<path d="'+path(p.stitch)+'" fill="none" stroke="'+stc+'" stroke-width="0.4" stroke-dasharray="1.7 1.3"/>';
+  p.folds.forEach(f=>{
+    g+='<line x1="'+fx(f.x1)+'" y1="'+fx(f.y1)+'" x2="'+fx(f.x2)+'" y2="'+fx(f.y2)+'" stroke="'+fold+'" stroke-width="0.4" stroke-dasharray="3.2 1.4 0.7 1.4"/>';
+    if(o.labels&&f.label)g+='<text x="'+fx(nv(f.x1)+2)+'" y="'+fx(nv(f.y1)-1.2)+'" font-size="2.5" fill="'+fold+'" font-family="Arial">'+f.label+'</text>';
+  });
+  p.marks.forEach(m=>{
+    g+='<line x1="'+fx(m.x1)+'" y1="'+fx(m.y1)+'" x2="'+fx(m.x2)+'" y2="'+fx(m.y2)+'" stroke="'+fold+'" stroke-width="0.35" stroke-dasharray="2 1.2"/>';
+    if(o.labels&&m.label){
+      const vert=Math.abs(nv(m.x1)-nv(m.x2))<.01;
+      if(vert)g+='<text x="'+fx(nv(m.x1)+1.6)+'" y="'+fx((nv(m.y1)+nv(m.y2))/2)+'" font-size="2.3" fill="'+fold+'" font-family="Arial" transform="rotate(-90 '+fx(nv(m.x1)+1.6)+' '+fx((nv(m.y1)+nv(m.y2))/2)+')">'+m.label+'</text>';
+      else g+='<text x="'+fx(nv(m.x1)+2)+'" y="'+fx(nv(m.y1)-1.2)+'" font-size="2.3" fill="'+fold+'" font-family="Arial">'+m.label+'</text>';
+    }
+  });
+  if(o.hardware){
+    p.holes.forEach(h=>{
+      const x=nv(h.x),y=nv(h.y),w=nv(h.w,4),hh=nv(h.h,4);
+      if(h.type==="circle")g+='<circle cx="'+fx(x)+'" cy="'+fx(y)+'" r="'+fx(w/2,2)+'" fill="none" stroke="'+cut+'" stroke-width="0.5"/>';
+      else g+='<rect x="'+fx(x-w/2)+'" y="'+fx(y-hh/2)+'" width="'+fx(w,2)+'" height="'+fx(hh,2)+'" rx="0.6" fill="none" stroke="'+cut+'" stroke-width="0.5"/>';
+      g+='<line x1="'+fx(x-2.4)+'" y1="'+fx(y)+'" x2="'+fx(x+2.4)+'" y2="'+fx(y)+'" stroke="'+cut+'" stroke-width="0.28"/>';
+      g+='<line x1="'+fx(x)+'" y1="'+fx(y-2.4)+'" x2="'+fx(x)+'" y2="'+fx(y+2.4)+'" stroke="'+cut+'" stroke-width="0.28"/>';
+      if(o.labels&&h.label)g+='<text x="'+fx(x+w/2+2)+'" y="'+fx(y+1)+'" font-size="2.4" font-weight="bold" fill="'+cut+'" font-family="Arial">'+h.label+'</text>';
+    });
+  }
+  p.notches.forEach(n=>{
+    const x=nv(n.x);
+    g+='<path d="M'+fx(x-1.7)+',0L'+fx(x+1.7)+',0L'+fx(x)+',2.5Z" fill="'+cut+'"/>';
+    g+='<path d="M'+fx(x-1.7)+','+fx(p.h)+'L'+fx(x+1.7)+','+fx(p.h)+'L'+fx(x)+','+fx(p.h-2.5)+'Z" fill="'+cut+'"/>';
+    g+='<line x1="'+fx(x)+'" y1="3" x2="'+fx(x)+'" y2="'+fx(p.h-3)+'" stroke="#bbb" stroke-width="0.22" stroke-dasharray="1 1.4"/>';
+    if(o.labels&&n.label)g+='<text x="'+fx(x+1)+'" y="'+fx(p.h/2)+'" font-size="2.2" fill="#666" font-family="Arial" transform="rotate(-90 '+fx(x+1)+' '+fx(p.h/2)+')">'+n.label+'</text>';
+  });
+  if(o.joins){
+    p.joins.forEach(j=>{
+      if(j.axis==="x"){
+        const x=nv(j.pos);
+        g+='<line x1="'+fx(x)+'" y1="0" x2="'+fx(x)+'" y2="'+fx(p.h)+'" stroke="'+jc+'" stroke-width="0.85" stroke-dasharray="2.2 1.1"/>';
+        g+='<circle cx="'+fx(x)+'" cy="5" r="1.4" fill="'+jc+'"/><circle cx="'+fx(x)+'" cy="'+fx(p.h-5)+'" r="1.4" fill="'+jc+'"/>';
+        g+='<text x="'+fx(x+2)+'" y="8.5" font-size="3.1" font-weight="bold" fill="'+jc+'" font-family="Arial">'+j.id+j.side+'</text>';
+      }else{
+        const y=nv(j.pos);
+        g+='<line x1="0" y1="'+fx(y)+'" x2="'+fx(p.w)+'" y2="'+fx(y)+'" stroke="'+jc+'" stroke-width="0.85" stroke-dasharray="2.2 1.1"/>';
+        g+='<circle cx="5" cy="'+fx(y)+'" r="1.4" fill="'+jc+'"/><circle cx="'+fx(p.w-5)+'" cy="'+fx(y)+'" r="1.4" fill="'+jc+'"/>';
+        g+='<text x="7" y="'+fx(y-2)+'" font-size="3.1" font-weight="bold" fill="'+jc+'" font-family="Arial">'+j.id+j.side+'</text>';
+      }
+    });
+  }
+  if(o.labels){
+    const cy=Math.max(10,p.h*.44);
+    g+='<text x="'+fx(p.w/2)+'" y="'+fx(cy)+'" text-anchor="middle" font-size="3.7" font-weight="bold" fill="#2b1c0c" font-family="Arial">'+p.name+'</text>';
+    g+='<text x="'+fx(p.w/2)+'" y="'+fx(cy+5)+'" text-anchor="middle" font-size="3" fill="#6b4c22" font-family="Arial">'+fmt(p.w)+' × '+fmt(p.h)+' мм</text>';
+    if(p.notes)g+='<text x="'+fx(p.w/2)+'" y="'+fx(p.h-5)+'" text-anchor="middle" font-size="2.5" fill="#6b4c22" font-family="Arial">'+p.notes+'</text>';
+  }
+  return g;
+}
+const printOpts=()=>({print:true,glue:S.print.glue,stitch:S.print.stitch,hardware:S.print.hardware,joins:S.print.joins,labels:S.print.labels});
+const screenOpts=()=>({print:false,glue:S.print.glue,stitch:S.print.stitch,hardware:S.print.hardware,joins:S.print.joins,labels:S.print.labels});
+
+function layout(M){
+  let x=12,y=12,rh=0,mw=0;const pos=[];
+  M.pieces.forEach(p=>{if(x+p.w>920){x=12;y+=rh+18;rh=0}pos.push({p,x,y});x+=p.w+16;rh=Math.max(rh,p.h);mw=Math.max(mw,x)});
+  return{pos,W:mw+12,H:y+rh+18};
+}
+function renderBoard(M){
+  const lo=layout(M),svg=$("#patternSvg"),k=3.1;
+  svg.setAttribute("viewBox","0 0 "+fx(lo.W)+" "+fx(lo.H));
+  svg.setAttribute("width",fx(lo.W*k));svg.setAttribute("height",fx(lo.H*k));
+  svg.innerHTML=lo.pos.map(o=>'<g transform="translate('+fx(o.x)+' '+fx(o.y)+')">'+pieceSVG(o.p,screenOpts())+'</g>').join("");
+}
+function miniLegend(y){
+  const items=[["#111","рез","0"],["#b03030","шов","1.7 1.3"],["#3a6ea5","сгиб","3.2 1.4"],["#9b3fbf","стык J","2.2 1.1"]];
+  let g='<g>',x=10;
+  items.forEach(it=>{g+='<line x1="'+x+'" y1="'+y+'" x2="'+(x+7)+'" y2="'+y+'" stroke="'+it[0]+'" stroke-width="0.7"'+(it[2]!=="0"?' stroke-dasharray="'+it[2]+'"':'')+'/><text x="'+(x+8.5)+'" y="'+(y+1)+'" font-size="2.6" fill="#444" font-family="Arial">'+it[1]+'</text>';x+=26});
+  if(S.print.hardware){g+='<circle cx="'+(x+2)+'" cy="'+y+'" r="1.6" fill="none" stroke="#111" stroke-width="0.4"/><text x="'+(x+5)+'" y="'+(y+1)+'" font-size="2.6" fill="#444" font-family="Arial">фурнитура</text>';x+=30}
+  if(S.print.glue){g+='<rect x="'+x+'" y="'+(y-1.6)+'" width="6" height="3.2" fill="#e0a437" fill-opacity="0.35"/><text x="'+(x+7.5)+'" y="'+(y+1)+'" font-size="2.6" fill="#444" font-family="Arial">склейка</text>'}
+  return g+"</g>";
+}
+function sheetFrame(title,right,idx,total){
+  let g='<rect width="210" height="297" fill="#fff"/>';
+  g+='<rect x="10" y="10" width="190" height="277" fill="none" stroke="#ddd" stroke-width="0.25"/>';
+  g+='<text x="10" y="7" font-size="3.3" font-weight="bold" font-family="Arial" fill="#111">'+title+'</text>';
+  g+='<text x="200" y="7" text-anchor="end" font-size="3" font-family="Arial" fill="#555">'+right+'</text>';
+  g+='<text x="10" y="292" font-size="2.7" font-family="Arial" fill="#666">A4 210×297 · печать 100% · кожа '+fmt(S.thick)+' мм · припуск '+fmt(S.seam)+' мм · '+designName()+'</text>';
+  g+='<text x="200" y="292" text-anchor="end" font-size="2.7" font-family="Arial" fill="#666">лист '+idx+'/'+total+'</text>';
+  if(S.print.mini)g+=miniLegend(287.5);
+  return g;
+}
+function crossMark(x,y,label){
+  return '<line x1="'+(x-2.2)+'" y1="'+y+'" x2="'+(x+2.2)+'" y2="'+y+'" stroke="#111" stroke-width="0.3"/><line x1="'+x+'" y1="'+(y-2.2)+'" x2="'+x+'" y2="'+(y+2.2)+'" stroke="#111" stroke-width="0.3"/><circle cx="'+x+'" cy="'+y+'" r="0.8" fill="#111"/>'+(label?'<text x="'+(x+2.6)+'" y="'+(y-1)+'" font-size="2.6" font-family="Arial">'+label+'</text>':'');
+}
+function tileSVG(p,r,c,nx,ny,idx,total,partNo,partTot){
+  const single=nx===1&&ny===1;
+  const ox=single?10+(SHEET.pw-p.w)/2:10-c*(SHEET.pw-SHEET.ov);
+  const oy=single?10+(SHEET.ph-p.h)/2:10-r*(SHEET.ph-SHEET.ov);
+  const L=String.fromCharCode(65+c),R=r+1,cid="clip"+partNo+"_"+r+"_"+c;
+  let g=sheetFrame(p.name,single?"деталь "+partNo+"/"+partTot:"деталь "+partNo+"/"+partTot+" · плитка "+L+R,idx,total);
+  g+='<defs><clipPath id="'+cid+'"><rect x="10" y="10" width="190" height="277"/></clipPath></defs>';
+  g+='<g clip-path="url(#'+cid+')"><g transform="translate('+fx(ox,2)+' '+fx(oy,2)+')">'+pieceSVG(p,printOpts())+'</g></g>';
+  if(!single){
+    g+=crossMark(10,10,L+R)+crossMark(200,10,L+R)+crossMark(10,287,L+R)+crossMark(200,287,L+R);
+    const seam=(x,y,id,rot)=>'<circle cx="'+x+'" cy="'+y+'" r="1.4" fill="#9b3fbf"/><circle cx="'+x+'" cy="'+y+'" r="3" fill="none" stroke="#9b3fbf" stroke-width="0.3"/><text x="'+(x+4)+'" y="'+(y+1)+'" font-size="2.9" font-weight="bold" font-family="Arial" fill="#9b3fbf"'+(rot?' transform="rotate(-90 '+(x+4)+' '+(y+1)+')"':'')+'>'+id+'</text>';
+    if(c>0)g+='<line x1="18" y1="10" x2="18" y2="287" stroke="#bbb" stroke-width="0.25" stroke-dasharray="2 2"/>'+seam(18,148,"V"+R+"."+c,true);
+    if(c<nx-1)g+='<line x1="192" y1="10" x2="192" y2="287" stroke="#bbb" stroke-width="0.25" stroke-dasharray="2 2"/>'+seam(192,148,"V"+R+"."+(c+1),true);
+    if(r>0)g+='<line x1="10" y1="18" x2="200" y2="18" stroke="#bbb" stroke-width="0.25" stroke-dasharray="2 2"/>'+seam(105,18,"H"+r+"."+(c+1),false);
+    if(r<ny-1)g+='<line x1="10" y1="279" x2="200" y2="279" stroke="#bbb" stroke-width="0.25" stroke-dasharray="2 2"/>'+seam(105,279,"H"+(r+1)+"."+(c+1),false);
+    g+='<text x="105" y="284" text-anchor="middle" font-size="2.6" fill="#9b3fbf" font-family="Arial">Совместить кресты и точки V/H · перекрытие 8 мм</text>';
+  }
+  return '<svg xmlns="http://www.w3.org/2000/svg" width="210mm" height="297mm" viewBox="0 0 210 297">'+g+'</svg>';
+}
+function calSVG(idx,total){
+  let ticks="";
+  for(let i=0;i<=100;i++){const h=i%10===0?5:(i%5===0?3.5:2);ticks+='<line x1="'+(55+i)+'" y1="60" x2="'+(55+i)+'" y2="'+(60+h)+'" stroke="#111" stroke-width="'+(i%10===0?.4:.2)+'"/>';if(i%10===0)ticks+='<text x="'+(55+i)+'" y="69.5" font-size="3.2" text-anchor="middle" font-family="Arial">'+i+'</text>'}
+  let g=sheetFrame("Калибровка · печать 1:1","проверьте перед раскроем",idx,total);
+  g+='<line x1="55" y1="60" x2="155" y2="60" stroke="#111" stroke-width="0.5"/>'+ticks;
+  g+='<text x="105" y="78" text-anchor="middle" font-size="4" font-weight="bold" font-family="Arial">Отрезок = 100 мм</text>';
+  g+='<rect x="30" y="95" width="50" height="50" fill="none" stroke="#111" stroke-width="0.5"/><text x="55" y="122" text-anchor="middle" font-size="4" font-family="Arial">50 × 50 мм</text>';
+  g+='<rect x="95" y="95" width="85.6" height="53.98" rx="3.18" fill="none" stroke="#111" stroke-width="0.5"/><text x="137.8" y="124" text-anchor="middle" font-size="3.4" font-family="Arial">Карта ID-1 85,60×53,98</text>';
+  const lines=["1. Масштаб 100% / Реальный размер, не «Вписать».","2. Поля: Нет. Колонтитулы: выключить.","3. Отрезок сверху должен быть ровно 100 мм.","4. Банковская карта обязана совпасть с контуром.","5. Крупные детали: несколько листов, перекрытие 8 мм.","6. Совмещайте кресты и точки V/H, склеивайте встык."];
+  lines.forEach((t,i)=>{g+='<text x="24" y="'+(168+i*8)+'" font-size="3.7" font-family="Arial">'+t+'</text>'});
+  g+='<text x="24" y="228" font-size="3.6" font-family="Arial" font-weight="bold">Изделие: '+famName()+' · '+designName()+'</text>';
+  g+='<text x="24" y="236" font-size="3.4" font-family="Arial">Формат: '+fmtName()+' · габарит '+fmt(S.A)+'×'+fmt(S.B)+'×'+fmt(S.C)+' мм</text>';
+  g+='<text x="24" y="244" font-size="3.4" font-family="Arial">Крой: '+edgeLabel(useGus())+' · кусок кожи: '+stock().name+' · частей: '+derive().pieces.length+'</text>';
+  return '<svg xmlns="http://www.w3.org/2000/svg" width="210mm" height="297mm" viewBox="0 0 210 297">'+g+'</svg>';
+}
+function legendRows(){
+  return [
+    {t:"Контур реза",d:"Сплошная тёмная линия. Резать по ней.",g:'<line x1="0" y1="6" x2="26" y2="6" stroke="#111" stroke-width="0.9"/>'},
+    {t:"Линия шва",d:"Красный пунктир. Отступ "+fmt(S.seam)+" мм от реза, шаг "+fmt(isCard()?3:3.5)+" мм.",g:'<line x1="0" y1="6" x2="26" y2="6" stroke="#b03030" stroke-width="0.8" stroke-dasharray="1.7 1.3"/>'},
+    {t:"Сгиб / подгибка",d:"Синий штрихпунктир. Согнуть, не резать.",g:'<line x1="0" y1="6" x2="26" y2="6" stroke="#3a6ea5" stroke-width="0.8" stroke-dasharray="3.2 1.4 0.7 1.4"/>'},
+    {t:"Линия обхвата",d:"Синий пунктир. Зона, где кожа огибает торец.",g:'<line x1="0" y1="6" x2="26" y2="6" stroke="#3a6ea5" stroke-width="0.7" stroke-dasharray="2 1.2"/>'},
+    {t:"Отверстие фурнитуры",d:"Кружок с крестом, рядом диаметр. Пробить до сшивки.",g:'<circle cx="13" cy="6" r="3.2" fill="none" stroke="#111" stroke-width="0.6"/><line x1="9" y1="6" x2="17" y2="6" stroke="#111" stroke-width="0.35"/><line x1="13" y1="2" x2="13" y2="10" stroke="#111" stroke-width="0.35"/>'},
+    {t:"Прорезь",d:"Прямоугольник с крестом — лапки замка, магнит.",g:'<rect x="6" y="3.5" width="14" height="5" rx="0.8" fill="none" stroke="#111" stroke-width="0.6"/><line x1="9" y1="6" x2="17" y2="6" stroke="#111" stroke-width="0.35"/><line x1="13" y1="2" x2="13" y2="10" stroke="#111" stroke-width="0.35"/>'},
+    {t:"Зона склейки",d:"Янтарная полоса по припуску. Клей только внутри шва.",g:'<rect x="0" y="2" width="26" height="8" fill="#e0a437" fill-opacity="0.3"/><circle cx="6" cy="6" r="0.9" fill="#e0a437"/><circle cx="13" cy="6" r="0.9" fill="#e0a437"/><circle cx="20" cy="6" r="0.9" fill="#e0a437"/>'},
+    {t:"Стык частей J",d:"Фиолетовый пунктир, метки A и B. Совмещать одноимённые.",g:'<line x1="13" y1="0" x2="13" y2="12" stroke="#9b3fbf" stroke-width="0.9" stroke-dasharray="2.2 1.1"/><circle cx="13" cy="2" r="1.4" fill="#9b3fbf"/><circle cx="13" cy="10" r="1.4" fill="#9b3fbf"/>'},
+    {t:"Метка совмещения",d:"Треугольники на кромке: центр низа, углы, концы молнии.",g:'<path d="M9,1 L17,1 L13,7 Z" fill="#111"/><line x1="13" y1="7" x2="13" y2="12" stroke="#bbb" stroke-width="0.3" stroke-dasharray="1 1.2"/>'},
+    {t:"Крест листа",d:"Углы печатного поля. Совмещать при склейке листов.",g:'<line x1="7" y1="6" x2="19" y2="6" stroke="#111" stroke-width="0.4"/><line x1="13" y1="0" x2="13" y2="12" stroke="#111" stroke-width="0.4"/><circle cx="13" cy="6" r="1" fill="#111"/>'},
+    {t:"Точка склейки V/H",d:"V — вертикальный шов листов, H — горизонтальный.",g:'<circle cx="13" cy="6" r="1.6" fill="#9b3fbf"/><circle cx="13" cy="6" r="3.4" fill="none" stroke="#9b3fbf" stroke-width="0.35"/>'}
+  ];
+}
+function legendSVG(idx,total){
+  let g=sheetFrame("Легенда · условные обозначения","справочный лист",idx,total);
+  const rows=legendRows();
+  rows.forEach((r,i)=>{
+    const y=26+i*22;
+    g+='<g transform="translate(16 '+y+')">'+r.g+'</g>';
+    g+='<text x="50" y="'+(y+4)+'" font-size="4" font-weight="bold" font-family="Arial" fill="#111">'+r.t+'</text>';
+    g+='<text x="50" y="'+(y+10)+'" font-size="3.2" font-family="Arial" fill="#555">'+r.d+'</text>';
+    g+='<line x1="16" y1="'+(y+15)+'" x2="194" y2="'+(y+15)+'" stroke="#e5e5e5" stroke-width="0.3"/>';
+  });
+  return '<svg xmlns="http://www.w3.org/2000/svg" width="210mm" height="297mm" viewBox="0 0 210 297">'+g+'</svg>';
+}
+function renderLegendPreview(){
+  const rows=legendRows();let g="";
+  rows.forEach((r,i)=>{
+    const y=10+i*22;
+    g+='<g transform="translate(10 '+y+')">'+r.g+'</g>';
+    g+='<text x="44" y="'+(y+5)+'" font-size="7" font-weight="bold" font-family="Arial" fill="#2b1c0c">'+r.t+'</text>';
+    g+='<text x="44" y="'+(y+14)+'" font-size="5.4" font-family="Arial" fill="#6b4c22">'+r.d+'</text>';
+  });
+  const svg=$("#legendPreview");svg.setAttribute("viewBox","0 0 320 "+(rows.length*22+14));svg.innerHTML=g;
+}
+function buildPages(M){
+  const out=[];const total=sheetsOf(M);let idx=1;
+  if(S.print.cal)out.push({cap:"Калибровка",svg:calSVG(idx++,total)});
+  if(S.print.legend)out.push({cap:"Легенда",svg:legendSVG(idx++,total)});
+  M.pieces.forEach((p,pi)=>{
+    const t=tilesOf(p.w,p.h);
+    for(let r=0;r<t.ny;r++)for(let c=0;c<t.nx;c++){
+      out.push({cap:p.name+(t.nx*t.ny>1?" · "+String.fromCharCode(65+c)+(r+1):""),svg:tileSVG(p,r,c,t.nx,t.ny,idx++,total,pi+1,M.pieces.length)});
+    }
+  });
+  return out;
+}
+function downloadSVG(M){
+  const lo=layout(M),body=lo.pos.map(o=>'<g transform="translate('+fx(o.x)+' '+fx(o.y)+')">'+pieceSVG(o.p,printOpts())+'</g>').join("");
+  const svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+fx(lo.W)+'mm" height="'+fx(lo.H)+'mm" viewBox="0 0 '+lo.W+' '+lo.H+'">'+body+'</svg>';
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([svg],{type:"image/svg+xml"}));a.download="vykroyka_"+(designId()||"item")+".svg";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),3000);
+}
+let pdfLoading=null;
+function loadPDF(){
+  if(window.jspdf)return Promise.resolve(window.jspdf.jsPDF);
+  if(pdfLoading)return pdfLoading;
+  pdfLoading=new Promise((res,rej)=>{const s=document.createElement("script");s.src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js";s.onload=()=>{window.jspdf?res(window.jspdf.jsPDF):rej(new Error("jspdf"))};s.onerror=()=>rej(new Error("load"));document.head.appendChild(s)});
+  return pdfLoading;
+}
+function svgToCanvas(svg,dpi){
+  return new Promise((res,rej)=>{
+    const w=Math.round(210/25.4*dpi),h=Math.round(297/25.4*dpi);
+    const s=svg.replace('width="210mm"','width="'+w+'"').replace('height="297mm"','height="'+h+'"');
+    const url=URL.createObjectURL(new Blob([s],{type:"image/svg+xml"})),img=new Image();
+    img.onload=()=>{const c=document.createElement("canvas");c.width=w;c.height=h;const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,w,h);x.drawImage(img,0,0,w,h);URL.revokeObjectURL(url);res(c)};
+    img.onerror=e=>{URL.revokeObjectURL(url);rej(e)};img.src=url;
+  });
+}
+async function exportPDF(){
+  if(!ready())return toast("Выберите параметры");
+  const M=derive(),pages=buildPages(M),dpi=+$("#dpi").value||300;
+  $("#pdfProg").hidden=false;$("#progBar").style.width="0%";
+  try{
+    const JP=await loadPDF();
+    const doc=new JP({unit:"mm",format:"a4",orientation:"portrait",compress:true});
+    for(let i=0;i<pages.length;i++){
+      $("#progText").textContent="Лист "+(i+1)+" из "+pages.length;
+      const c=await svgToCanvas(pages[i].svg,dpi);
+      if(i)doc.addPage("a4","portrait");
+      doc.addImage(c.toDataURL("image/png"),"PNG",0,0,210,297,undefined,"FAST");
+      $("#progBar").style.width=Math.round((i+1)/pages.length*100)+"%";
+      await new Promise(r=>setTimeout(r,0));
+    }
+    doc.save("atelier_"+(designId()||"item")+"_A4.pdf");toast("PDF A4 сохранён · "+pages.length+" лист.");
+  }catch(e){console.warn(e);toast("PDF недоступен — системная печать");printPages()}
+  finally{$("#pdfProg").hidden=true}
+}
+function printPages(){
+  if(!ready())return;
+  $("#printRoot").innerHTML=buildPages(derive()).map(p=>'<div class="print-page">'+p.svg+'</div>').join("");
+  setTimeout(()=>window.print(),80);
+}
+function openPreview(){
+  if(!ready())return;
+  const pages=buildPages(derive());
+  $("#previewPages").innerHTML=pages.map(p=>'<div><div class="thumb">'+p.svg.replace('width="210mm"','width="100%"').replace('height="297mm"','')+'</div><div class="cap">'+p.cap+'</div></div>').join("");
+  $("#preview").hidden=false;
+}
+
+/* ================= отчёты ================= */
+function renderPrint(M){
+  const sheets=sheetsOf(M),tiled=M.pieces.filter(p=>{const t=tilesOf(p.w,p.h);return t.nx*t.ny>1}).length;
+  $("#printSummary").innerHTML=[["Формат","A4"],["Поле","10 мм"],["Листов",sheets],["Деталей",M.pieces.length],["Плитками",tiled],["Легенда",S.print.legend?"да":"нет"]].map(x=>'<div class="stat"><div class="v">'+x[1]+'</div><div class="l">'+x[0]+'</div></div>').join("");
+  $("#printWarn").innerHTML=tiled?'<div class="warnbar">'+tiled+' дет. больше печатного поля A4 — они разложены на несколько листов с перекрытием 8 мм, крестами и точками V/H.</div>':'<div class="okbar">✓ Все детали помещаются на один лист A4 каждая.</div>';
+  renderLegendPreview();
+}
+function renderSplit(M){
+  const st=M.stock,uw=st.w-2*st.m,uh=st.h-2*st.m;
+  $("#stockSummary").innerHTML=[["Кусок",st.name],["Размер",fmt(st.w)+"×"+fmt(st.h)],["Поле",fmt(st.m)+" мм"],["Полезно",fmt(uw)+"×"+fmt(uh)],["Стык",fmt(S.join)+" мм"],["Частей",M.pieces.length]].map(x=>'<div class="stat"><div class="v">'+x[1]+'</div><div class="l">'+x[0]+'</div></div>').join("");
+  $("#joinList").innerHTML=M.joins.length?M.joins.map(j=>'<li><b>'+j.id+'</b> · '+j.parts.join(" ↔ ")+'<br><code>'+(j.axis==="x"?"вертикальный":"горизонтальный")+' стык · припуск '+j.allow+' мм</code></li>').join(""):"<li>Стыков нет: детали помещаются в кусок кожи.</li>";
+  $("#splitWarn").innerHTML=M.oversize>0?'<div class="errbar">⚠ '+M.oversize+' дет. не помещаются в кусок '+st.name+'. Уменьшите припуск стыка или возьмите кусок больше.</div>':'<div class="okbar">✓ Все части помещаются в полезную область куска кожи.</div>';
+}
+function renderSpec(M){
+  $("#specBody").innerHTML=M.pieces.map(p=>{const t=tilesOf(p.w,p.h);return '<tr><td><b>'+p.name+'</b><span class="note">'+(p.notes||"")+'</span></td><td class="mono">'+fmt(p.w)+'×'+fmt(p.h)+'</td><td>'+(p.joins.map(j=>j.id+j.side).join(", ")||"—")+'</td><td class="mono">'+(t.nx*t.ny)+'</td></tr>'}).join("");
+  $("#stArea").textContent=fmt(M.area*1.15)+" дм²";
+  $("#stParts").textContent=M.pieces.length;
+  $("#stJoins").textContent=M.joins.length;
+  $("#stSheets").textContent=sheetsOf(M);
+  $("#stThread").textContent=fmt(M.stitchLen/1000*2.5+.3)+" м";
+  const checks=[["Части помещаются в кусок кожи",M.oversize===0],["Нет NaN в геометрии",M.pieces.every(p=>Number.isFinite(p.w)&&Number.isFinite(p.h)&&p.poly.every(q=>Number.isFinite(q[0])&&Number.isFinite(q[1])))],["Стыки размечены парно",M.joins.every(j=>j.parts.length>1)],["Кромка соответствует толщине",M.pieces.some(p=>p.id==="gusset"||p.id==="side")===M.gusset],["Листы A4 без NaN",buildPages(M).every(pg=>pg.svg.indexOf("NaN")<0)],["Все листы 210×297 мм",buildPages(M).every(pg=>pg.svg.indexOf('width="210mm"')>=0)]];
+  $("#checkList").innerHTML=checks.map(c=>'<li>'+(c[1]?"✓":"✕")+' <b>'+c[0]+'</b></li>').join("");
+}
+function techText(M){
+  const L=[];
+  L.push("АТЕЛЬЕ КОЖАНЫХ ИЗДЕЛИЙ — ТЕХКАРТА");
+  L.push("Линия: "+famName()+" · "+designName());
+  L.push("Формат: "+fmtName()+" · габарит "+fmt(S.A)+"×"+fmt(S.B)+"×"+fmt(S.C)+" мм");
+  L.push("Крой: "+edgeLabel(M.gusset)+" · кожа "+fmt(S.thick)+" мм · подкладка "+(LININGS.find(l=>l[0]===S.lining)||LININGS[0])[1]);
+  L.push("Печать: A4 210×297, поле 10 мм, листов "+sheetsOf(M));
+  L.push("Кусок кожи: "+M.stock.name+" "+fmt(M.stock.w)+"×"+fmt(M.stock.h)+" · стык "+S.join+" мм · частей "+M.pieces.length);
+  L.push("");L.push("ДЕТАЛИ:");
+  M.pieces.forEach((p,i)=>{const t=tilesOf(p.w,p.h);L.push((i+1)+". "+p.name+" — "+fmt(p.w)+"×"+fmt(p.h)+" мм · A4 листов "+(t.nx*t.ny)+(p.joins.length?" · стыки "+p.joins.map(j=>j.id+j.side).join("/"):""))});
+  L.push("");L.push("СТЫКИ:");
+  if(M.joins.length)M.joins.forEach(j=>L.push(j.id+": "+j.parts.join(" <-> ")+" · припуск "+j.allow+" мм"));else L.push("нет");
+  L.push("");L.push("ПОРЯДОК:");
+  L.push("1. Печать 100%, проверить отрезок 100 мм и карту ID-1.");
+  L.push("2. Скрупные детали склеить по крестам и точкам V/H (перекрытие 8 мм).");
+  L.push("3. Перенести на кожу по долевой, подписать J-метки с изнанки.");
+  if(M.joins.length)L.push("4. Состыковать части по одинаковым J: припуск "+S.join+" мм, проверить общую длину.");
+  L.push("5. Спустить припуски до "+fmt(S.thick*.65)+" мм, сгибы — до "+fmt(S.thick*.5)+" мм.");
+  L.push("6. Разметить шов "+fmt(S.seam)+" мм, пробить шаг "+fmt(M.pitch)+" мм.");
+  L.push("7. Клей только в янтарной зоне внутри линии шва.");
+  L.push("8. Фурнитуру поставить до сшивания.");
+  L.push("9. Сшить седельным швом, обработать урез, отформовать 12–24 ч.");
+  return L.join("\n");
+}
+function renderTech(M){
+  const steps=["Проверить калибровку A4 и размеры.","Склеить листы крупных деталей по V/H.","Раскроить части, подписать J с изнанки.","Состыковать разделённые детали.","Спустить припуски и сгибы.","Разметить и пробить шов.","Нанести клей в отмеченные зоны.","Поставить фурнитуру до замыкания шва.","Сшить, обработать урез, отформовать."];
+  $("#techCards").innerHTML='<div class="tcard"><h4>Карта изделия</h4>'+[["Линия",famName()],["Конструкция",designName()],["Формат",fmtName()],["Крой",edgeLabel(M.gusset)],["Печать","A4 · "+sheetsOf(M)+" лист."],["Кусок",M.stock.name],["Частей",M.pieces.length],["Стыков",M.joins.length],["Кожа",fmt(S.thick)+" мм"],["Шов",fmt(M.stitchLen/1000)+" м"]].map(k=>'<div class="kv"><span>'+k[0]+'</span><b>'+k[1]+'</b></div>').join("")+'</div><div class="tcard"><h4>Стыковка</h4><ul>'+(M.joins.length?M.joins.map(j=>'<li><b>'+j.id+'</b>: '+j.parts.join(" ↔ ")+' · '+j.allow+' мм.</li>').join(""):"<li>Детали цельные.</li>")+'<li>Стык кромки — на дне или боку, не на лицевом центре.</li><li>Сверяйте общую длину собранной кромки.</li></ul></div><div class="tcard"><h4>Порядок работ</h4><ol>'+steps.map(x=>'<li>'+x+'</li>').join("")+'</ol></div>';
+}
+function downloadTech(){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([techText(derive())],{type:"text/plain;charset=utf-8"}));a.download="tech_"+(designId()||"item")+".txt";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),3000)}
+
+/* ================= 3D ================= */
+let T3=null,OC=null,RBG=null,RE=null;
+let renderer,scene,camera,controls,group,keyL,rimL,floorMesh;
+let ready3=false,started3=false,disp=[];
+const track=o=>{disp.push(o);return o};
+const mapCache=new Map();
+function noiseGen(seed){
+  let a=seed>>>0;const rnd=()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
+  const g=new Float32Array(65536);for(let i=0;i<65536;i++)g[i]=rnd();
+  const n=(x,y)=>{const xi=Math.floor(x),yi=Math.floor(y),xf=x-xi,yf=y-yi,u=xf*xf*(3-2*xf),v=yf*yf*(3-2*yf),s=(p,q)=>g[((q&255)<<8)|(p&255)];return lerp(lerp(s(xi,yi),s(xi+1,yi),u),lerp(s(xi,yi+1),s(xi+1,yi+1),u),v)};
+  const fbm=(x,y,o)=>{let r=0,am=1,f=1,t=0;for(let i=0;i<o;i++){r+=n(x*f,y*f)*am;t+=am;am*=.5;f*=2}return r/t};
+  return{n,fbm,rnd};
+}
+function leatherMaps(color,finish,patina){
+  const key=color+"|"+finish+"|"+patina;
+  if(mapCache.has(key))return mapCache.get(key);
+  const N=256,z=noiseGen(finish==="crazy"?11:finish==="smooth"?23:37);
+  const h=new Float32Array(N*N);
+  for(let y=0;y<N;y++)for(let x=0;x<N;x++){
+    let v;
+    if(finish==="saffiano")v=.5+.22*Math.sin((x+y)*.62)+.22*Math.sin((x-y)*.62)+z.fbm(x*.06,y*.06,2)*.1;
+    else{v=z.fbm(x*.045,y*.045,4)*.65+z.fbm(x*.3,y*.3,2)*.25-Math.max(0,z.n(x*.95,y*.95)-.74)*(finish==="crazy"?1.2:.7);if(finish==="smooth")v=.35+v*.45}
+    h[y*N+x]=clamp(v,0,1);
+  }
+  const base=parseInt(color.slice(1),16),br=(base>>16)&255,bg=(base>>8)&255,bb=base&255;
+  const ac=document.createElement("canvas");ac.width=ac.height=N;
+  const ax=ac.getContext("2d"),ai=ax.createImageData(N,N),ad=ai.data;
+  const rc=document.createElement("canvas");rc.width=rc.height=N;
+  const rx=rc.getContext("2d"),ri=rx.createImageData(N,N),rd=ri.data;
+  const nc=document.createElement("canvas");nc.width=nc.height=N;
+  const nx=nc.getContext("2d"),ni=nx.createImageData(N,N),nd=ni.data;
+  const rough=finish==="crazy"?.66:finish==="smooth"?.5:.58;
+  const st=finish==="crazy"?2.6:finish==="smooth"?1.4:3.2;
+  for(let y=0;y<N;y++)for(let x=0;x<N;x++){
+    const i=y*N+x,v=h[i],m=.78+.4*v,k=i*4;
+    ad[k]=clamp(br*m,0,255);ad[k+1]=clamp(bg*m,0,255);ad[k+2]=clamp(bb*m,0,255);ad[k+3]=255;
+    const rv=clamp((rough+(v-.5)*.18)*255,0,255);rd[k]=rd[k+1]=rd[k+2]=rv;rd[k+3]=255;
+    const xm=(x-1+N)%N,xp=(x+1)%N,ym=(y-1+N)%N,yp=(y+1)%N;
+    const dx=(h[y*N+xp]-h[y*N+xm])*st,dy=(h[yp*N+x]-h[ym*N+x])*st,il=1/Math.hypot(dx,dy,1);
+    nd[k]=(-dx*il*.5+.5)*255;nd[k+1]=(-dy*il*.5+.5)*255;nd[k+2]=(il*.5+.5)*255;nd[k+3]=255;
+  }
+  ax.putImageData(ai,0,0);rx.putImageData(ri,0,0);nx.putImageData(ni,0,0);
+  const rr=noiseGen(99);
+  ax.lineCap="round";
+  const cnt=finish==="crazy"?Math.floor(30+patina*1.1):12;
+  for(let i=0;i<cnt;i++){
+    const x=rr.rnd()*N,y=rr.rnd()*N,a=(rr.rnd()<.5?.5:-.6)+(rr.rnd()-.5)*.9,l=15+rr.rnd()*90;
+    ax.strokeStyle="rgba("+Math.min(255,br+70)+","+Math.min(255,bg+60)+","+Math.min(255,bb+45)+","+(0.04+rr.rnd()*.1)+")";
+    ax.lineWidth=.5+rr.rnd()*1.1;
+    ax.beginPath();ax.moveTo(x,y);ax.quadraticCurveTo(x+Math.cos(a)*l/2+(rr.rnd()-.5)*18,y+Math.sin(a)*l/2+(rr.rnd()-.5)*18,x+Math.cos(a)*l,y+Math.sin(a)*l);ax.stroke();
+  }
+  const out={albedo:ac,rough:rc,normal:nc};
+  mapCache.set(key,out);if(mapCache.size>6)mapCache.delete(mapCache.keys().next().value);
+  return out;
+}
+function tex(cv,srgb,rx,ry){
+  const t=new T3.CanvasTexture(cv);
+  if(srgb)t.colorSpace=T3.SRGBColorSpace;
+  t.wrapS=t.wrapT=T3.RepeatWrapping;t.repeat.set(rx,ry);
+  t.anisotropy=renderer?Math.min(8,renderer.capabilities.getMaxAnisotropy()):4;
+  return track(t);
+}
+function leatherMat(rx,ry){
+  const m=leatherMaps(S.color,S.finish,S.patina);
+  const cc={crazy:.16,smooth:.34,saffiano:.22}[S.finish]||.2;
+  return track(new T3.MeshPhysicalMaterial({map:tex(m.albedo,true,rx,ry),normalMap:tex(m.normal,false,rx,ry),roughnessMap:tex(m.rough,false,rx,ry),normalScale:new T3.Vector2(.85,.85),roughness:1,clearcoat:cc,clearcoatRoughness:.55,envMapIntensity:.9,sheen:.25,sheenRoughness:.8}));
+}
+function edgeMat(){const n=parseInt(S.color.slice(1),16);return track(new T3.MeshPhysicalMaterial({color:new T3.Color(((n>>16)&255)*.45/255,((n>>8)&255)*.45/255,(n&255)*.45/255),roughness:.35,clearcoat:.7,clearcoatRoughness:.25}))}
+function threadMat(){return track(new T3.MeshStandardMaterial({color:new T3.Color(threadHex()),roughness:.75}))}
+function brassMat(){return track(new T3.MeshStandardMaterial({color:0xb08d57,metalness:1,roughness:.26}))}
+function steelMat(){return track(new T3.MeshStandardMaterial({color:0xb8bcc2,metalness:1,roughness:.3}))}
+function cardMat(i){const cols=[0xe9e5dc,0xdfe6ef,0xf0e2d0,0xe4ecdf,0xefe0e6,0xe6e6ee];return track(new T3.MeshPhysicalMaterial({color:cols[i%cols.length],roughness:.38,clearcoat:.6,clearcoatRoughness:.25}))}
+function liningMat(){const n=parseInt(S.color.slice(1),16);return track(new T3.MeshPhysicalMaterial({color:new T3.Color(Math.min(1,((n>>16)&255)/255*.6+.35),Math.min(1,((n>>8)&255)/255*.6+.32),Math.min(1,(n&255)/255*.6+.3)),roughness:.95,sheen:1,sheenRoughness:.85}))}
+function panel(w,h,t,mat,parent,r){
+  const rad=Math.min(r===undefined?t*.42:r,Math.min(w,h)/2*.9,t/2*.92);
+  const g=track(new RBG(Math.max(w,.001),Math.max(h,.001),Math.max(t,.0004),4,Math.max(rad,.0002)));
+  const m=new T3.Mesh(g,mat);m.castShadow=true;m.receiveShadow=true;(parent||group).add(m);return m;
+}
+function rrPts(w,h,r,insetV){
+  const W=w/2-insetV,H=h/2-insetV,rr=Math.max(.0008,r-insetV*.5),p=[];
+  const cs=[[W-rr,H-rr,0],[-(W-rr),H-rr,Math.PI/2],[-(W-rr),-(H-rr),Math.PI],[W-rr,-(H-rr),1.5*Math.PI]];
+  cs.forEach(c=>{for(let i=0;i<=10;i++){const a=c[2]+i/10*Math.PI/2;p.push([c[0]+rr*Math.cos(a),c[1]+rr*Math.sin(a)])}});
+  p.push(p[0].slice());return p;
+}
+function stitches(pts,z,mat,parent,pitch){
+  pitch=pitch||.0032;
+  let len=0;const segs=[];
+  for(let i=0;i<pts.length-1;i++){const l=Math.hypot(pts[i+1][0]-pts[i][0],pts[i+1][1]-pts[i][1]);segs.push(l);len+=l}
+  const n=Math.max(4,Math.floor(len/pitch));
+  const g=track(new T3.BoxGeometry(pitch*.62,.00075,.00075));
+  const im=new T3.InstancedMesh(g,mat,n);im.castShadow=true;track(im);
+  const M=new T3.Matrix4(),Q=new T3.Quaternion(),Q2=new T3.Quaternion(),X=new T3.Vector3(1,0,0),T=new T3.Vector3(),P=new T3.Vector3(),Sc=new T3.Vector3(1,1,1);
+  let k=0;
+  for(let i=0;i<n;i++){
+    const target=(i+.5)*len/n;let acc=0,si=0;
+    while(si<segs.length-1&&acc+segs[si]<target){acc+=segs[si];si++}
+    const t=segs[si]>1e-9?(target-acc)/segs[si]:0,a=pts[si],b=pts[si+1];
+    P.set(lerp(a[0],b[0],t),lerp(a[1],b[1],t),z);
+    T.set(b[0]-a[0],b[1]-a[1],0);if(T.lengthSq()<1e-12)T.set(1,0,0);else T.normalize();
+    Q.setFromUnitVectors(X,T);Q2.setFromAxisAngle(T,(i%2?1:-1)*.38);Q.premultiply(Q2);
+    M.compose(P,Q,Sc);im.setMatrixAt(k++,M);
+  }
+  im.instanceMatrix.needsUpdate=true;(parent||group).add(im);return im;
+}
+function stitchRect(w,h,r,insetV,z,mat,parent){return stitches(rrPts(w,h,r,insetV),z,mat,parent)}
+function ringGeo(w,h,r,thick,depth){
+  const outer=new T3.Shape();const ow=w/2,oh=h/2,rr=Math.min(r,ow*.9,oh*.9);
+  outer.moveTo(-ow+rr,-oh);outer.lineTo(ow-rr,-oh);outer.quadraticCurveTo(ow,-oh,ow,-oh+rr);
+  outer.lineTo(ow,oh-rr);outer.quadraticCurveTo(ow,oh,ow-rr,oh);outer.lineTo(-ow+rr,oh);
+  outer.quadraticCurveTo(-ow,oh,-ow,oh-rr);outer.lineTo(-ow,-oh+rr);outer.quadraticCurveTo(-ow,-oh,-ow+rr,-oh);
+  const iw=ow-thick,ih=oh-thick,ir=Math.max(.0008,rr-thick*.6);
+  const hole=new T3.Path();
+  hole.moveTo(-iw+ir,-ih);hole.lineTo(iw-ir,-ih);hole.quadraticCurveTo(iw,-ih,iw,-ih+ir);
+  hole.lineTo(iw,ih-ir);hole.quadraticCurveTo(iw,ih,iw-ir,ih);hole.lineTo(-iw+ir,ih);
+  hole.quadraticCurveTo(-iw,ih,-iw,ih-ir);hole.lineTo(-iw,-ih+ir);hole.quadraticCurveTo(-iw,-ih,-iw+ir,-ih);
+  outer.holes.push(hole);
+  const g=track(new T3.ExtrudeGeometry(outer,{depth,bevelEnabled:false,curveSegments:12}));
+  g.translate(0,0,-depth/2);return g;
+}
+function snap(x,y,z,mat,parent,r){
+  r=r||.0055;
+  const g1=track(new T3.CylinderGeometry(r,r,.0016,20));
+  const b=new T3.Mesh(g1,mat);b.rotation.x=Math.PI/2;b.position.set(x,y,z);b.castShadow=true;(parent||group).add(b);
+  const g2=track(new T3.SphereGeometry(r*.72,18,10,0,Math.PI*2,0,Math.PI/2));
+  const c=new T3.Mesh(g2,mat);c.rotation.x=-Math.PI/2;c.position.set(x,y,z+.0012);c.castShadow=true;(parent||group).add(c);
+}
+function rivet(x,y,z,mat,parent,r){
+  r=r||.0035;
+  const g=track(new T3.CylinderGeometry(r,r,.0018,16));
+  const m=new T3.Mesh(g,mat);m.rotation.x=Math.PI/2;m.position.set(x,y,z);m.castShadow=true;(parent||group).add(m);
+}
+function magnet(x,y,z,parent){
+  const m=track(new T3.MeshStandardMaterial({color:0x2a2a2e,metalness:.8,roughness:.4}));
+  const g=track(new T3.BoxGeometry(.010,.002,.0016));
+  const o=new T3.Mesh(g,m);o.position.set(x,y,z);(parent||group).add(o);
+}
+function zipper(pts,z,mat,parent){
+  let len=0;const segs=[];
+  for(let i=0;i<pts.length-1;i++){const l=Math.hypot(pts[i+1][0]-pts[i][0],pts[i+1][1]-pts[i][1]);segs.push(l);len+=l}
+  const n=Math.max(8,Math.floor(len/.0045));
+  const g=track(new T3.BoxGeometry(.0022,.0026,.0034));
+  const im=new T3.InstancedMesh(g,mat,n*2);track(im);im.castShadow=true;
+  const M=new T3.Matrix4(),Q=new T3.Quaternion(),X=new T3.Vector3(1,0,0),T=new T3.Vector3(),P=new T3.Vector3(),Sc=new T3.Vector3(1,1,1);
+  let k=0;
+  for(let i=0;i<n;i++){
+    const target=(i+.5)*len/n;let acc=0,si=0;
+    while(si<segs.length-1&&acc+segs[si]<target){acc+=segs[si];si++}
+    const t=segs[si]>1e-9?(target-acc)/segs[si]:0,a=pts[si],b=pts[si+1];
+    const px=lerp(a[0],b[0],t),py=lerp(a[1],b[1],t);
+    T.set(b[0]-a[0],b[1]-a[1],0);if(T.lengthSq()<1e-12)T.set(1,0,0);else T.normalize();
+    Q.setFromUnitVectors(X,T);
+    [-1,1].forEach(s=>{P.set(px,py,z+s*.0016);M.compose(P,Q,Sc);im.setMatrixAt(k++,M)});
+  }
+  im.instanceMatrix.needsUpdate=true;(parent||group).add(im);
+  const sl=track(new T3.BoxGeometry(.008,.006,.006));
+  const sm=new T3.Mesh(sl,mat);sm.position.set(pts[0][0],pts[0][1],z);sm.castShadow=true;(parent||group).add(sm);
+  const pg=track(new T3.BoxGeometry(.004,.014,.0015));
+  const pm=new T3.Mesh(pg,mat);pm.position.set(pts[0][0],pts[0][1]-.010,z+.003);(parent||group).add(pm);
+}
+function cardObj(w,h,i,parent){
+  const g=new T3.Group();(parent||group).add(g);
+  const m=cardMat(i);
+  panel(w,h,.0008,m,g,.003);
+  const chip=track(new T3.MeshStandardMaterial({color:0xc9a227,metalness:1,roughness:.35}));
+  const cg=track(new T3.BoxGeometry(w*.13,h*.16,.0004));
+  const cm=new T3.Mesh(cg,chip);cm.position.set(-w*.28,h*.1,.0006);g.add(cm);
+  const stripe=track(new T3.MeshStandardMaterial({color:0x3a3f4a,roughness:.6}));
+  const sg=track(new T3.BoxGeometry(w*.62,h*.07,.0003));
+  const sm=new T3.Mesh(sg,stripe);sm.position.set(w*.08,-h*.24,.0006);g.add(sm);
+  return g;
+}
+function clear3D(){disp.forEach(o=>{if(o&&o.dispose)o.dispose()});disp=[];while(group.children.length)group.remove(group.children[0])}
+async function init3D(){
+  if(started3)return;started3=true;$("#veil").classList.remove("off");
+  try{
+    T3=await import("three");
+    OC=(await import("three/addons/controls/OrbitControls.js")).OrbitControls;
+    RBG=(await import("three/addons/geometries/RoundedBoxGeometry.js")).RoundedBoxGeometry;
+    RE=(await import("three/addons/environments/RoomEnvironment.js")).RoomEnvironment;
+    renderer=new T3.WebGLRenderer({canvas:$("#gl"),antialias:true,alpha:true,preserveDrawingBuffer:true});
+    renderer.outputColorSpace=T3.SRGBColorSpace;
+    renderer.toneMapping=T3.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;
+    renderer.shadowMap.enabled=true;renderer.shadowMap.type=T3.PCFSoftShadowMap;
+    scene=new T3.Scene();
+    camera=new T3.PerspectiveCamera(34,1,.005,30);
+    controls=new OC(camera,$("#gl"));controls.enableDamping=true;controls.dampingFactor=.075;controls.autoRotateSpeed=.65;
+    const pm=new T3.PMREMGenerator(renderer);
+    const env=pm.fromScene(new RE(),.04);scene.environment=env.texture;track(env);pm.dispose();
+    scene.add(new T3.HemisphereLight(0xfff2e0,0x241a12,.55));
+    keyL=new T3.DirectionalLight(0xffe6c4,2.1);keyL.position.set(.6,1,.8);keyL.castShadow=true;
+    keyL.shadow.mapSize.set(2048,2048);keyL.shadow.bias=-.0004;keyL.shadow.normalBias=.002;
+    scene.add(keyL);scene.add(keyL.target);
+    rimL=new T3.DirectionalLight(0x9dc4ff,.9);rimL.position.set(-.7,.35,-.6);scene.add(rimL);
+    const fg=track(new T3.CircleGeometry(1.6,64));
+    const fm=track(new T3.MeshStandardMaterial({color:0x241a12,roughness:.92,metalness:0}));
+    floorMesh=new T3.Mesh(fg,fm);floorMesh.rotation.x=-Math.PI/2;floorMesh.receiveShadow=true;scene.add(floorMesh);
+    group=new T3.Group();scene.add(group);
+    ready3=true;$("#veil").classList.add("off");
+    resize3D();build3D();animate();
+    if("ResizeObserver" in window)new ResizeObserver(resize3D).observe($("#stage"));
+  }catch(e){console.warn(e);fallback3D()}
+}
+function resize3D(){
+  if(!ready3)return;
+  const st=$("#stage"),w=Math.max(1,st.clientWidth),h=Math.max(1,st.clientHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,{low:1,med:1.5,high:2}[S.quality]));
+  renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();
+}
+function frameModel(W,H,D){
+  const d=Math.max(W,H);
+  camera.position.set(d*.62,d*.42,d*1.18);
+  controls.target.set(0,0,0);controls.minDistance=d*.4;controls.maxDistance=d*5;controls.update();
+  floorMesh.position.y=-H/2-.004;
+  keyL.target.position.set(0,0,0);
+  const sc=Math.max(d,.06);
+  keyL.shadow.camera.left=-sc;keyL.shadow.camera.right=sc;keyL.shadow.camera.top=sc;keyL.shadow.camera.bottom=-sc;
+  keyL.shadow.camera.near=.01;keyL.shadow.camera.far=sc*8;keyL.shadow.camera.updateProjectionMatrix();
+}
+function build3D(){
+  if(!ready3||!ready())return;
+  clear3D();
+  const R=deriveRaw(),M=derive();
+  const t=S.thick/1000,seam=S.seam/1000;
+  const lm=leatherMat(2.2,1.6),lm2=leatherMat(1.4,1.1),em=edgeMat(),tm=threadMat(),bm=brassMat(),sm=steelMat();
+  const lin=liningT()>0?liningMat():null;
+  const ex=S.explode/100,op=S.open;
+  const W=R.outer.w/1000,H=R.outer.h/1000,D=Math.max(.004,R.outer.c/1000);
+  const kind=def()[1];
+  const rad=Math.min(.008,W*.06,H*.06);
+  const joinMat=track(new T3.MeshStandardMaterial({color:0x9b3fbf,emissive:0x2a0a35,roughness:.5}));
+  const addJoinMarks=(w,h,z,parent)=>{
+    const n=Math.min(M.joins.length,6);
+    for(let i=0;i<n;i++){const g=track(new T3.BoxGeometry(.0012,h*.86,.0006));const m=new T3.Mesh(g,joinMat);m.position.set(-w/2+(i+1)*w/(n+1),0,z);(parent||group).add(m)}
+  };
+  if(isCard()){
+    const cw=R.cardW/1000,ch=R.cardH/1000;
+    const stack=Math.max(.0012,R.depth/1000);
+    if(/wrap/.test(kind)){
+      const long=/long/.test(kind);
+      const hw=(long?Math.max(.160,(R.cardW+74)/1000):(R.cardW+S.ease)/1000);
+      const hh=(long?Math.max(.092,(R.cardH+38)/1000):(R.cardH+S.ease)/1000);
+      const sp=Math.max(.003,(R.depth+2*S.thick)/1000);
+      const left=new T3.Group();group.add(left);
+      left.position.set(-hw/2-sp/2,0,0);
+      panel(hw,hh,t,lm,left,rad);
+      if(lin)panel(hw-2*seam,hh-2*seam,liningT()/1000,lin,left,rad).position.z=t/2+liningT()/2000;
+      stitchRect(hw,hh,rad,seam,t/2+.0006,tm,left);
+      const half=2;
+      for(let i=0;i<half;i++){
+        const sw=hw-.006,sh=ch*.6;
+        const sl=panel(sw,sh,t*.7,lm2,left,.003);
+        sl.position.set(0,-hh/2+sh/2+.004+i*.012,t/2+.0016+i*.0016+ex*.01);
+        stitchRect(sw,sh,.003,seam*.7,t*.35+.0005,tm,sl);
+        if(S.fill){const c=cardObj(cw,ch,i,left);c.position.set(0,-hh/2+ch/2+.010+i*.012,t/2+.0026+i*.0016+ex*.01)}
+      }
+      const pivot=new T3.Group();group.add(pivot);
+      pivot.position.set(sp/2,0,0);
+      const right=new T3.Group();pivot.add(right);
+      right.position.set(hw/2,0,-(t+.0006));
+      panel(hw,hh,t,lm,right,rad);
+      stitchRect(hw,hh,rad,seam,t/2+.0006,tm,right);
+      for(let i=0;i<2;i++){
+        const sw=hw-.006,sh=ch*.6;
+        const sl=panel(sw,sh,t*.7,lm2,right,.003);
+        sl.position.set(0,-hh/2+sh/2+.004+i*.012,t/2+.0016+i*.0016+ex*.01);
+        stitchRect(sw,sh,.003,seam*.7,t*.35+.0005,tm,sl);
+        if(S.fill){const c=cardObj(cw,ch,i+2,right);c.position.set(0,-hh/2+ch/2+.010+i*.012,t/2+.0026+i*.0016+ex*.01)}
+      }
+      pivot.rotation.y=(op-180)*DEG;
+      const spineG=track(new T3.BoxGeometry(sp,hh,t));
+      const spineM=new T3.Mesh(spineG,lm);spineM.position.set(0,0,-t/2);spineM.castShadow=true;group.add(spineM);
+      if(/magnet/.test(kind)){
+        const tab=panel(.055,.020,t*.8,lm2,right,.006);
+        tab.position.set(hw/2-.012,0,t/2+.002);
+        magnet(hw/2-.014,0,t/2+.004,right);
+        magnet(-hw/2-sp/2+hw-.014,0,t/2+.004,left);
+      }
+      addJoinMarks(hw,hh,t/2+.001,left);
+      frameModel(hw*2+sp,hh,D);
+    }else if(/fan/.test(kind)){
+      const pw=(R.cardW+10+2*S.seam)/1000,ph=(R.cardH+6+2*S.seam)/1000;
+      const n=clamp(S.cards,3,6);
+      const px=-pw/2+.012,py=-ph/2+.012;
+      const back=panel(pw+.002,ph+.002,t,lm,group,rad);back.position.z=-stack/2-t/2-ex*.02;
+      for(let i=0;i<n;i++){
+        const pv=new T3.Group();group.add(pv);
+        pv.position.set(px,py,-stack/2+(i+1)*(stack/(n+1)));
+        pv.rotation.z=-(op/180)*(i/(n-1||1))*.95;
+        const pl=panel(pw,ph,t*.62,lm2,pv,.004);pl.position.set(pw/2-.012,ph/2-.012,0);
+        stitchRect(pw,ph,.004,seam*.7,t*.31+.0005,tm,pl);
+        if(S.fill){const c=cardObj(cw,ch,i,pv);c.position.set(pw/2-.012,ph/2-.008,t*.32+.001)}
+      }
+      const cv=new T3.Group();group.add(cv);
+      cv.position.set(px,py,stack/2+t/2+ex*.02);
+      cv.rotation.z=-(op/180)*1.05;
+      const cm=panel(pw+.002,ph+.002,t,lm,cv,rad);cm.position.set(pw/2-.012,ph/2-.012,0);
+      stitchRect(pw+.002,ph+.002,rad,seam,t/2+.0006,tm,cm);
+      rivet(px,py,stack/2+t+.003,bm,group,.004);
+      frameModel(pw*1.5,ph*1.4,D);
+    }else if(/acc/.test(kind)){
+      const pl=clamp(S.cards,3,8);
+      const spread=.3+.7*(op/180);
+      const totalW=W*spread;
+      const back=panel(W,H,t,lm,group,rad);back.position.z=-D/2-t/2-ex*.02;
+      const front=panel(W,H,t,lm,group,rad);front.position.z=D/2+t/2+ex*.02;
+      stitchRect(W,H,rad,seam,t/2+.0006,tm,front);
+      for(let i=0;i<pl-1;i++){
+        const x=-totalW/2+totalW*(i+1)/pl;
+        const dv=panel(W*.94,H*.9,t*.55,lm2,group,.003);
+        dv.position.set(x*.55,0,0);
+        dv.rotation.y=Math.PI/2;
+        if(S.fill&&i<6){const c=cardObj(cw,ch,i,group);c.position.set(x*.55+ .004,0,.002);c.rotation.y=Math.PI/2}
+      }
+      [-1,1].forEach(s=>{
+        const zz=track(new T3.BufferGeometry());
+        const pts=[];const segs=pl*2;
+        for(let i=0;i<=segs;i++){const u=i/segs;pts.push(new T3.Vector3(s*(W/2),-H/2+H*u,0))}
+        const sideG=track(new T3.BoxGeometry(t*.6,H,totalW));
+        const side=new T3.Mesh(sideG,lm2);side.position.set(s*W/2,0,0);side.castShadow=true;group.add(side);
+      });
+      addJoinMarks(W,H,D/2+t+.001);
+      frameModel(W*1.3,H,D+totalW);
+    }else if(/zip/.test(kind)){
+      const back=panel(W,H,t,lm,group,rad);back.position.z=-D/2+t/2;
+      const ring=new T3.Mesh(ringGeo(W,H,rad,t,Math.max(.001,D-2*t)),lm2);ring.castShadow=true;group.add(ring);
+      const lid=new T3.Group();group.add(lid);
+      lid.position.set(0,-H/2,D/2-t/2);
+      const front=panel(W,H,t,lm,lid,rad);front.position.set(0,H/2,0);
+      stitchRect(W,H,rad,seam,t/2+.0006,tm,front);
+      lid.rotation.x=-(op/180)*.85;
+      const zp=[[W/2-.004,H/2-.004],[-W/2+.004,H/2-.004],[-W/2+.004,-H/2+.004],[W/2-.004,-H/2+.004]];
+      zipper(zp,0,bm,group);
+      if(S.fill)for(let i=0;i<Math.min(S.cards,5);i++){const c=cardObj(cw,ch,i,group);c.position.set(0,.004,-D/2+t+.001+i*.0012)}
+      addJoinMarks(W,H,D/2+.001);
+      frameModel(W,H,D);
+    }else{
+      const fh=(R.cardH*.72+S.ease+2*S.seam)/1000;
+      const backH=(/slots/.test(kind))?(R.cardH+S.ease+22+2*S.seam)/1000:H;
+      const back=panel(W,backH,t,lm,group,rad);
+      back.position.set(0,(backH-H)/2,-stack/2-t/2-ex*.018);
+      if(lin){const l=panel(W-2*seam,backH-2*seam,liningT()/1000,lin,group,rad);l.position.set(0,(backH-H)/2,-stack/2-liningT()/2000-ex*.018)}
+      stitchRect(W,backH,rad,seam,-stack/2-t-.0006,tm,back);
+      if(/flap/.test(kind)){
+        const pv=new T3.Group();group.add(pv);
+        pv.position.set(0,backH/2+(backH-H)/2,-stack/2-t/2);
+        const fl=panel(W,R.cardH*.45/1000,t,lm2,pv,rad);
+        fl.position.set(0,-R.cardH*.45/2000,-(stack+t)-.001);
+        stitchRect(W,R.cardH*.45/1000,rad,seam,-t/2-.0006,tm,fl);
+        snap(0,-R.cardH*.45/1000+.016,-(stack+t)-.001-t/2,bm,fl);
+        pv.rotation.x=(op/180)*Math.PI*.92;
+        snap(0,backH/2-R.cardH*.45/1000+.016+(backH-H)/2,stack/2+t+.002,bm,group);
+      }
+      if(/slots|clip/.test(kind)){
+        const n=/clip/.test(kind)?2:3;
+        for(let i=0;i<n;i++){
+          const sh=R.cardH*.62/1000;
+          const sl=panel(W,sh,t*.7,lm2,group,.003);
+          sl.position.set(0,-backH/2+sh/2+.004+i*.011+(backH-H)/2,stack/2+t+.0012+i*.0014+ex*.012);
+          stitchRect(W,sh,.003,seam*.7,t*.35+.0005,tm,sl);
+          if(S.fill){const c=cardObj(cw,ch,i,group);c.position.set(0,-backH/2+ch/2+.012+i*.011+(backH-H)/2,stack/2+t+.0024+i*.0014+ex*.012)}
+        }
+      }else{
+        const front=panel(W,fh,t,lm,group,rad);
+        front.position.set(0,-(H-fh)/2,stack/2+t/2+ex*.018);
+        stitchRect(W,fh,rad,seam,t/2+.0006,tm,front);
+        if(S.fill)for(let i=0;i<Math.min(S.cards,6);i++){const c=cardObj(cw,ch,i,group);c.position.set(0,(backH-H)/2+.010,-stack/2+.0008+i*(stack/Math.max(1,Math.min(S.cards,6))))}
+      }
+      if(/pull/.test(kind)){
+        const rb=panel(.012,.055,.0012,lm2,group,.001);
+        rb.position.set(0,backH/2+.020+(backH-H)/2,0);
+      }
+      if(/clip/.test(kind)){
+        const cg=track(new T3.BoxGeometry(.060,.024,.0022));
+        const cm2=new T3.Mesh(cg,sm);cm2.position.set(0,backH/2-.014+(backH-H)/2,-stack/2-t-.002);cm2.castShadow=true;group.add(cm2);
+        const tg=track(new T3.BoxGeometry(.050,.004,.0014));
+        const tm2=new T3.Mesh(tg,sm);tm2.position.set(0,backH/2-.028+(backH-H)/2,-stack/2-t-.005);group.add(tm2);
+        rivet(-.010,backH/2-.014+(backH-H)/2,-stack/2-t-.004,bm,group);
+        rivet(.010,backH/2-.014+(backH-H)/2,-stack/2-t-.004,bm,group);
+      }
+      addJoinMarks(W,backH,stack/2+t+.001);
+      frameModel(W,Math.max(backH,H),D);
+    }
+  }else{
+    if(/wrap/.test(kind)){
+      const hw=W/2,sp=Math.max(.004,(R.depth+2*S.thick)/1000);
+      const left=new T3.Group();group.add(left);left.position.set(-hw/2-sp/2,0,0);
+      panel(hw,H,t,lm,left,rad);
+      stitchRect(hw,H,rad,seam,t/2+.0006,tm,left);
+      if(lin){const l=panel(hw-2*seam,H-2*seam,liningT()/1000,lin,left,rad);l.position.z=t/2+liningT()/2000}
+      const piv=new T3.Group();group.add(piv);piv.position.set(sp/2,0,0);
+      const right=new T3.Group();piv.add(right);right.position.set(hw/2,0,-(t+.0008));
+      panel(hw,H,t,lm,right,rad);
+      stitchRect(hw,H,rad,seam,t/2+.0006,tm,right);
+      const pk=panel(hw*.7,H*.5,t*.7,lm2,right,.005);pk.position.set(0,-H*.12,t/2+.0018);
+      piv.rotation.y=(op-180)*DEG;
+      const spg=track(new T3.BoxGeometry(sp,H,t));
+      const spm=new T3.Mesh(spg,lm);spm.position.set(0,0,-t/2);spm.castShadow=true;group.add(spm);
+      if(S.fill){const dv=panel(S.A/1000,S.B/1000,Math.max(.004,S.C/1000),steelMat(),left,.004);dv.position.set(0,0,t/2+.004+S.C/2000)}
+      addJoinMarks(hw,H,t/2+.001,left);
+      frameModel(hw*2+sp,H,D);
+    }else{
+      const back=panel(W,H,t,lm,group,rad);back.position.z=-D/2+t/2-ex*.03;
+      if(lin){const l=panel(W-2*seam,H-2*seam,liningT()/1000,lin,group,rad);l.position.z=-D/2+liningT()/2000-ex*.03}
+      stitchRect(W,H,rad,seam,-D/2-.0006,tm,back);
+      if(R.gusset){
+        const ring=new T3.Mesh(ringGeo(W,H,rad,t,Math.max(.001,D-2*t)),lm2);ring.castShadow=true;ring.receiveShadow=true;group.add(ring);
+        stitchRect(W,H,rad,t*.5,(D-2*t)/2-.0004,tm,group);
+        stitchRect(W,H,rad,t*.5,-(D-2*t)/2+.0004,tm,group);
+      }else{
+        const seamG=track(new T3.BoxGeometry(.0012,.0012,.0012));
+        const pts=rrPts(W,H,rad,.0006);
+        stitches(pts,0,tm,group,.0035);
+      }
+      const front=panel(W,H,t,lm,group,rad);front.position.z=D/2-t/2+ex*.03;
+      stitchRect(W,H,rad,seam,D/2+.0006,tm,front);
+      if(lin){const l=panel(W-2*seam,H-2*seam,liningT()/1000,lin,group,rad);l.position.z=D/2-liningT()/2000+ex*.03}
+      if(/pocket|org/.test(kind)){
+        const pw=W*.55,ph=H*.32;
+        const pk=panel(pw,ph,t*.75,lm2,group,.005);pk.position.set(0,-H*.12,D/2+t*.4+.001+ex*.04);
+        stitchRect(pw,ph,.005,seam*.7,t*.38+.0005,tm,pk);
+      }
+      if(/flap/.test(kind)){
+        const flL=H*.42;
+        const pv=new T3.Group();group.add(pv);
+        pv.position.set(0,H/2,D/2-t/2);
+        const fl=panel(W*.98,flL,t,lm2,pv,rad);fl.position.set(0,-flL/2,t*.6+.0012);
+        stitchRect(W*.98,flL,rad,seam,t/2+.0006,tm,fl);
+        if(/stud|lock/.test(kind)){snap(0,-flL+.020,t*.6+.0012+t/2,bm,fl,.006);snap(0,H/2-flL+.020,D/2+.002,bm,group,.006)}
+        if(/band/.test(kind)){
+          const bd=panel(W+.004,.022,t*.7,lm2,group,.003);bd.position.set(0,H/2-flL*.7,D/2+t*.5+.002);
+        }
+        pv.rotation.x=(op/180)*Math.PI*.95;
+      }
+      if(/zip/.test(kind)){
+        const zp=[[-W/2+.006,H/2-.002],[W/2-.006,H/2-.002]];
+        zipper(zp,D/2-.001,bm,group);
+      }
+      if(/handle/.test(kind)){
+        const curve=new T3.CatmullRomCurve3([new T3.Vector3(-.06,H/2,0),new T3.Vector3(-.05,H/2+.05,0),new T3.Vector3(.05,H/2+.05,0),new T3.Vector3(.06,H/2,0)]);
+        const hg=track(new T3.TubeGeometry(curve,40,.005,10,false));
+        const hm=new T3.Mesh(hg,lm2);hm.castShadow=true;group.add(hm);
+        rivet(-.06,H/2-.004,D/2+.002,bm,group);rivet(.06,H/2-.004,D/2+.002,bm,group);
+      }
+      if(S.fill&&(op>25||!/flap/.test(kind))){
+        const dv=panel(S.A/1000,S.B/1000,Math.max(.004,S.C/1000),steelMat(),group,.004);
+        dv.position.set(0,H*.16,0);
+      }
+      addJoinMarks(W,H,D/2+.001);
+      frameModel(W,H,D);
+    }
+  }
+  renderer.shadowMap.needsUpdate=true;
+}
+function animate(){
+  requestAnimationFrame(animate);
+  if(!ready3)return;
+  controls.autoRotate=S.autoRot;controls.update();
+  const a=S.angle*DEG,d=Math.max(.12,camera.position.length());
+  keyL.position.set(Math.sin(a)*d*1.1,d*1.2,Math.cos(a)*d*1.1);
+  keyL.intensity=S.light*1.5;rimL.intensity=S.light*.55;
+  renderer.render(scene,camera);
+}
+function fallback3D(){ready3=false;$("#gl").hidden=true;$("#fallback").hidden=false;$("#veil").classList.add("off");$("#hudBadge").textContent="Эскиз 2D";drawFallback()}
+function rrPath2(x,a,b,w,h,r){x.beginPath();x.moveTo(a+r,b);x.arcTo(a+w,b,a+w,b+h,r);x.arcTo(a+w,b+h,a,b+h,r);x.arcTo(a,b+h,a,b,r);x.arcTo(a,b,a+w,b,r);x.closePath()}
+function drawFallback(){
+  if(!ready())return;
+  const M=derive(),cv=$("#fallback"),st=$("#stage");
+  cv.width=Math.max(1,st.clientWidth)*1.5;cv.height=Math.max(1,st.clientHeight)*1.5;
+  const x=cv.getContext("2d");
+  x.fillStyle="#1d130c";x.fillRect(0,0,cv.width,cv.height);
+  const w=cv.width*.55,h=w*M.outer.h/M.outer.w,X=(cv.width-w)/2,Y=(cv.height-h)/2;
+  x.fillStyle=S.color;rrPath2(x,X,Y,w,h,18);x.fill();
+  x.strokeStyle=threadHex();x.setLineDash([8,6]);x.strokeRect(X+18,Y+18,w-36,h-36);x.setLineDash([]);
+  x.fillStyle="#f3ead8";x.font="700 22px Manrope,sans-serif";x.textAlign="center";
+  x.fillText(designName(),cv.width/2,Y+h+36);
+}
+function snapshot(){
+  if(!ready())return toast("Выберите параметры");
+  if(!ready3&&$("#fallback").hidden)return toast("3D ещё загружается");
+  const src=ready3?$("#gl"):$("#fallback");
+  if(!src.width||!src.height)return toast("Сцена не готова");
+  const o=document.createElement("canvas");o.width=src.width;o.height=src.height;
+  const x=o.getContext("2d");x.fillStyle="#171009";x.fillRect(0,0,o.width,o.height);x.drawImage(src,0,0);
+  x.fillStyle="#f3ead8";x.font="700 24px Manrope,sans-serif";
+  x.fillText(designName()+" · "+edgeLabel(derive().gusset)+" · "+fmt(S.thick)+" мм",30,o.height-30);
+  const a=document.createElement("a");a.href=o.toDataURL("image/png");a.download="preview.png";a.click();
+}
+
+/* ================= UI ================= */
+function fillSelects(){
+  const brands=["all"].concat(Array.from(new Set(DEVICES[S.type].map(d=>d[0]))));
+  $("#brand").innerHTML=brands.map(b=>'<option value="'+b+'">'+(b==="all"?"Все бренды":b)+'</option>').join("");
+  $("#brand").value=S.brand;
+  const groups={},order=[];
+  CARD_FORMATS.forEach(f=>{if(!groups[f.group]){groups[f.group]=[];order.push(f.group)}groups[f.group].push(f)});
+  $("#cardFormat").innerHTML=order.map(g=>'<optgroup label="'+g+'">'+groups[g].map(f=>'<option value="'+f.id+'">'+f.name+' · '+fmt(f.w)+'×'+fmt(f.h)+'</option>').join("")+'</optgroup>').join("");
+  $("#stock").innerHTML=STOCKS.map(s=>'<option value="'+s.id+'">'+s.name+(s.id==="custom"?"":" · "+s.w+"×"+s.h)+'</option>').join("");
+  $("#finish").innerHTML=FINISHES.map(f=>'<option value="'+f[0]+'">'+f[1]+'</option>').join("");
+  $("#thread").innerHTML=THREADS.map(t=>'<option value="'+t[0]+'">'+t[1]+'</option>').join("");
+  $("#lining").innerHTML=LININGS.map(l=>'<option value="'+l[0]+'">'+l[1]+'</option>').join("");
+  $("#swatches").innerHTML=COLORS.map(c=>'<button class="swatch" data-color="'+c+'" style="background:'+c+'"></button>').join("");
+}
+function fillModels(){
+  const q=$("#search").value.trim().toLowerCase(),brand=$("#brand").value||"all",arr=DEVICES[S.type],groups={},order=[];
+  let shown=0;
+  arr.forEach((d,i)=>{
+    if((brand==="all"||d[0]===brand)&&(!q||d[1].toLowerCase().indexOf(q)>=0||d[0].toLowerCase().indexOf(q)>=0)){
+      if(!groups[d[0]]){groups[d[0]]=[];order.push(d[0])}
+      groups[d[0]].push([d,i]);shown++;
+    }
+  });
+  let html='<option value="">— выбрать модель —</option>';
+  order.forEach(b=>{html+='<optgroup label="'+b+' ('+groups[b].length+')">'+groups[b].map(it=>'<option value="'+it[1]+'">'+it[0][1]+' · '+fmt(it[0][2])+'×'+fmt(it[0][3])+'×'+fmt(it[0][4])+'</option>').join("")+'</optgroup>'});
+  html+='<option value="custom">Свой размер</option>';
+  $("#model").innerHTML=html;
+  const idx=arr.findIndex(d=>d[1]===S.model);
+  $("#model").value=S.model==="custom"?"custom":(idx>=0?String(idx):"");
+  const total=DEVICES.laptop.length+DEVICES.tablet.length+DEVICES.ebook.length;
+  $("#catCount").textContent="Показано "+shown+" из "+arr.length+" "+TYPE_LABEL[S.type]+" · всего в каталоге "+total;
+  $("#chCatalog").textContent=DEVICES.laptop.length+" ноутб. + "+DEVICES.tablet.length+" планш. + "+DEVICES.ebook.length+" э-книг";
+}
+function fillDesigns(){
+  const reg=designs();
+  $("#designGrid").innerHTML=Object.keys(reg).map(id=>'<button class="dc '+(designId()===id?"on":"")+'" data-design="'+id+'"><svg viewBox="0 0 46 34"><rect x="6" y="7" width="34" height="22" rx="4"/><path d="M10 13h26M10 20h18"/></svg><span>'+reg[id][0]+'</span></button>').join("");
+}
+function syncUI(){
+  const r=ready();
+  $("#casePanel").hidden=isCard();$("#cardPanel").hidden=!isCard();$("#customStock").hidden=S.stock!=="custom";
+  $("#lock").hidden=r;
+  $("#chFamily").textContent=famName();
+  $("#chDims").textContent=r?fmt(S.A)+"×"+fmt(S.B)+"×"+fmt(S.C):"—";
+  $("#chThick").textContent=fmt(S.thick)+" мм";
+  $("#hudDims").innerHTML=r?"<b>"+designName()+"</b> · "+fmt(S.A)+"×"+fmt(S.B)+"×"+fmt(S.C)+" мм · кожа "+fmt(S.thick)+" мм · "+edgeLabel(useGus()):"Выберите параметры";
+  $("#dimA").value=fx(S.A);$("#dimB").value=fx(S.B);$("#dimC").value=fx(S.C);$("#dimC").disabled=isCard();
+  $("#ease").value=S.ease;$("#easeOut").textContent="+"+fmt(S.ease);
+  $("#seam").value=S.seam;$("#seamOut").textContent=fmt(S.seam);
+  $("#thick").value=S.thick;$("#thickOut").textContent=fmt(S.thick)+" мм";
+  $("#patina").value=S.patina;$("#patinaOut").textContent=S.patina+"%";
+  $("#light").value=S.light;$("#lightOut").textContent=fx(S.light,2);
+  $("#angle").value=S.angle;$("#angleOut").textContent=S.angle+"°";
+  $("#open").value=S.open;$("#openOut").textContent=S.open+"°";
+  $("#openLbl").textContent=isCard()?"Раскрытие":"Клапан / крышка";
+  $("#explode").value=S.explode;$("#explodeOut").textContent=S.explode+"%";
+  $("#joinAllow").value=S.join;$("#joinOut").textContent=S.join+" мм";
+  $("#maxPart").value=S.maxPart;$("#maxPartOut").textContent=S.maxPart+" мм";
+  $("#stockW").value=S.stockW;$("#stockH").value=S.stockH;$("#stockM").value=S.stockM;
+  $("#color").value=S.color;$("#finish").value=S.finish;$("#thread").value=S.thread;$("#lining").value=S.lining;$("#stock").value=S.stock;
+  $("#quality").value=S.quality;
+  $("#splitToggle").setAttribute("aria-checked",String(S.split));
+  $("#rotToggle").setAttribute("aria-checked",String(S.autoRot));
+  $("#fillToggle").setAttribute("aria-checked",String(S.fill));
+  $("#rotBtn").classList.toggle("on",S.autoRot);
+  const pm={legend:"pLegend",hardware:"pHardware",glue:"pGlue",stitch:"pStitch",joins:"pJoins",labels:"pLabels",mini:"pMini",cal:"pCal"};
+  Object.keys(pm).forEach(k=>{$("#"+pm[k]).checked=S.print[k]});
+  $("#cardFormat").value=S.cardFmt;$("#cardCount").value=S.cards;$("#cardCountOut").textContent=S.cards+" шт";
+  const f=cardFmt();
+  $("#cardInfo").textContent=f.name+" · "+fmt(f.w)+"×"+fmt(f.h)+"×"+fmt(f.t)+" мм · стек "+S.cards+" шт = "+fmt(S.C)+" мм";
+  $$(".swatch").forEach(b=>b.classList.toggle("on",b.dataset.color===S.color));
+  $$("[data-or]").forEach(b=>b.classList.toggle("on",b.dataset.or===S.orient));
+  $$("[data-family]").forEach(b=>b.classList.toggle("on",b.dataset.family===S.family));
+  $$("[data-type]").forEach(b=>b.classList.toggle("on",b.dataset.type===S.type));
+  const pk=[["device",isCard()?"Формат карты / документа":"Модель устройства"],["design","Конструкция"]];
+  const html=pk.map(p=>'<span class="ri '+(S.picked[p[0]]?"ok":"")+'"><i>'+(S.picked[p[0]]?"✓":"")+'</i>'+p[1]+'</span>').join("");
+  $("#readyList").innerHTML=html;$("#lockList").innerHTML=html;
+  $("#lockBar").style.width=((S.picked.device?1:0)+(S.picked.design?1:0))/2*100+"%";
+  ["pdfBtn","pdfBtn2","svgBtn","svgBtn2","techBtn","previewBtn","previewBtn2","pngBtn","pngBtn2","camBtn","camBtn2","rotBtn","openBtn","openBtn2","topPdf"].forEach(id=>{const el=$("#"+id);if(el)el.disabled=!r});
+}
+let buildTimer=0;
+function render(light){
+  try{
+    syncUI();
+    if(!ready()){
+      $("#patternSvg").innerHTML="";
+      $("#specBody").innerHTML="<tr><td colspan='4'>Выберите параметры и конструкцию</td></tr>";
+      ["joinList","stockSummary","techCards","checkList","splitWarn","printSummary","printWarn","testReport"].forEach(id=>{$("#"+id).innerHTML=""});
+      $("#chParts").textContent="—";$("#chSheets").textContent="—";
+      renderLegendPreview();
+      return;
+    }
+    const M=derive();
+    renderBoard(M);renderPrint(M);renderSplit(M);renderSpec(M);renderTech(M);
+    $("#chParts").textContent=M.pieces.length;$("#chSheets").textContent=sheetsOf(M);
+    if(!started3)init3D();
+    else if(ready3){
+      if(light){clearTimeout(buildTimer);buildTimer=setTimeout(build3D,60)}
+      else build3D();
+    }else if(!$("#fallback").hidden)drawFallback();
+  }catch(e){console.error(e);toast("Ошибка: "+e.message)}
+}
+function set(patch,light){
+  S=sanitize(Object.assign({},S,patch));
+  if(isCard()){
+    if("cardFmt" in patch){const f=cardFmt();if(f.t>=2)S.cards=1}
+    if("cardFmt" in patch||"cards" in patch||"orient" in patch)syncCardDims();
+  }
+  if("design" in patch||"cardDesign" in patch)S.picked.design=!!designId();
+  if("model" in patch)S.picked.device=!!S.model;
+  if("cardFmt" in patch||"cards" in patch||"orient" in patch)S.picked.device=true;
+  save();render(light);
+}
+function setPrint(k,v){S.print[k]=v;save();render()}
+function toast(m){const t=document.createElement("div");t.className="toast";t.textContent=m;$("#toasts").appendChild(t);setTimeout(()=>t.remove(),2800)}
+function toggleOpen(){set({open:S.open>90?0:170})}
+
+/* ================= тесты ================= */
+const TEST_IDS=["familyTabs","typeSeg","brand","search","model","catCount","cardFormat","cardCount","cardCountOut","orientSeg","cardInfo","dimA","dimB","dimC","ease","easeOut","seam","seamOut","designGrid","swatches","color","finish","thick","thickOut","patina","patinaOut","thread","lining","stock","customStock","stockW","stockH","stockM","splitToggle","joinAllow","joinOut","maxPart","maxPartOut","pLegend","pHardware","pGlue","pStitch","pJoins","pLabels","pMini","pCal","open","openOut","openLbl","explode","explodeOut","light","lightOut","angle","angleOut","rotToggle","fillToggle","quality","resetAll","randomBtn","stage","gl","fallback","lock","lockList","lockBar","veil","hudBadge","camBtn","rotBtn","openBtn","pngBtn","hudDims","camBtn2","openBtn2","pngBtn2","pdfBtn","svgBtn","techBtn","previewBtn","printSummary","printWarn","legendPreview","splitWarn","stockSummary","joinList","svgBtn2","previewBtn2","pdfBtn2","board","patternSvg","stArea","stParts","stJoins","stSheets","stThread","specBody","checkList","selfTest","testReport","techCards","preview","previewScrim","previewPages","closePreview","closePreview2","dpi","doPdf","doPrint","pdfProg","progText","progBar","printRoot","toasts","readyList","resetPick","demoBtn","casePanel","cardPanel","chFamily","chCatalog","chDims","chThick","chParts","chSheets","topPdf"];
+function runTests(){
+  const res=[];
+  const missing=TEST_IDS.filter(id=>!document.getElementById(id));
+  res.push(["DOM: "+TEST_IDS.length+" элементов",missing.length===0,missing.length?("нет: "+missing.join(", ")):"ok"]);
+  res.push(["Каталог ноутбуков ≥ 80",DEVICES.laptop.length>=80,DEVICES.laptop.length+" моделей"]);
+  res.push(["Каталог планшетов ≥ 80",DEVICES.tablet.length>=80,DEVICES.tablet.length+" моделей"]);
+  res.push(["Каталог э-книг ≥ 100",DEVICES.ebook.length>=100,DEVICES.ebook.length+" моделей"]);
+  res.push(["Форматы РБ присутствуют",["pp_by","pp_by_bio","id_by","dl_by"].every(id=>CARD_FORMATS.some(f=>f.id===id)),"4 формата"]);
+  const backup=JSON.parse(JSON.stringify(S));
+  const cfgs=[
+    ["Чехол · Air плоский",{family:"case",design:"slip",A:304.1,B:215,C:11.3,thick:2.2,stock:"a4"}],
+    ["Чехол · игровой 25 мм",{family:"case",design:"slip",A:354,B:251,C:25,thick:2.2,stock:"a4"}],
+    ["Чехол · фолио",{family:"case",design:"folio",A:304,B:215,C:12,thick:2,stock:"a3"}],
+    ["Чехол · органайзер",{family:"case",design:"organizer",A:280,B:200,C:14,thick:2.4,stock:"a4"}],
+    ["Чехол · ручка",{family:"case",design:"handle",A:320,B:220,C:16,thick:2.2,stock:"a4"}],
+    ["Чехол · молния",{family:"case",design:"zip",A:300,B:210,C:14,thick:2.2,stock:"a4"}],
+    ["Картхолдер · слип",{family:"card",cardDesign:"ch_slip",cardFmt:"id1",cards:4,thick:1.4,stock:"a4"}],
+    ["Картхолдер · молния",{family:"card",cardDesign:"ch_zip",cardFmt:"id1",cards:6,thick:1.4,stock:"a4"}],
+    ["Картхолдер · аккордеон",{family:"card",cardDesign:"ch_acc",cardFmt:"id1",cards:10,thick:1.2,stock:"a4"}],
+    ["Картхолдер · бифолд",{family:"card",cardDesign:"ch_bifold",cardFmt:"id1",cards:6,thick:1.5,stock:"a4"}],
+    ["Картхолдер · веер",{family:"card",cardDesign:"ch_fan",cardFmt:"id1",cards:5,thick:1.3,stock:"20x20"}],
+    ["Картхолдер · зажим",{family:"card",cardDesign:"ch_clip",cardFmt:"id1",cards:4,thick:1.4,stock:"a4"}],
+    ["Паспорт РБ · слип",{family:"card",cardDesign:"ch_slip",cardFmt:"pp_by",cards:1,thick:1.4,stock:"a4"}],
+    ["Биопаспорт РБ · бифолд",{family:"card",cardDesign:"ch_bifold",cardFmt:"pp_by_bio",cards:1,thick:1.6,stock:"a4"}],
+    ["ID-карта РБ · слоты",{family:"card",cardDesign:"ch_slots",cardFmt:"id_by",cards:3,thick:1.2,stock:"20x20"}],
+    ["Кусок 100×100",{family:"case",design:"slip",A:304,B:215,C:12,thick:2.2,stock:"custom",stockW:100,stockH:100,stockM:5,join:5,maxPart:90}]
+  ];
+  cfgs.forEach(c=>{
+    S=sanitize(Object.assign({},backup,c[1]));
+    if(isCard())syncCardDims();
+    let M=null,err="";
+    try{M=derive()}catch(e){err=e.message}
+    if(!M){res.push([c[0],false,err||"derive null"]);return}
+    const geom=M.pieces.length>0&&M.pieces.every(p=>Number.isFinite(p.w)&&Number.isFinite(p.h)&&p.poly.length>=3&&p.poly.every(q=>Number.isFinite(q[0])&&Number.isFinite(q[1])));
+    const fit=M.oversize===0,pair=M.joins.every(j=>j.parts.length>1);
+    let a4=true;
+    try{a4=buildPages(M).every(pg=>pg.svg.indexOf("NaN")<0&&pg.svg.indexOf('width="210mm"')>=0)}catch(e){a4=false}
+    res.push([c[0],geom&&fit&&pair&&a4,M.pieces.length+" дет · "+sheetsOf(M)+" A4"+(fit?"":" · не влезает в кусок")]);
+  });
+  S=sanitize(backup);
+  const pass=res.filter(r=>r[1]).length;
+  $("#testReport").innerHTML='<div class="'+(pass===res.length?"okbar":"warnbar")+'">Тесты: '+pass+'/'+res.length+'</div><ul class="join-list" style="margin-top:8px">'+res.map(r=>'<li>'+(r[1]?"✓":"✕")+' '+r[0]+' <code>'+r[2]+'</code></li>').join("")+'</ul>';
+  return pass===res.length;
+}
+
+/* ================= привязки ================= */
+function bind(){
+  fillSelects();fillModels();fillDesigns();
+  $("#familyTabs").onclick=e=>{
+    const b=e.target.closest("[data-family]");if(!b)return;
+    S.family=b.dataset.family;S.picked={device:false,design:false};
+    if(isCard()){S.ease=2;S.seam=4;S.thick=1.4;S.open=140;syncCardDims()}else{S.ease=6;S.seam=6;S.thick=2.2;S.open=0}
+    fillDesigns();render();
+  };
+  $("#typeSeg").onclick=e=>{const b=e.target.closest("[data-type]");if(!b)return;S.type=b.dataset.type;S.brand="all";S.model="";S.picked.device=false;fillSelects();fillModels();render()};
+  $("#brand").onchange=e=>{S.brand=e.target.value;save();fillModels()};
+  $("#search").oninput=e=>{S.search=e.target.value;save();fillModels()};
+  $("#model").onchange=e=>{
+    const v=e.target.value;
+    if(v==="custom"){S.model="custom";S.picked.device=true}
+    else if(v){const d=DEVICES[S.type][+v];S.model=d[1];S.A=d[2];S.B=d[3];S.C=d[4];S.picked.device=true;toast(d[1])}
+    else{S.model="";S.picked.device=false}
+    render();
+  };
+  $("#cardFormat").onchange=e=>{set({cardFmt:e.target.value});toast(cardFmt().name)};
+  $("#cardCount").oninput=e=>set({cards:+e.target.value},true);
+  $("#orientSeg").onclick=e=>{const b=e.target.closest("[data-or]");if(b)set({orient:b.dataset.or})};
+  ["A","B","C"].forEach(k=>{$("#dim"+k).onchange=e=>{const p={};p[k]=+e.target.value;if(!isCard())p.model="custom";set(p)}});
+  $$("[data-step]").forEach(b=>{b.onclick=()=>{const q=b.dataset.step.split(":"),k=q[0],d=+q[1],p={};p[k]=Math.round((S[k]+d)*10)/10;if(!isCard())p.model="custom";set(p)}});
+  $("#designGrid").onclick=e=>{
+    const b=e.target.closest("[data-design]");if(!b)return;
+    const p={open:isCard()?140:0};
+    if(isCard())p.cardDesign=b.dataset.design;else p.design=b.dataset.design;
+    set(p);toast(designName());
+  };
+  $("#swatches").onclick=e=>{const b=e.target.closest("[data-color]");if(b)set({color:b.dataset.color},true)};
+  $("#color").oninput=e=>set({color:e.target.value},true);
+  $("#finish").onchange=e=>set({finish:e.target.value});
+  $("#thread").onchange=e=>set({thread:e.target.value},true);
+  $("#lining").onchange=e=>set({lining:e.target.value});
+  ["ease","seam","thick","patina"].forEach(id=>{$("#"+id).oninput=e=>{const p={};p[id]=+e.target.value;set(p,id==="patina")}});
+  ["light","angle"].forEach(id=>{$("#"+id).oninput=e=>{const p={};p[id]=+e.target.value;S=sanitize(Object.assign({},S,p));save();syncUI()}});
+  $("#open").oninput=e=>{S=sanitize(Object.assign({},S,{open:+e.target.value}));save();syncUI();if(ready3){clearTimeout(buildTimer);buildTimer=setTimeout(build3D,40)}};
+  $("#explode").oninput=e=>{S=sanitize(Object.assign({},S,{explode:+e.target.value}));save();syncUI();if(ready3){clearTimeout(buildTimer);buildTimer=setTimeout(build3D,40)}};
+  $("#joinAllow").oninput=e=>set({join:+e.target.value},true);
+  $("#maxPart").oninput=e=>set({maxPart:+e.target.value},true);
+  $("#stock").onchange=e=>set({stock:e.target.value});
+  ["stockW","stockH","stockM"].forEach(id=>{$("#"+id).onchange=e=>{const p={};p[id]=+e.target.value;set(p)}});
+  $("#splitToggle").onclick=()=>set({split:!S.split});
+  $("#rotToggle").onclick=()=>set({autoRot:!S.autoRot},true);
+  $("#rotBtn").onclick=()=>set({autoRot:!S.autoRot},true);
+  $("#fillToggle").onclick=()=>set({fill:!S.fill});
+  $("#quality").onchange=e=>{S=sanitize(Object.assign({},S,{quality:e.target.value}));save();resize3D()};
+  const pm={pLegend:"legend",pHardware:"hardware",pGlue:"glue",pStitch:"stitch",pJoins:"joins",pLabels:"labels",pMini:"mini",pCal:"cal"};
+  Object.keys(pm).forEach(id=>{$("#"+id).onchange=e=>setPrint(pm[id],e.target.checked)});
+  $("#resetPick").onclick=()=>{S.picked={device:false,design:false};S.model="";S.design="";S.cardDesign="";fillDesigns();render()};
+  $("#demoBtn").onclick=()=>{
+    if(isCard()){S.cardFmt="pp_by";S.cards=1;S.cardDesign="ch_bifold";S.open=150;syncCardDims();toast("Демо: обложка на паспорт РБ")}
+    else{S.type="laptop";S.brand="all";S.model="MacBook Air 13 M2/M3/M4";S.A=304.1;S.B=215;S.C=11.3;S.design="slip";S.open=0;fillSelects();fillModels()}
+    S.picked={device:true,design:true};fillDesigns();render();
+  };
+  $("#resetAll").onclick=()=>{S=sanitize(DEF);fillSelects();fillModels();fillDesigns();render()};
+  $("#randomBtn").onclick=()=>{
+    const keys=Object.keys(designs()),id=keys[Math.floor(Math.random()*keys.length)];
+    const p={color:COLORS[Math.floor(Math.random()*COLORS.length)],finish:FINISHES[Math.floor(Math.random()*FINISHES.length)][0],thick:Math.round((isCard()?1+Math.random()*1.2:1.4+Math.random()*1.8)*10)/10,open:isCard()?150:0};
+    if(isCard())p.cardDesign=id;else p.design=id;
+    set(p);
+  };
+  ["pdfBtn","pdfBtn2","topPdf","doPdf"].forEach(id=>{$("#"+id).onclick=exportPDF});
+  ["svgBtn","svgBtn2"].forEach(id=>{$("#"+id).onclick=()=>downloadSVG(derive())});
+  $("#techBtn").onclick=downloadTech;
+  $("#previewBtn").onclick=openPreview;$("#previewBtn2").onclick=openPreview;
+  const close=()=>{$("#preview").hidden=true};
+  $("#closePreview").onclick=close;$("#closePreview2").onclick=close;$("#previewScrim").onclick=close;
+  $("#doPrint").onclick=printPages;
+  $("#pngBtn").onclick=snapshot;$("#pngBtn2").onclick=snapshot;
+  $("#camBtn").onclick=()=>{if(ready3)build3D()};$("#camBtn2").onclick=()=>{if(ready3)build3D()};
+  $("#openBtn").onclick=toggleOpen;$("#openBtn2").onclick=toggleOpen;
+  $("#selfTest").onclick=()=>{const ok=runTests();toast(ok?"Все тесты пройдены":"Есть замечания — см. отчёт");render()};
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")close()});
+  window.addEventListener("resize",()=>{if(!ready3&&!$("#fallback").hidden)drawFallback()});
+  if("IntersectionObserver" in window){
+    const ro=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add("in");ro.unobserve(en.target)}}),{threshold:.05});
+    $$(".reveal").forEach(el=>ro.observe(el));
+    const nav=$$("nav a");
+    const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting)nav.forEach(a=>a.classList.toggle("on",a.getAttribute("href")==="#"+en.target.id))}),{rootMargin:"-35% 0px -55%"});
+    ["studio","print","split","pattern","spec","assembly"].forEach(id=>{const el=document.getElementById(id);if(el)io.observe(el)});
+  }else $$(".reveal").forEach(el=>el.classList.add("in"));
+}
+
+try{
+  if(isCard())syncCardDims();
+  bind();render();runTests();
+  window.__booted=true;
+}catch(e){
+  console.error(e);
+  const b=document.createElement("div");b.id="bootError";b.textContent="Ошибка запуска: "+e.message;document.body.appendChild(b);
+}
+</script>
+</body>
+</html>
