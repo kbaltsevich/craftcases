@@ -1027,10 +1027,17 @@ for(let i=0;i<n;i++){const sh=BANK_CARD.h*.62+s+8;P.push(piece("slot"+i,"Сло�
 }
 if(/pull/.test(kind))P.push(piece("ribbon","Язычок-экстрактор",130,12,roundedRect(0,0,130,12,3),{folds:[mark(20,0,20,12,"перегиб")]}));
 if(/flap/.test(kind)){
-P.push(piece("flap","Клапан",pw,cB*.45,roundedRect(0,0,pw,cB*.45,8),{holes:[hole("circle",pw/2-4.5,18,3.5,3.5,"кнопка Ø3,5"),hole("circle",pw/2+4.5,18,3.5,3.5,"")]}));
-P.push(piece("studpad","Площадка кнопки",30,30,roundedRect(0,0,30,30,6),{holes:[hole("circle",10.5,15,3.5,3.5,"Ø3,5"),hole("circle",19.5,15,3.5,3.5,"")],notes:"усилитель"}));
+const flapH=cB*.45;
+let flapPoly;
+if(/stud/.test(kind)){
+flapPoly=[[0,0],[pw,0],[pw,flapH*.35],[pw/2,flapH],[0,flapH*.35]];
+}else{
+flapPoly=roundedRect(0,0,pw,flapH,8);
 }
-if(/clip/.test(kind))P.push(piece("cliptab","Площадка зажима",70,26,roundedRect(0,0,70,26,5),{holes:[hole("circle",25,13,3,3,"заклёпка Ø3"),hole("circle",45,13,3,3,"")],notes:"зажим 60×25 мм"}));
+P.push(piece("flap","Клапан",pw,flapH,flapPoly,{holes:[hole("circle",pw/2-4.5,18,3.5,3.5,"кнопка Остров"),hole("circle",pw/2+4.5,18,3.5,3.5,"")]}));
+P.push(piece("studpad","Площадка кнопки",30,30,roundedRect(0,0,30,30,6),{holes:[hole("circle",10.5,15,3.5,3.5,"Остров"),hole("circle",19.5,15,3.5,3.5,"")],notes:"усилитель"}));
+}
+if(/clip/.test(kind))P.push(piece("cliptab","Площадка зажима",70,26,roundedRect(0,0,70,26,5),{holes:[hole("circle",25,13,3,3,"заклёпка Остров"),hole("circle",45,13,3,3,"")],notes:"зажим 60×25 мм"}));
 }
 if(pass){
 const iw=PASSPORT_BY.w+2*s+8,ih=PASSPORT_BY.h+2*s+8;
@@ -1609,11 +1616,11 @@ if(!M.gusset)h.push("Прибавка на обхват торца: +"+fmt(wrapA
 }
 if(/lock/.test(d))h.push("Замок turn-lock ~35×20 мм · овал 16×9, 2 прорези 3×1,5");
 if(/band/.test(d))h.push("Лента-ремешок: кожа "+fmt(M.finW+2*M.seam)+"×32 мм, фурнитура не нужна");
-if(/stud/.test(d))h.push("Кнопка 12,5 мм · 4 отв. Ø3,5 (клапан + площадка)");
+if(/stud/.test(d))h.push("Кнопка 12,5 мм · 4 отв. Остров3,5 (клапан + площадка)");
 if(/magnet/.test(d))h.push("Неодим 10×2 мм, 4 шт · прорези 4×1,5 · проверить полярность");
-if(/zip/.test(d))h.push(isCard()?"Молния №3 · "+fmt(M.finW*2+M.finH)+" мм · пуллер Ø5, 2 концевика":"Молния №5 · "+fmt(M.finW+160)+" мм · пуллер Ø5, 2 концевика");
-if(/clip/.test(d))h.push("Зажим для денег 60×25 мм · заклёпки Ø3 — 2 шт");
-if(/fan/.test(d))h.push("Винт-пост Ø4 мм + шайба · ось веера, "+(clamp(S.cardCount,3,6)+2)+" слоёв");
+if(/zip/.test(d))h.push(isCard()?"Молния №3 · "+fmt(M.finW*2+M.finH)+" мм · пуллер Остров5, 2 концевика":"Молния №5 · "+fmt(M.finW+160)+" мм · пуллер Остров5, 2 концевика");
+if(/clip/.test(d))h.push("Зажим для денег 60×25 мм · заклёпки Остров3 — 2 шт");
+if(/fan/.test(d))h.push("Винт-пост Остров4 мм + шайба · ось веера, "+(clamp(S.cardCount,3,6)+2)+" слоёв");
 if(/acc/.test(d))h.push("Гофре: "+clamp(S.cardCount,3,8)+" секций · разделителей "+(clamp(S.cardCount,3,8)-1));
 if(/pull/.test(d))h.push("Лента-язычок 130×12 мм");
 h.push("Оценка времени: ≈ "+fmt(M.hours)+" ч");
@@ -1790,7 +1797,7 @@ st.push({t:"Формовка корешка",d:"Увлажнить зону ко
 st.push({t:"Клапаны и подгибка",d:"Согнуть боковые клапаны "+fmt(M.flapW)+" мм и подгибку "+fmt(M.turnIn)+" мм. Клапаны должны держать обложку, не мешая открыванию книги."});
 if(S.bookmark)st.push({t:"Закладка-ляссе",d:"Ляссе 18×"+fmt(S.bookH+90)+" мм закрепить в верхней зоне корешка до замыкания подкладки, кончик оплавить или обработать."});
 st.push({t:"Сшивание / склейка",d:"Сшить или склеить подгибку и клапаны по разметке. Шов не должен попадать в зону естественного сгиба книги."});
-st.push({t:"Урез и примерка",d:"Обработать урез последовательно: торцбил №2–3 → шлифовка 400→800→1200 → Tokonole тонким слоем → деревянный сликер 3–5 проходов → воск (для veg-tan) или краска для уреза. Надеть обложку на книгу и проверить, что книга открывается свободно."});
+st.push({t:"Урез и примерка",d:"Обработать урез, нанести кондиционер. Надеть обложку на книгу и проверить, что книга открывается свободно и обложка не сползает."});
 return st;
 }
 if(isCard())st.push({t:"Спускание (skiving)",d:"Припуски до "+fmt(t*.55)+" мм, верхние кромки слотов до "+fmt(t*.4)+" мм — иначе карта будет цеплять."});
@@ -1808,7 +1815,7 @@ if(/slots|clip/.test(kind))st.push({t:"Каскад слотов",d:"Нижни�
 else if(/wrap/.test(kind))st.push({t:"Половины и корешок",d:"Слоты пришить к половинам, затем соединить обёрткой. Корешок увлажнить и продавить бифовкой по линиям сгиба."});
 else if(/acc/.test(kind))st.push({t:"Гофре",d:"Боковины сложить по линиям сгиба ("+clamp(S.cardCount,3,8)+" секций), вставить разделители, зафиксировать зажимами."});
 else if(/zip/.test(kind))st.push({t:"Молния и контур",d:"Молния №3 втачивается по контуру. Концевики и пуллер — до замыкания боковины."});
-else if(/fan/.test(kind))st.push({t:"Ось веера",d:"Собрать "+clamp(S.cardCount,3,6)+" пластин и 2 крышки на винт-пост Ø4. Затяжка свободная — пластины должны вращаться."});
+else if(/fan/.test(kind))st.push({t:"Ось веера",d:"Собрать "+clamp(S.cardCount,3,6)+" пластин и 2 крышки на винт-пост Остров4. Затяжка свободная — пластины должны вращаться."});
 else if(/pull/.test(kind))st.push({t:"Язычок",d:"Ленту 130×12 сложить петлёй и вшить в дно между панелями, выступ 25–30 мм."});
 else st.push({t:"Совмещение панелей",d:"Передняя панель ниже зада, выемка под палец уже в выкройке. Совместить по низу и бокам, верх открыт."});
 if(passportActive())st.push({t:"Вкладыш паспорт РБ",d:"Вкладыш 88×125 мм вшивается в крупную половину. Проверить, что паспорт входит без натяга и не мешает картам."});
@@ -1896,7 +1903,7 @@ kv.push(["Шаг / иглы",fmt(M.pitch)+" мм · "+M.needle]);
 kv.push(["Стежков / нить","≈ "+M.stitches+" · "+fmt(M.threadM)+" м"]);
 kv.push(["Урез",fmt(M.edge)+" м"],["Вес",Math.round(M.weight)+" г"],["Печать","A4 · "+sheetsOf(M)+" лист."],["Время","≈ "+fmt(M.hours)+" ч"]);
 const w=techWarn(M),tips=techTips(M),steps=techSteps(M);
-const tools=["Пробойник ромбовидный, шаг <b>"+fmt(M.pitch)+" мм</b>","Иглы седельные <b>"+M.needle+"</b>, 2 шт","Шило ромбовидное, киянка, мат для пробивки","Нож круглый / косяк, металлическая линейка, лекала","Спускатель (skiving knife) или машинка для спуска","Циркуль-разметчик на <b>"+fmt(S.seam)+" мм</b>","Торцбил №"+(isCard()?"1–2":"2–3")+" для снятия фаски уреза","Шлифовка наждачная 400 / 800 / 1200","Tokonole или CMC — грунт для уреза","Сликер деревянный или костяной","Воск для уреза (veg-tan) или краска Edge Kote / Fenice (сафьян, хром)","Зажимы с прокладкой, ролик прикаточный, кость","Пресс или установщик кнопок, пробойники Ø по выкройке",isBook()?"Сама книга для формовки корешка":"Болванка по внутреннему размеру для формовки"];
+const tools=["Пробойник ромбовидный, шаг <b>"+fmt(M.pitch)+" мм</b>","Иглы седельные <b>"+M.needle+"</b>, 2 шт","Шило ромбовидное, киянка, мат для пробивки","Нож круглый / косяк, металлическая линейка, лекала","Спускатель (skiving knife) или машинка для спуска","Циркуль-разметчик на <b>"+fmt(S.seam)+" мм</b>","Торцбил №"+(isCard()?"1–2":"2–3")+" для снятия фаски уреза","Шлифовка наждачная 400 / 800 / 1200","Tokonole или CMC — грунт для уреза","Сликер деревянный или костяной","Воск для уреза (veg-tan) или краска Edge Kote / Fenice (сафьян, хром)","Зажимы с прокладкой, ролик прикаточный, кость","Пресс или установщик кнопок, пробойники Остров по выкройке",isBook()?"Сама книга для формовки корешка":"Болванка по внутреннему размеру для формовки"];
 htm("techBody",'<div class="grid3" style="margin-top:16px">'
 +'<div class="tcard"><h4><i>1</i>Карта изделия</h4>'+kv.map(k=>'<div class="kv"><span>'+k[0]+'</span><b>'+k[1]+'</b></div>').join("")+'</div>'
 +'<div class="tcard"><h4><i>2</i>Материалы и фурнитура</h4><ul>'+hardwareList(M).map(x=>'<li>'+x+'</li>').join("")+'</ul></div>'
@@ -2307,6 +2314,25 @@ const rad=Math.min(r===undefined?t*.42:r,Math.min(w,h)/2*.9,t/2*.92);
 const g=track(new RBG(Math.max(w,.001),Math.max(h,.001),Math.max(t,.0004),4,Math.max(rad,.0002)));
 const m=new T3.Mesh(g,mat);m.castShadow=true;m.receiveShadow=true;(parent||group).add(m);return m;
 }
+function extrudePoly(pts,depth,mat,parent,bevel){
+const shape=new T3.Shape();
+pts.forEach((p,i)=>{if(i===0)shape.moveTo(p[0],p[1]);else shape.lineTo(p[0],p[1])});
+shape.closePath();
+const geo=track(new T3.ExtrudeGeometry(shape,{
+depth:depth,
+bevelEnabled:!!bevel,
+bevelThickness:bevel?depth*.15:0,
+bevelSize:bevel?depth*.15:0,
+bevelSegments:bevel?2:0,
+curveSegments:8
+}));
+geo.translate(0,0,-depth/2);
+const mesh=new T3.Mesh(geo,mat);
+mesh.castShadow=true;
+mesh.receiveShadow=true;
+(parent||group).add(mesh);
+return mesh;
+}
 function rrPts(w,h,r,iv){
 const W=w/2-iv,H=h/2-iv,rr=Math.max(.0008,r-iv*.5),p=[];
 const cs=[[W-rr,H-rr,0],[-(W-rr),H-rr,Math.PI/2],[-(W-rr),-(H-rr),Math.PI],[W-rr,-(H-rr),1.5*Math.PI]];
@@ -2553,22 +2579,23 @@ const front=raw.find(p=>p.id==="front")||raw[0];
 const back=raw.find(p=>p.id==="back")||raw[0];
 const wrapP=raw.find(p=>p.id==="wrap");
 const rad=Math.min(.008,W*.06,H*.06);
+const panelRad=(w,h)=>Math.min(.006,Math.min(w,h)/5);
 if(wrapP){
 const spineMm=isBook()?M.spine:Math.max(4,M.depth+2*S.thick);
 const spine=spineMm/1000;
 const hw=Math.max(.005,(W-spine)/2);
 const left=new T3.Group();group.add(left);left.position.set(-hw/2-spine/2,0,0);
-const lp=panel(hw,H,t,lm,left,rad);projectMarks(wrapP,hw,H,t/2+.0005,lp,false);
-if(sd){const l=panel(hw-.008,H-.008,liningT()/1000,sd,left,.005);l.position.z=-t/2-liningT()/2000}
+const lp=panel(hw,H,t,lm,left,panelRad(hw,H));projectMarks(wrapP,hw,H,t/2+.0005,lp,false);
+if(sd){const l=panel(hw-.008,H-.008,liningT()/1000,sd,left,panelRad(hw,H)*.9);l.position.z=-t/2-liningT()/2000}
 const piv=new T3.Group();group.add(piv);piv.position.set(spine/2,0,0);
 const right=new T3.Group();piv.add(right);right.position.set(hw/2,0,-(t+.0008));
-const rp=panel(hw,H,t,lm,right,rad);projectMarks(wrapP,hw,H,t/2+.0005,rp,false);
+const rp=panel(hw,H,t,lm,right,panelRad(hw,H));projectMarks(wrapP,hw,H,t/2+.0005,rp,false);
 piv.rotation.y=(op-180)*DEG;
 const spm=new T3.Mesh(track(new T3.BoxGeometry(spine,H,t)),lm2);spm.position.set(0,0,-t/2);spm.castShadow=true;group.add(spm);
 if(isBook()){
 const flapW=M.flapW/1000;
-const lf=panel(flapW,H*.92,t*.7,lm2,left,.004);lf.position.set(-hw/2-flapW/2,0,t*.22);lf.rotation.y=.35;
-const rf=panel(flapW,H*.92,t*.7,lm2,right,.004);rf.position.set(hw/2+flapW/2,0,t*.22);rf.rotation.y=-.35;
+const lf=panel(flapW,H*.92,t*.7,lm2,left,panelRad(flapW,H)*.7);lf.position.set(-hw/2-flapW/2,0,t*.22);lf.rotation.y=.35;
+const rf=panel(flapW,H*.92,t*.7,lm2,right,panelRad(flapW,H)*.7);rf.position.set(hw/2+flapW/2,0,t*.22);rf.rotation.y=-.35;
 if(S.bookmark){const bmsh=panel(.018,(S.bookH+90)/1000,.0012,lm2,group,.001);bmsh.position.set(0,H/2+.03,-.002)}
 frameModel(hw*2+spine+M.flapW/500,H,D);
 return;
@@ -2576,8 +2603,9 @@ return;
 raw.filter(p=>p.id.indexOf("slot")===0).forEach((p,i)=>{
 const side=i%2===0?left:right;
 const sw=(p.w-2*M.seam)/1000,sh=(p.h-2*M.seam)/1000;
-const sl=panel(sw,sh,t*.7,lm2,side,.003);
-sl.position.set(0,-H/2+sh/2+.006+(i%2)*.012,t/2+.0016+ex);
+const slotIdx=Math.floor(i/2);
+const sl=panel(sw,sh,t*.7,lm2,side,panelRad(sw,sh)*.7);
+sl.position.set(0,-H/2+sh/2+.008+slotIdx*.011,t/2+.0016+ex+slotIdx*.0008);
 projectMarks(p,sw,sh,t*.35+.0005,sl,false);
 });
 if(/magnet/.test(kind)){const tab=panel(.055,.020,t*.8,lm2,right,.006);tab.position.set(hw/2-.012,0,t/2+.002)}
@@ -2588,17 +2616,17 @@ if(/fan/.test(kind)){
 const plate=raw.find(p=>p.id==="plate")||front;
 const pw=(plate.w-2*M.seam)/1000,ph=(plate.h-2*M.seam)/1000,n=clamp(S.cardCount,3,6);
 const px=-pw/2+.012,py=-ph/2+.012;
-const backM=panel(pw+.002,ph+.002,t,lm,group,.006);backM.position.z=-D/2-t/2-ex;
+const backM=panel(pw+.002,ph+.002,t,lm,group,panelRad(pw,ph));backM.position.z=-D/2-t/2-ex;
 for(let i=0;i<n;i++){
 const pv=new T3.Group();group.add(pv);
 pv.position.set(px,py,-D/2+(i+1)*(D/(n+1)));
 pv.rotation.z=-(op/180)*(i/(n-1||1))*.95;
-const pl=panel(pw,ph,t*.62,lm2,pv,.004);pl.position.set(pw/2-.012,ph/2-.012,0);
+const pl=panel(pw,ph,t*.62,lm2,pv,panelRad(pw,ph)*.62);pl.position.set(pw/2-.012,ph/2-.012,0);
 projectMarks(plate,pw,ph,t*.31+.0005,pl,false);
 }
 const cv=new T3.Group();group.add(cv);
 cv.position.set(px,py,D/2+t/2+ex);cv.rotation.z=-(op/180)*1.05;
-const cm=panel(pw+.002,ph+.002,t,lm,cv,.006);cm.position.set(pw/2-.012,ph/2-.012,0);
+const cm=panel(pw+.002,ph+.002,t,lm,cv,panelRad(pw,ph));cm.position.set(pw/2-.012,ph/2-.012,0);
 const riv=track(new T3.CylinderGeometry(.004,.004,.006,16));
 const rm=new T3.Mesh(riv,bm);rm.rotation.x=Math.PI/2;rm.position.set(px,py,D/2+t+.003);group.add(rm);
 frameModel(pw*1.5,ph*1.4,D);
@@ -2607,21 +2635,21 @@ return;
 if(/acc/.test(kind)){
 const pl=clamp(S.cardCount,3,8),spread=.3+.7*(op/180),totalW=W*spread;
 const outer=raw.find(p=>p.id==="outer")||front;
-const backM=panel(W,H,t,lm,group,.006);backM.position.z=-D/2-t/2-ex;projectMarks(outer,W,H,t/2+.0005,backM,false);
-const frontM=panel(W,H,t,lm,group,.006);frontM.position.z=D/2+t/2+ex;projectMarks(outer,W,H,t/2+.0005,frontM,false);
+const backM=panel(W,H,t,lm,group,panelRad(W,H));backM.position.z=-D/2-t/2-ex;projectMarks(outer,W,H,t/2+.0005,backM,false);
+const frontM=panel(W,H,t,lm,group,panelRad(W,H));frontM.position.z=D/2+t/2+ex;projectMarks(outer,W,H,t/2+.0005,frontM,false);
 for(let i=0;i<pl-1;i++){
 const x=-totalW/2+totalW*(i+1)/pl;
-const dv=panel(W*.94,H*.9,t*.55,lm2,group,.003);dv.position.set(x*.55,0,0);dv.rotation.y=Math.PI/2;
+const dv=panel(W*.94,H*.9,t*.55,lm2,group,panelRad(W,H)*.55);dv.position.set(x*.55,0,0);dv.rotation.y=Math.PI/2;
 }
 [-1,1].forEach(sg=>{const g=track(new T3.BoxGeometry(t*.6,H,totalW));const m=new T3.Mesh(g,lm2);m.position.set(sg*W/2,0,0);m.castShadow=true;group.add(m)});
 frameModel(W*1.3,H,D+totalW);
 return;
 }
 if(/zip/.test(kind)&&isCard()){
-const backM=panel(W,H,t,lm,group,.006);backM.position.z=-D/2+t/2;projectMarks(back,W,H,t/2+.0005,backM,false);
+const backM=panel(W,H,t,lm,group,panelRad(W,H));backM.position.z=-D/2+t/2;projectMarks(back,W,H,t/2+.0005,backM,false);
 const ring=new T3.Mesh(ringGeo(W,H,rad,t,Math.max(.001,D-2*t)),lm2);ring.castShadow=true;group.add(ring);
 const lid=new T3.Group();group.add(lid);lid.position.set(0,-H/2,D/2-t/2);
-const frontM=panel(W,H,t,lm,lid,.006);frontM.position.set(0,H/2,0);projectMarks(front,W,H,t/2+.0005,frontM,false);
+const frontM=panel(W,H,t,lm,lid,panelRad(W,H));frontM.position.set(0,H/2,0);projectMarks(front,W,H,t/2+.0005,frontM,false);
 lid.rotation.x=-(op/180)*.85;
 zipper([[W/2-.004,H/2-.004],[-W/2+.004,H/2-.004],[-W/2+.004,-H/2+.004],[W/2-.004,-H/2+.004]],0,bm,group);
 frameModel(W,H,D);
@@ -2629,29 +2657,86 @@ return;
 }
 const backH=(back.h-2*M.seam)/1000;
 const frontH=(front.h-2*M.seam)/1000;
-const backM=panel(W,backH,t,lm,group,rad);backM.position.set(0,(backH-H)/2,-D/2+t/2-ex);
+const isShaped=back.poly&&back.poly.length>4&&!isBook()&&/flap/.test(kind)&&(/lock|diag|stud/.test(kind));
+if(isShaped){
+const backPoly=back.poly.map(pt=>[(pt[0]-back.w/2)/1000,(back.h/2-pt[1])/1000]);
+const backM=extrudePoly(backPoly,t,lm,group,true);
+backM.position.set(0,(backH-H)/2,-D/2+t/2-ex);
+projectMarks(back,back.w/1000,backH,t/2+.0005,backM,false);
+if(sd){
+const lPoly=back.poly.map(pt=>[(pt[0]-back.w/2)/1000*.99,(back.h/2-pt[1])/1000*.99]);
+const l=extrudePoly(lPoly,liningT()/1000,sd,group,false);
+l.position.set(0,(backH-H)/2,-D/2-liningT()/2000-ex);
+}
+stitchRect(back.w/1000,backH,rad,seam,-D/2-.0006,tm,backM);
+}else{
+const backM=panel(W,backH,t,lm,group,panelRad(W,backH));backM.position.set(0,(backH-H)/2,-D/2+t/2-ex);
 projectMarks(back,W,backH,t/2+.0005,backM,false);
-if(sd){const l=panel(W-.008,backH-.008,liningT()/1000,sd,group,.005);l.position.set(0,(backH-H)/2,-D/2-liningT()/2000-ex)}
+if(sd){const l=panel(W-.008,backH-.008,liningT()/1000,sd,group,panelRad(W,backH)*.9);l.position.set(0,(backH-H)/2,-D/2-liningT()/2000-ex)}
 stitchRect(W,backH,rad,seam,-D/2-.0006,tm,backM);
-const frontM=panel(W,frontH,t,lm,group,rad);frontM.position.set(0,-(H-frontH)/2,D/2-t/2+ex);
+}
+const frontM=panel(W,frontH,t,lm,group,panelRad(W,frontH));frontM.position.set(0,-(H-frontH)/2,D/2-t/2+ex);
 projectMarks(front,W,frontH,t/2+.0005,frontM,false);
 stitchRect(W,frontH,rad,seam,D/2+.0006,tm,frontM);
 if(M.gusset){const ring=new T3.Mesh(ringGeo(W,H,rad,t,Math.max(.001,D-2*t)),lm2);ring.castShadow=true;ring.receiveShadow=true;group.add(ring)}
-if(/flap/.test(kind)){
-const flL=H*.42;
-const pv=new T3.Group();group.add(pv);pv.position.set(0,H/2,D/2-t/2);
-const fl=panel(W*.98,flL,t,lm2,pv,.006);fl.position.set(0,-flL/2,t*.6+.0012);
-projectMarks(back,W*.98,flL,t/2+.0005,fl,false);
-if(/lock/.test(kind)){
-snap(0,-flL+.020,t*.6+.0012+t/2,bm,fl,.006);
-snap(0,H/2-flL+.020,D/2+.002,bm,group,.006);
+if(/flap/.test(kind)&&!/lock|diag/.test(kind)){
+const flapPiece=raw.find(p=>p.id==="flap");
+if(flapPiece){
+const flW=flapPiece.w/1000,flH=flapPiece.h/1000;
+const isTriangle=flapPiece.poly&&flapPiece.poly.length>=5&&/stud/.test(kind);
+let flapMesh;
+if(isTriangle){
+const flapPoly=flapPiece.poly.map(pt=>[(pt[0]-flapPiece.w/2)/1000,(flapPiece.h/2-pt[1])/1000]);
+flapMesh=extrudePoly(flapPoly,t*.8,lm2,group,true);
+}else{
+flapMesh=panel(W*.98,flH,t*.8,lm2,group,panelRad(W,flH)*.8);
 }
-if(/band/.test(kind)){const bd=panel(W+.004,.022,t*.7,lm2,group,.003);bd.position.set(0,H/2-flL*.7,D/2+t*.5+.002)}
+const pv=new T3.Group();group.add(pv);pv.position.set(0,H/2,D/2-t/2);
+pv.add(flapMesh);
+flapMesh.position.set(0,-flH/2,t*.6+.0012);
+projectMarks(flapPiece,flW,flH,t*.4+.0005,flapMesh,false);
+if(/stud/.test(kind)){
+snap(0,-flH*.7,t*.6+.0012+t*.4,bm,flapMesh,.006);
+snap(0,H/2-flH*.7,D/2+.002,bm,group,.006);
+}
+if(/band/.test(kind)){const bd=panel(W+.004,.022,t*.7,lm2,group,.003);bd.position.set(0,H/2-flH*.7,D/2+t*.5+.002)}
 pv.rotation.x=(op/180)*Math.PI*.95;
+}
+}
+if(/slots|clip/.test(kind)){
+const slotPieces=raw.filter(p=>p.id.indexOf("slot")===0);
+slotPieces.forEach((p,i)=>{
+const sw=(p.w-2*M.seam)/1000,sh=(p.h-2*M.seam)/1000;
+const sl=panel(sw,sh,t*.7,lm2,group,panelRad(sw,sh)*.7);
+sl.position.set(0,-H/2+sh/2+.008+i*.011,D/2+t*.4+.001+ex+i*.0008);
+projectMarks(p,sw,sh,t*.35+.0005,sl,false);
+});
+}
+if(/pull/.test(kind)){
+const ribbon=raw.find(p=>p.id==="ribbon");
+if(ribbon){
+const rw=ribbon.w/1000,rh=ribbon.h/1000;
+const rib=panel(rw,rh,t*.6,lm2,group,.002);
+rib.position.set(0,-H/2-rh/2+.005,0);
+rib.rotation.x=Math.PI/2;
+projectMarks(ribbon,rw,rh,t*.3,rib,false);
+}
+}
+if(/clip/.test(kind)){
+const cliptab=raw.find(p=>p.id==="cliptab");
+if(cliptab){
+const cw=cliptab.w/1000,ch=cliptab.h/1000;
+const clip=panel(cw,ch,t*.5,lm2,group,.003);
+clip.position.set(0,H*.3,D/2+t*.5+.001+ex);
+projectMarks(cliptab,cw,ch,t*.25,clip,false);
+const bmClip=new T3.Mesh(track(new T3.BoxGeometry(.06,.025,.002)),bm);
+bmClip.position.set(0,H*.3,D/2+t*.5+.003+ex);
+group.add(bmClip);
+}
 }
 raw.filter(p=>p.id==="pocket").forEach((p,i)=>{
 const pw=(p.w-2*M.seam)/1000,ph=(p.h-2*M.seam)/1000;
-const pk=panel(pw,ph,t*.75,lm2,group,.005);
+const pk=panel(pw,ph,t*.75,lm2,group,panelRad(pw,ph)*.75);
 pk.position.set(0,-H*.12+i*.014,D/2+t*.4+.001+ex);
 projectMarks(p,pw,ph,t*.38+.0005,pk,false);
 });
@@ -2731,7 +2816,7 @@ let t="Совмещение панелей",d="Передняя панель н�
 if(/wrap/.test(kind)){t="Корешок и половины";d="Слоты пришиваются к половинам, затем половины соединяются обёрткой через корешок."}
 else if(/acc/.test(kind)){t="Гофре и разделители";d="Боковины складываются гофре, разделители вставляются между секциями."}
 else if(/zip/.test(kind)){t="Молния и боковина";d="Молния втачивается по контуру, концевики и пуллер — до замыкания боковины."}
-else if(/fan/.test(kind)){t="Ось веера";d="Пластины и крышки собираются на винт-пост Ø4, затяжка свободная."}
+else if(/fan/.test(kind)){t="Ось веера";d="Пластины и крышки собираются на винт-пост Остров4, затяжка свободная."}
 else if(/slots|clip/.test(kind)){t="Каскад слотов";d="Слоты пришиваются каскадом снизу вверх с шагом 11 мм, верх открыт."}
 else if(/pull/.test(kind)){t="Язычок";d="Лента-язычок вшивается в дно между панелями, выступ 25–30 мм."}
 out[8]={t,d};
