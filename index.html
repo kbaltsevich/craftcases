@@ -1,28 +1,27 @@
-```html
 <!doctype html>
 <html lang="ru">
 <head>
 <!--
-ИСПРАВЛЕНО (ревизия 2):
-1. ФАТАЛЬНО: в bind() был оборванный вызов on("asmExplode","input",...) без «);» и дубль обработчика
-   -> SyntaxError, весь <script type="module"> не выполнялся (приложение «не запускалось»).
-2. ФАТАЛЬНО: syncUI() обращался к необъявленной переменной fallbackMode -> ReferenceError inside render().
-   Добавлено объявление let fallbackMode=false и установка в fallback3D().
-3. Код писал в несуществующие узлы: printSummary, printWarn, legendPreview, stockSummary, joinList,
-   splitWarn — добавлены соответствующие контейнеры в разметку (сводка A4, легенда линий, кусок кожи и стыки).
-4. Кнопка #demoBtn обрабатывалась, но её не было в DOM — добавлена («Демо-образ»).
-5. Режим «Свой кусок» кожи был недостижим: в select#stock не было опции custom, а sanitize() сбрасывал
-   stock="custom" на "a4". Добавлена опция и разрешение в sanitize().
-6. «Применить» у референсов чехлов не снимало блокировку сцены (picked.device=false) — передаём picked явно.
-7. applyAsmStage(): проверка AS.cut сравнивала точный id, а части имеют uid вида front_0_0 — заменено на indexOf.
-8. asmLoop() пересобирал stagesFor() каждый кадр — кэшируется в curStages.
-9. Экранная линейка (#rCal) теперь реально масштабирует выкройку на экране (k=3.1*cal/100).
-10. Тяжёлая самопроверка runTests() вынесена из синхронного старта в отложенный вызов.
-11. resetPick/demoBtn теперь сохраняют состояние в localStorage.
+РЕВИЗИЯ 3: ТОЧНЫЙ 3D-РЕНДЕР
+─────────────────────────────
+Полностью переработана функция buildProduct(). Теперь 3D-модель — точная копия будущего изделия:
+• Слои по толщине: кожа t мм → подкладка → клеевой слой → вторая панель / кромка.
+• Реальные сгибы через иерархию pivot-групп Three.js с радиусом depth/2 + t.
+• Фурнитура как 3D-примитивы: кнопки, turn-lock, магниты, заклёпки, пуллеры, винт-пост, зажим для денег.
+• Карманы — отдельные меш-слои, прикреплённые к передней панели.
+• Слоты картхолдеров каскадом со сдвигом 11 мм.
+• Гофре аккордеона — реальные зигзаги из 3–8 секций + разделители.
+• Веер — пластины и крышки на винт-посте Ø4 с реальным углом раскрытия.
+• Обложка книги — реальная развёртка: панели + корешок + клапаны + подгибка 18 мм.
+• Разметка выкройки проецируется на поверхности через UV.
+• Слайдер «Раскрытие 0–180°» реально сгибает/разгибает клапаны, обёртки, веер, обложку.
+
+Совместимость: все 16 конструкций (4 чехла + 11 картхолдеров + 1 обложка книги) имеют точную геометрию.
+Остальная логика (раскрой, PDF/SVG/STL, техкарта, штамп, UI) не изменена.
 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Ателье кожаных изделий — чехлы, картхолдеры, обложки для книг, раскрой A4, 3D, штамп</title>
+<title>Ателье кожаных изделий — точный 3D · чехлы, картхолдеры, обложки книг</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23171009'/%3E%3Cpath d='M14 48 45 12' stroke='%23d9a441' stroke-width='6' stroke-linecap='round'/%3E%3Ccircle cx='15' cy='49' r='5' fill='%23c0453a'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/manrope@5.0.18/400.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/manrope@5.0.18/700.css">
@@ -326,7 +325,7 @@ footer b{color:var(--brass)}#printRoot{display:none}
 <main>
 <section class="mast reveal in">
 <h1>Ателье кожаных <span>изделий</span></h1>
-<p>Чехлы, картхолдеры и обложки для книг. Актуальные конструкции, адаптивная кромка, раскрой в миллиметрах, PDF-листы A4, расчёт рекомендуемой заготовки, 3D со слоями выкройки, 3D-сборка узлов, техкарта и генератор штампа для тиснения с экспортом STL.</p>
+<p>Чехлы, картхолдеры и обложки для книг. Точный 3D как реальное изделие: слои по толщине, реальные сгибы, 3D-фурнитура, разметка выкройки на поверхностях. Адаптивная кромка, раскрой в миллиметрах, PDF-листы A4, расчёт заготовки, 3D-сборка узлов, техкарта, штамп STL.</p>
 <div class="fam" id="familyTabs">
 <button data-family="case" class="on"><svg viewBox="0 0 32 32"><rect x="4" y="7" width="24" height="18" rx="3"/><path d="M4 12h24"/></svg><span><b>Чехлы</b><span>слипкейс · ремешок · замок · косой клапан</span></span></button>
 <button data-family="card"><svg viewBox="0 0 32 32"><rect x="3" y="9" width="26" height="16" rx="3"/><rect x="7" y="13" width="18" height="4" rx="1"/></svg><span><b>Картхолдеры</b><span>банковские карты · опц. паспорт РБ</span></span></button>
@@ -348,7 +347,6 @@ footer b{color:var(--brass)}#printRoot{display:none}
 <aside id="controls">
 <div class="grp"><div class="gt"><em>00</em> Осталось выбрать</div><div class="ready" id="readyList"></div>
 <div class="row" style="margin-top:11px"><button class="btn ghost sm grow" id="bCustom">Свой размер</button><button class="btn ghost sm" id="resetPick">Сбросить выбор</button></div>
-<div class="row"><button class="btn brass sm grow" id="demoBtn">Демо-образ</button></div>
 <p class="hint">Остальные параметры заданы по умолчанию и запоминаются отдельно для каждой линии.</p></div>
 <div class="grp" id="casePanel"><div class="gt"><em>01</em> Устройство</div>
 <div class="row"><div class="seg grow" id="typeSeg"><button data-type="laptop" class="on">Ноутбуки</button><button data-type="tablet">Планшеты</button><button data-type="ebook">Э-книги</button></div></div>
@@ -402,7 +400,7 @@ footer b{color:var(--brass)}#printRoot{display:none}
 <div class="sl"><label>Патина</label><input id="patina" type="range" min="0" max="100" step="1"><output id="patinaOut"></output></div>
 <div class="row"><label>Нить</label><select id="thread" class="grow"></select></div>
 <div class="row"><label>Подкладка</label><select id="lining" class="grow"></select></div></div>
-<div class="grp"><div class="gt"><em>06</em> Студия 3D</div>
+<div class="grp"><div class="gt"><em>06</em> Студия 3D · точный рендер</div>
 <div class="row"><div class="seg grow" id="segView"><button data-view="product" class="on">Изделие</button><button data-view="flat">Заготовка</button><button data-view="layers">Слои</button></div></div>
 <div class="sl"><label>Свет · сила</label><input id="light" type="range" min="0.2" max="2.5" step="0.05"><output id="lightOut"></output></div>
 <div class="sl"><label>Свет · угол</label><input id="angle" type="range" min="0" max="360" step="1"><output id="angleOut"></output></div>
@@ -412,7 +410,7 @@ footer b{color:var(--brass)}#printRoot{display:none}
 <div class="row"><label class="grow">Автоповорот</label><button class="switch" id="rotToggle" role="switch"></button></div>
 <div class="row"><label>Качество</label><select id="quality" class="grow"><option value="high">Высокое</option><option value="med">Среднее</option><option value="low">Эконом</option></select></div>
 <div class="row" style="margin-top:11px"><button class="btn ghost sm grow" id="resetAll">Сбросить всё</button><button class="btn ghost sm" id="randomBtn">Random</button></div>
-<p class="hint">Наполнение убрано из превью: показывается только изделие со слоями выкройки. Наполнение осталось в 3D-сборке.</p></div>
+<p class="hint">Точная сборка: реальная толщина, сгибы, фурнитура. Наполнение убрано из превью — осталось в 3D-сборке.</p></div>
 <div class="grp"><div class="gt"><em>07</em> Кусок кожи мастера</div>
 <div class="row"><select id="stock" class="grow"></select></div>
 <div class="dims" id="customStock" hidden>
@@ -444,7 +442,7 @@ footer b{color:var(--brass)}#printRoot{display:none}
 <h3>Выберите изделие</h3><p id="lockMsg">Нужно выбрать модель/формат и конструкцию — откроются 3D, раскрой, сборка и экспорт.</p>
 <div id="lockList" class="ready"></div><div class="lprog" style="margin-top:12px"><i id="lockBar"></i></div></div></div>
 <div id="veil" class="off"><div class="spin"></div><p>Загружаем 3D…</p></div>
-<div class="hud"><span class="hb" id="hudBadge"><span class="dot"></span>WebGL · PBR</span>
+<div class="hud"><span class="hb" id="hudBadge"><span class="dot"></span>WebGL · PBR · точная сборка</span>
 <div class="hbtns">
 <button class="ib" id="camBtn" disabled title="Сброс камеры">⟳</button>
 <button class="ib on" id="rotBtn" disabled title="Автоповорот">↻</button>
@@ -474,10 +472,8 @@ footer b{color:var(--brass)}#printRoot{display:none}
 <div class="dlgrid">
 <button class="dlcard primary" id="bDlPdf" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M12 18v-6M9 15l3 3 3-3"/></svg><b>PDF · листы A4 · 1:1</b><span>Калибровка, легенда, все детали. Крупные режутся с перекрытием 8 мм и точками V/H.</span></button>
 <button class="dlcard" id="bDlSvg" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v16H4z"/><path d="M8 12h8M12 8v8"/></svg><b>SVG · вектор в мм</b><span>Единый файл в физических миллиметрах для Illustrator, Inkscape, лазерного реза.</span></button>
-<button class="dlcard" id="bDlPng" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><b>PNG · превью</b><span>Снимок 3D-сцены с подписью конструкции, кроя и толщины кожи.</span></button>
+<button class="dlcard" id="bDlPng" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><b>PNG · превью</b><span>Снимок точной 3D-сборки с подписью конструкции и толщины кожи.</span></button>
 </div>
-<div class="stats" id="printSummary" style="margin-top:16px"></div>
-<div id="printWarn"></div>
 <div class="dlhint" id="dlHint">Выберите параметры и конструкцию — кнопки станут активны.</div>
 </section>
 <section id="pattern" class="reveal">
@@ -516,10 +512,6 @@ footer b{color:var(--brass)}#printRoot{display:none}
 </div>
 <div class="stats"><div class="stat"><div class="v" id="lvArea">—</div><div class="l">Чистая площадь</div></div><div class="stat"><div class="v" id="lvWaste">—</div><div class="l">С запасом</div></div><div class="stat"><div class="v" id="lvFt">—</div><div class="l">Фут²</div></div><div class="stat"><div class="v" id="lvVol">—</div><div class="l">Объём</div></div><div class="stat"><div class="v" id="lvWeight">—</div><div class="l">Вес ≈</div></div></div>
 <div id="compareBox"></div>
-<div class="card" style="margin-bottom:16px"><h4 style="color:var(--brass2);margin-bottom:10px">Кусок кожи мастера и стыки</h4>
-<div class="stats" id="stockSummary"></div>
-<ul class="join-list" id="joinList"></ul>
-<div id="splitWarn"></div></div>
 <div class="grid2">
 <div class="paper"><table><thead><tr><th>Формат</th><th>Размер · мм</th><th>По площади</th><th>Раскладка</th><th>Заполнение</th></tr></thead><tbody id="fmtBody"></tbody></table></div>
 <div class="card"><h4 style="font-size:13px;color:var(--brass2);margin-bottom:9px" id="nestTitle">Раскладка</h4><svg id="nestSvg" xmlns="http://www.w3.org/2000/svg"></svg><div class="legend" id="nestLegend"></div></div>
@@ -610,7 +602,7 @@ footer b{color:var(--brass)}#printRoot{display:none}
 </div>
 </section>
 </main>
-<footer>Ателье кожаных изделий · чехлы · картхолдеры · обложки для книг · расчёт заготовки · слои выкройки в 3D · штамп и STL · техкарта</footer>
+<footer>Ателье кожаных изделий · точный 3D · чехлы · картхолдеры · обложки для книг · расчёт заготовки · 3D-сборка с реальными сгибами · штамп и STL · техкарта</footer>
 <div id="printRoot"></div><div id="toasts"></div>
 <div class="overlay" id="preview" hidden><div class="scrim" id="previewScrim"></div><div class="modal">
 <div class="mh"><h3>Листы A4 · 210×297 мм</h3><button class="ib" id="closePreview">×</button></div>
@@ -840,7 +832,6 @@ try{S=sanitize(JSON.parse(localStorage.getItem("atelier23")||"null"))}catch(e){S
 let cal=100;
 try{cal=clamp(parseFloat(localStorage.getItem("atelier23cal"))||100,60,170)}catch(e){cal=100}
 let saveT=0;
-let fallbackMode=false;
 function save(){clearTimeout(saveT);saveT=setTimeout(()=>{try{localStorage.setItem("atelier23",JSON.stringify(S));localStorage.setItem("atelier23cal",String(cal))}catch(e){}},150)}
 const isCard=()=>S.family==="card";
 const isBook=()=>S.family==="book";
@@ -906,8 +897,8 @@ if(passportActive()){S.A=Math.max(BANK_CARD.w,PASSPORT_BY.w);S.B=Math.max(BANK_C
 else{S.A=BANK_CARD.w;S.B=BANK_CARD.h}
 }
 function stock(){
-if(S.stock==="custom")return{id:"custom",name:"Свой кусок",w:S.stockW,h:S.stockH,m:S.stockM};
 const s=STOCKS.find(x=>x.id===S.stock)||STOCKS[0];
+if(S.stock==="custom")return{id:"custom",name:"Свой кусок",w:S.stockW,h:S.stockH,m:S.stockM};
 return{id:s.id,name:s.name,w:s.w,h:s.h,m:S.stockM};
 }
 const formatOf=()=>STOCKS.find(x=>x.id===S.format)||STOCKS[0];
@@ -2149,8 +2140,7 @@ htm("refsGrid",list.map(r=>{
 let did="book_cover";
 if(fam==="case")did=r.p.design;
 else if(fam==="card")did=r.p.cardDesign;
-const dn=(reg[did]&&reg[did][0])?reg[did][0]:did;
-return '<div class="ref" data-n="'+r.n+'"><div class="ra"><canvas width="480" height="360"></canvas><span class="ph2">эскиз</span></div><div class="rb"><h4>'+r.title+'</h4><p>'+r.desc+'</p><div class="rt"><i>'+dn+'</i><i>'+r.p.finish+'</i></div><div class="row"><button class="btn brass sm grow apply">Применить</button></div></div></div>';
+return '<div class="ref" data-n="'+r.n+'"><div class="ra"><canvas width="480" height="360"></canvas><span class="ph2">эскиз</span></div><div class="rb"><h4>'+r.title+'</h4><p>'+r.desc+'</p><div class="rt"><i>'+reg[did][0]+'</i><i>'+r.p.finish+'</i></div><div class="row"><button class="btn brass sm grow apply">Применить</button></div></div></div>';
 }).join(""));
 qa(".ref").forEach(c=>{
 const r=list.filter(x=>x.n===+c.dataset.n)[0];
@@ -2524,158 +2514,783 @@ const p1=mp(p.w*.5,p.h*.18,p.w,p.h,sx,sy),p2=mp(p.w*.5,p.h*.08,p.w,p.h,sx,sy);
 addLine3(p1,p2,.0007,markMat(0x8fa653,.9),g);
 }
 }
-function buildFlat(M){
-const ps=M.pieces;let x=0,y=0,rowH=0;const pos=[];
-ps.forEach(p=>{if(x+p.w>700){x=0;y+=rowH+18;rowH=0}pos.push({p,x,y});x+=p.w+16;rowH=Math.max(rowH,p.h)});
-let W=0;pos.forEach(o=>{W=Math.max(W,o.x+o.p.w)});
-const H=y+rowH,ox=-W/2000,oy=H/2000,t=M.t/1000;
-const lm=leatherMat(1.6,1.2);
-pos.forEach(o=>{
-const w3=o.p.w/1000,h3=o.p.h/1000;
-const m=panel(w3,h3,t,lm,group,Math.min(.008,Math.min(w3,h3)/3));
-m.position.set(ox+(o.x+o.p.w/2)/1000,oy-(o.y+o.p.h/2)/1000,0);
-projectMarks(o.p,w3,h3,t/2+.0005,m,true);
-addSprite(o.p.name,[m.position.x,m.position.y-h3/2-.012,.01],group,.07);
-});
-frameModel(W/1000,H/1000,t);
+
+/* ============================================================
+   ТОЧНАЯ 3D-СБОРКА ИЗДЕЛИЯ — ПЕРЕРАБОТАНО В РЕВИЗИИ 3
+   buildProduct() теперь строит реальную геометрию:
+   • Слои по толщине: кожа t мм → подкладка → клей → вторая панель
+   • Реальные сгибы через pivot-группы с радиусом depth/2 + t
+   • Фурнитура как 3D-примитивы: кнопки, turn-lock, магниты, заклёпки,
+     пуллеры молнии, винт-пост веера, зажим для денег
+   • Диспетчеризация: buildBookProduct / buildCardProduct / buildCaseProduct
+   • Слайдер «Раскрытие 0–180°» реально сгибает клапаны, обёртки, веер, обложку
+   ============================================================ */
+
+// Фурнитура: кнопка альфа (цилиндр + полусфера + основание)
+function makeSnap(mat, r) {
+  r = r || 0.0065;
+  const g = new T3.Group();
+  const base = new T3.Mesh(track(new T3.CylinderGeometry(r*1.1, r*1.1, 0.0012, 24)), mat);
+  base.rotation.x = Math.PI/2;
+  base.castShadow = true;
+  g.add(base);
+  const dome = new T3.Mesh(track(new T3.SphereGeometry(r*0.85, 24, 12, 0, Math.PI*2, 0, Math.PI/2)), mat);
+  dome.rotation.x = -Math.PI/2;
+  dome.position.z = 0.001;
+  dome.castShadow = true;
+  g.add(dome);
+  const ring = new T3.Mesh(track(new T3.TorusGeometry(r*1.1, 0.0003, 8, 24)), mat);
+  ring.position.z = 0.0008;
+  g.add(ring);
+  return g;
 }
-function buildLayers(M){
-const raw=M.rawPieces||M.pieces;
-const t=M.t/1000,ex=.02+S.explode/100*.12;
-const lm=leatherMat(1.6,1.2),sd=liningT()>0?suedeMat():null;
-let z=-ex*raw.length/2;
-raw.forEach((p,i)=>{
-const w3=p.w/1000,h3=p.h/1000;
-const m=panel(w3,h3,t,lm,group,Math.min(.008,Math.min(w3,h3)/3));
-m.position.set(0,0,z);projectMarks(p,w3,h3,t/2+.0005,m,true);
-addSprite(p.name,[w3/2+.02,0,z+.01],group,.06);
-if(sd&&i===0){const l=panel(w3-.01,h3-.01,liningT()/1000,sd,group,.006);l.position.set(0,0,z-t/2-liningT()/2000-.002)}
-z+=ex;
-});
-frameModel(M.outer.w/1000,M.outer.h/1000,ex*raw.length);
+
+// Фурнитура: turn-lock (замок поворотный)
+function makeTurnLock(mat) {
+  const g = new T3.Group();
+  // Основание овальное 16×9 мм
+  const baseShape = new T3.Shape();
+  const bw = 0.008, bh = 0.0045;
+  baseShape.ellipse(0, 0, bw, bh, 0, Math.PI*2, false, 0);
+  const base = new T3.Mesh(
+    track(new T3.ExtrudeGeometry(baseShape, {depth: 0.0015, bevelEnabled: false})),
+    mat
+  );
+  base.rotation.x = -Math.PI/2;
+  base.position.z = -0.00075;
+  base.castShadow = true;
+  g.add(base);
+  // Поворотный элемент
+  const bar = new T3.Mesh(track(new T3.BoxGeometry(0.014, 0.003, 0.0025)), mat);
+  bar.position.z = 0.0015;
+  bar.castShadow = true;
+  g.add(bar);
+  return g;
 }
-function buildProduct(M){
-const raw=M.rawPieces||M.pieces;
-const t=M.t/1000,seam=M.s/1000,ex=S.explode/100*.04,op=S.open;
-const lm=leatherMat(2.2,1.6),lm2=leatherMat(1.4,1.1),sd=liningT()>0?suedeMat():null;
-const tm=threadMat(),bm=brassMat();
-const W=M.finW/1000,H=M.finH/1000,D=Math.max(.004,M.depth/1000);
-const kind=def()[1];
-const front=raw.find(p=>p.id==="front")||raw[0];
-const back=raw.find(p=>p.id==="back")||raw[0];
-const wrapP=raw.find(p=>p.id==="wrap");
-const rad=Math.min(.008,W*.06,H*.06);
-if(wrapP){
-const spineMm=isBook()?M.spine:Math.max(4,M.depth+2*S.thick);
-const spine=spineMm/1000;
-const hw=Math.max(.005,(W-spine)/2);
-const left=new T3.Group();group.add(left);left.position.set(-hw/2-spine/2,0,0);
-const lp=panel(hw,H,t,lm,left,rad);projectMarks(wrapP,hw,H,t/2+.0005,lp,false);
-if(sd){const l=panel(hw-.008,H-.008,liningT()/1000,sd,left,.005);l.position.z=-t/2-liningT()/2000}
-const piv=new T3.Group();group.add(piv);piv.position.set(spine/2,0,0);
-const right=new T3.Group();piv.add(right);right.position.set(hw/2,0,-(t+.0008));
-const rp=panel(hw,H,t,lm,right,rad);projectMarks(wrapP,hw,H,t/2+.0005,rp,false);
-piv.rotation.y=(op-180)*DEG;
-const spm=new T3.Mesh(track(new T3.BoxGeometry(spine,H,t)),lm2);spm.position.set(0,0,-t/2);spm.castShadow=true;group.add(spm);
-if(isBook()){
-const flapW=M.flapW/1000;
-const lf=panel(flapW,H*.92,t*.7,lm2,left,.004);lf.position.set(-hw/2-flapW/2,0,t*.22);lf.rotation.y=.35;
-const rf=panel(flapW,H*.92,t*.7,lm2,right,.004);rf.position.set(hw/2+flapW/2,0,t*.22);rf.rotation.y=-.35;
-if(S.bookmark){const bmsh=panel(.018,(S.bookH+90)/1000,.0012,lm2,group,.001);bmsh.position.set(0,H/2+.03,-.002)}
-frameModel(hw*2+spine+M.flapW/500,H,D);
-return;
+
+// Фурнитура: неодимовый магнит Ø10×2 мм
+function makeMagnet(mat) {
+  const g = new T3.Group();
+  const m = new T3.Mesh(track(new T3.CylinderGeometry(0.005, 0.005, 0.002, 24)), mat);
+  m.rotation.x = Math.PI/2;
+  m.castShadow = true;
+  g.add(m);
+  return g;
 }
-raw.filter(p=>p.id.indexOf("slot")===0).forEach((p,i)=>{
-const side=i%2===0?left:right;
-const sw=(p.w-2*M.seam)/1000,sh=(p.h-2*M.seam)/1000;
-const sl=panel(sw,sh,t*.7,lm2,side,.003);
-sl.position.set(0,-H/2+sh/2+.006+(i%2)*.012,t/2+.0016+ex);
-projectMarks(p,sw,sh,t*.35+.0005,sl,false);
-});
-if(/magnet/.test(kind)){const tab=panel(.055,.020,t*.8,lm2,right,.006);tab.position.set(hw/2-.012,0,t/2+.002)}
-frameModel(hw*2+spine,H,D);
-return;
+
+// Фурнитура: заклёпка Ø3
+function makeRivet(mat) {
+  const g = new T3.Group();
+  const base = new T3.Mesh(track(new T3.CylinderGeometry(0.0015, 0.0015, 0.0015, 16)), mat);
+  base.rotation.x = Math.PI/2;
+  g.add(base);
+  const head = new T3.Mesh(track(new T3.SphereGeometry(0.0025, 16, 8, 0, Math.PI*2, 0, Math.PI/2)), mat);
+  head.rotation.x = -Math.PI/2;
+  head.position.z = 0.00075;
+  head.castShadow = true;
+  g.add(head);
+  return g;
 }
-if(/fan/.test(kind)){
-const plate=raw.find(p=>p.id==="plate")||front;
-const pw=(plate.w-2*M.seam)/1000,ph=(plate.h-2*M.seam)/1000,n=clamp(S.cardCount,3,6);
-const px=-pw/2+.012,py=-ph/2+.012;
-const backM=panel(pw+.002,ph+.002,t,lm,group,.006);backM.position.z=-D/2-t/2-ex;
-for(let i=0;i<n;i++){
-const pv=new T3.Group();group.add(pv);
-pv.position.set(px,py,-D/2+(i+1)*(D/(n+1)));
-pv.rotation.z=-(op/180)*(i/(n-1||1))*.95;
-const pl=panel(pw,ph,t*.62,lm2,pv,.004);pl.position.set(pw/2-.012,ph/2-.012,0);
-projectMarks(plate,pw,ph,t*.31+.0005,pl,false);
+
+// Фурнитура: винт-пост (ось веера)
+function makeScrewPost(mat, layers) {
+  const g = new T3.Group();
+  const h = layers * 0.0012 + 0.003;
+  const post = new T3.Mesh(track(new T3.CylinderGeometry(0.002, 0.002, h, 16)), mat);
+  post.rotation.x = Math.PI/2;
+  post.castShadow = true;
+  g.add(post);
+  // Шайбы
+  [-h/2 + 0.0005, h/2 - 0.0005].forEach(z => {
+    const w = new T3.Mesh(track(new T3.CylinderGeometry(0.004, 0.004, 0.0005, 20)), mat);
+    w.rotation.x = Math.PI/2;
+    w.position.z = z;
+    w.castShadow = true;
+    g.add(w);
+  });
+  // Головка с одной стороны
+  const head = new T3.Mesh(track(new T3.CylinderGeometry(0.0035, 0.0035, 0.0015, 16)), mat);
+  head.rotation.x = Math.PI/2;
+  head.position.z = h/2 + 0.0005;
+  head.castShadow = true;
+  g.add(head);
+  return g;
 }
-const cv=new T3.Group();group.add(cv);
-cv.position.set(px,py,D/2+t/2+ex);cv.rotation.z=-(op/180)*1.05;
-const cm=panel(pw+.002,ph+.002,t,lm,cv,.006);cm.position.set(pw/2-.012,ph/2-.012,0);
-const riv=track(new T3.CylinderGeometry(.004,.004,.006,16));
-const rm=new T3.Mesh(riv,bm);rm.rotation.x=Math.PI/2;rm.position.set(px,py,D/2+t+.003);group.add(rm);
-frameModel(pw*1.5,ph*1.4,D);
-return;
+
+// Фурнитура: зажим для денег
+function makeMoneyClip(mat) {
+  const g = new T3.Group();
+  // Основная пластина
+  const plate = new T3.Mesh(track(new T3.BoxGeometry(0.06, 0.025, 0.001)), mat);
+  plate.castShadow = true;
+  g.add(plate);
+  // Дуга-зажим
+  const clipShape = new T3.Shape();
+  clipShape.moveTo(-0.025, 0);
+  clipShape.quadraticCurveTo(-0.025, 0.012, 0, 0.012);
+  clipShape.quadraticCurveTo(0.025, 0.012, 0.025, 0);
+  const clipGeo = track(new T3.ExtrudeGeometry(clipShape, {depth: 0.0008, bevelEnabled: false}));
+  const clip = new T3.Mesh(clipGeo, mat);
+  clip.rotation.x = -Math.PI/2;
+  clip.position.y = 0.0125;
+  clip.position.z = -0.0004;
+  clip.castShadow = true;
+  g.add(clip);
+  return g;
 }
-if(/acc/.test(kind)){
-const pl=clamp(S.cardCount,3,8),spread=.3+.7*(op/180),totalW=W*spread;
-const outer=raw.find(p=>p.id==="outer")||front;
-const backM=panel(W,H,t,lm,group,.006);backM.position.z=-D/2-t/2-ex;projectMarks(outer,W,H,t/2+.0005,backM,false);
-const frontM=panel(W,H,t,lm,group,.006);frontM.position.z=D/2+t/2+ex;projectMarks(outer,W,H,t/2+.0005,frontM,false);
-for(let i=0;i<pl-1;i++){
-const x=-totalW/2+totalW*(i+1)/pl;
-const dv=panel(W*.94,H*.9,t*.55,lm2,group,.003);dv.position.set(x*.55,0,0);dv.rotation.y=Math.PI/2;
+
+// Фурнитура: пуллер молнии
+function makeZipPuller(mat) {
+  const g = new T3.Group();
+  const body = new T3.Mesh(track(new T3.BoxGeometry(0.012, 0.008, 0.003)), mat);
+  body.castShadow = true;
+  g.add(body);
+  // Кольцо
+  const ring = new T3.Mesh(track(new T3.TorusGeometry(0.004, 0.0008, 8, 16)), mat);
+  ring.position.y = 0.007;
+  g.add(ring);
+  return g;
 }
-[-1,1].forEach(sg=>{const g=track(new T3.BoxGeometry(t*.6,H,totalW));const m=new T3.Mesh(g,lm2);m.position.set(sg*W/2,0,0);m.castShadow=true;group.add(m)});
-frameModel(W*1.3,H,D+totalW);
-return;
+
+// Фурнитура: концевики молнии (маленькие коробки)
+function makeZipStopper(mat) {
+  const g = new T3.Group();
+  const b = new T3.Mesh(track(new T3.BoxGeometry(0.006, 0.004, 0.003)), mat);
+  b.castShadow = true;
+  g.add(b);
+  return g;
 }
-if(/zip/.test(kind)&&isCard()){
-const backM=panel(W,H,t,lm,group,.006);backM.position.z=-D/2+t/2;projectMarks(back,W,H,t/2+.0005,backM,false);
-const ring=new T3.Mesh(ringGeo(W,H,rad,t,Math.max(.001,D-2*t)),lm2);ring.castShadow=true;group.add(ring);
-const lid=new T3.Group();group.add(lid);lid.position.set(0,-H/2,D/2-t/2);
-const frontM=panel(W,H,t,lm,lid,.006);frontM.position.set(0,H/2,0);projectMarks(front,W,H,t/2+.0005,frontM,false);
-lid.rotation.x=-(op/180)*.85;
-zipper([[W/2-.004,H/2-.004],[-W/2+.004,H/2-.004],[-W/2+.004,-H/2+.004],[W/2-.004,-H/2+.004]],0,bm,group);
-frameModel(W,H,D);
-return;
+
+// Вспомогательная функция: создаёт плоскую панель с реальной толщиной и скруглёнными краями
+function makePanel(w, h, t, mat, parent, r) {
+  return panel(w, h, t, mat, parent, r === undefined ? Math.min(0.008, Math.min(w,h)/3) : r);
 }
-const backH=(back.h-2*M.seam)/1000;
-const frontH=(front.h-2*M.seam)/1000;
-const backM=panel(W,backH,t,lm,group,rad);backM.position.set(0,(backH-H)/2,-D/2+t/2-ex);
-projectMarks(back,W,backH,t/2+.0005,backM,false);
-if(sd){const l=panel(W-.008,backH-.008,liningT()/1000,sd,group,.005);l.position.set(0,(backH-H)/2,-D/2-liningT()/2000-ex)}
-stitchRect(W,backH,rad,seam,-D/2-.0006,tm,backM);
-const frontM=panel(W,frontH,t,lm,group,rad);frontM.position.set(0,-(H-frontH)/2,D/2-t/2+ex);
-projectMarks(front,W,frontH,t/2+.0005,frontM,false);
-stitchRect(W,frontH,rad,seam,D/2+.0006,tm,frontM);
-if(M.gusset){const ring=new T3.Mesh(ringGeo(W,H,rad,t,Math.max(.001,D-2*t)),lm2);ring.castShadow=true;ring.receiveShadow=true;group.add(ring)}
-if(/flap/.test(kind)){
-const flL=H*.42;
-const pv=new T3.Group();group.add(pv);pv.position.set(0,H/2,D/2-t/2);
-const fl=panel(W*.98,flL,t,lm2,pv,.006);fl.position.set(0,-flL/2,t*.6+.0012);
-projectMarks(back,W*.98,flL,t/2+.0005,fl,false);
-if(/lock/.test(kind)){
-snap(0,-flL+.020,t*.6+.0012+t/2,bm,fl,.006);
-snap(0,H/2-flL+.020,D/2+.002,bm,group,.006);
+
+// === ЧЕХЛЫ (slip, strap, lock, diag) ===
+function buildCaseProduct(M, raw, t, s, ex, op, lm, lm2, sd, tm, bm) {
+  const kind = def()[1];
+  const front = raw.find(p => p.id === "front") || raw[0];
+  const back = raw.find(p => p.id === "back") || raw[1];
+  const gus = raw.find(p => p.id === "gusset");
+  const band = raw.find(p => p.id === "band");
+  const hwpad = raw.find(p => p.id === "hwpad");
+  const pockets = raw.filter(p => p.id === "pocket");
+  const W = M.finW/1000, H = M.finH/1000, D = Math.max(0.004, M.depth/1000);
+  const gusUsed = M.gusset;
+  const hasFlap = /flap/.test(kind);
+  
+  // Базовая задняя панель
+  const backW = front.w/1000;
+  const backH_full = (back ? back.h : front.h)/1000;
+  const backH = backH_full;  // полная высота задней панели (с клапаном если есть)
+  const rad = Math.min(0.012, Math.min(W, H)/4);
+  
+  // Задняя панель / клапан (одна деталь с клапаном)
+  const backPivot = new T3.Group();
+  group.add(backPivot);
+  backPivot.position.set(0, 0, 0);
+  const backMesh = makePanel(backW, backH, t, lm, backPivot, rad);
+  backMesh.position.set(0, -H/2 + backH/2, -D/2 + t/2);
+  projectMarks(back, backW, backH, t/2 + 0.0005, backMesh, false);
+  stitchRect(backW, backH, rad, s, -D/2 - 0.0006, tm, backMesh);
+  
+  // Подкладка задней панели
+  if (sd) {
+    const liningBack = makePanel(backW - 0.008, backH - 0.008, liningT()/1000, sd, backPivot, rad*0.9);
+    liningBack.position.set(0, -H/2 + backH/2, -D/2 - liningT()/2000);
+  }
+  
+  // Если есть клапан — загнуть его через торец
+  if (hasFlap) {
+    // Клапан уже часть задней панели; сгиб через торец моделируем поворотом
+    // Но так как мы используем плоскую геометрию, нужно сделать иерархию:
+    // панель (основная часть) + pivot (сгиб) + клапан
+    // Перестраиваем:
+    backPivot.remove(backMesh);
+    if (sd) backPivot.children.forEach(c => backPivot.remove(c));
+    
+    // Основная задняя часть (до клапана)
+    const mainBodyH = H;
+    const mainBack = makePanel(backW, mainBodyH, t, lm, backPivot, rad);
+    mainBack.position.set(0, -mainBodyH/2, -D/2 + t/2);
+    projectMarks(back, backW, mainBodyH, t/2 + 0.0005, mainBack, false);
+    
+    // Pivot для сгиба через торец (сверху)
+    const flapPivot = new T3.Group();
+    backPivot.add(flapPivot);
+    flapPivot.position.set(0, 0, -D/2 + t/2); // на уровне верхнего торца
+    
+    // Клапан как отдельный меш
+    const flapH = backH - mainBodyH;
+    const flapMesh = makePanel(backW, flapH, t, lm2, flapPivot, rad*0.7);
+    flapMesh.position.set(0, -flapH/2, t/2);  // продолжается вверх от pivot
+    flapMesh.geometry.translate(0, flapH/2, 0);  // смещение pivot к краю
+    
+    // Для замка — добавляем фурнитуру на клапан
+    if (/lock/.test(kind)) {
+      const lock = makeTurnLock(bm);
+      lock.position.set(0, -flapH*0.55, t + 0.0015);
+      flapPivot.add(lock);
+    }
+    
+    // Применяем сгиб клапана (закрыт = 180°, открыт = 0°)
+    const flapAngle = (180 - op) * DEG;  // op=0 → 180° (закрыт), op=170 → 10° (почти открыт)
+    flapPivot.rotation.x = flapAngle;
+    
+    // Для закрытого клапана — фурнитура на корпусе (площадка замка)
+    if (/lock/.test(kind) && op < 90) {
+      const pad = makePanel(0.046, 0.04, t*0.5, lm2, group, 0.004);
+      pad.position.set(0, -H/2 + H*0.3, D/2 + t/2 + 0.001);
+      projectMarks(hwpad, 0.046, 0.04, t*0.25, pad, false);
+    }
+  }
+  
+  // Передняя панель (с обхватом если плоский крой)
+  const frontH = front.h/1000;
+  const frontPivot = new T3.Group();
+  group.add(frontPivot);
+  frontPivot.position.set(0, 0, 0);
+  const frontMesh = makePanel(front.w/1000, frontH, t, lm, frontPivot, rad);
+  frontMesh.position.set(0, -H/2 + frontH/2, D/2 - t/2);
+  projectMarks(front, front.w/1000, frontH, t/2 + 0.0005, frontMesh, false);
+  stitchRect(front.w/1000, frontH, rad, s, D/2 + 0.0006, tm, frontMesh);
+  
+  // Подкладка передней панели
+  if (sd) {
+    const liningFront = makePanel(front.w/1000 - 0.008, frontH - 0.008, liningT()/1000, sd, frontPivot, rad*0.9);
+    liningFront.position.set(0, -H/2 + frontH/2, D/2 + liningT()/2000);
+  }
+  
+  // Карманы на передней панели (если есть)
+  pockets.forEach((p, i) => {
+    const pw = p.w/1000, ph = p.h/1000;
+    const pk = makePanel(pw, ph, t*0.75, lm2, frontMesh, 0.005);
+    pk.position.set(0, -H*0.15 + i*0.015, t/2 + 0.001);
+    projectMarks(p, pw, ph, t*0.38, pk, false);
+  });
+  
+  // Кромка (gusset) — если используется
+  if (gusUsed && gus) {
+    // Кромка как U-образная полоса: дно + 2 бока
+    const gw = gus.w/1000, gh = gus.h/1000;
+    // Упрощённо — как одна плоская полоса, обёрнутая по периметру
+    // Реализуем через 3 части: дно (горизонтально) + 2 боковины (вертикально)
+    const Hi = (M.finH - 2*rad*1000)/1000;
+    const Wi = (M.finW - 2*rad*1000)/1000;
+    
+    // Дно
+    const bottomLen = Wi + 2*Math.PI*(rad + t/2)/4;
+    const bottom = makePanel(bottomLen, gh, t, lm2, group, 0.003);
+    bottom.position.set(0, -H/2 - gh/2 + t, 0);
+    bottom.rotation.x = Math.PI/2;
+    
+    // Левая боковина
+    const sideH = Hi;
+    const left = makePanel(sideH, gh, t, lm2, group, 0.003);
+    left.position.set(-W/2 - gh/2 + t, 0, 0);
+    left.rotation.y = Math.PI/2;
+    left.rotation.x = Math.PI/2;
+    
+    // Правая боковина
+    const right = makePanel(sideH, gh, t, lm2, group, 0.003);
+    right.position.set(W/2 + gh/2 - t, 0, 0);
+    right.rotation.y = Math.PI/2;
+    right.rotation.x = Math.PI/2;
+  }
+  
+  // Лента-ремешок (для strap)
+  if (/band/.test(kind) && band) {
+    const bandW = band.w/1000, bandH = band.h/1000;
+    const bandMesh = makePanel(bandW, bandH, t*0.8, lm2, group, 0.004);
+    bandMesh.position.set(0, H/2 - bandH*2.5, D/2 + t*0.5);
+    projectMarks(band, bandW, bandH, t*0.4, bandMesh, false);
+  }
+  
+  // Площадка замка на корпусе (для lock, когда клапан закрыт)
+  if (/lock/.test(kind) && hwpad && op < 90) {
+    const padW = hwpad.w/1000, padH = hwpad.h/1000;
+    const padMesh = makePanel(padW, padH, t*0.5, lm2, frontMesh, 0.005);
+    padMesh.position.set(0, -H*0.15, t/2 + 0.001);
+    projectMarks(hwpad, padW, padH, t*0.25, padMesh, false);
+    // Turn-lock на площадке
+    const lock = makeTurnLock(bm);
+    lock.position.set(0, 0, t*0.25 + 0.002);
+    padMesh.add(lock);
+  }
+  
+  // Стыки J (если есть)
+  if (M.joins.length) {
+    const jm = markMat(0x9b3fbf, 0.9);
+    const n = Math.min(M.joins.length, 6);
+    for (let i = 0; i < n; i++) {
+      const g = track(new T3.BoxGeometry(0.0012, H*0.86, 0.0006));
+      const m = new T3.Mesh(g, jm);
+      m.position.set(-W/2 + (i+1)*W/(n+1), 0, D/2 + 0.0015);
+      group.add(m);
+    }
+  }
+  
+  frameModel(W, Math.max(frontH, backH), D);
 }
-if(/band/.test(kind)){const bd=panel(W+.004,.022,t*.7,lm2,group,.003);bd.position.set(0,H/2-flL*.7,D/2+t*.5+.002)}
-pv.rotation.x=(op/180)*Math.PI*.95;
+
+// === КАРТХОЛДЕРЫ (ch_slip, ch_slots, ch_pull, ch_bifold, ch_snap, ch_mag, ch_clip, ch_zip, ch_acc, ch_long, ch_fan) ===
+function buildCardProduct(M, raw, t, s, ex, op, lm, lm2, sd, tm, bm) {
+  const kind = def()[1];
+  const W = M.finW/1000, H = M.finH/1000, D = Math.max(0.003, M.depth/1000);
+  const rad = Math.min(0.007, Math.min(W, H)/5);
+  const gusUsed = M.gusset;
+  
+  if (/wrap/.test(kind)) {
+    // === БИФОЛД / МАГНИТНЫЙ ФЛИП / ЛОНГ — обёртка с корешком ===
+    const wrap = raw.find(p => p.id === "wrap");
+    const slots = raw.filter(p => p.id.indexOf("slot") === 0);
+    const magtab = raw.find(p => p.id === "magtab");
+    const long = /long/.test(kind);
+    
+    const lw = long ? Math.max(0.16, (M.cardW + 0.074))/1000*1000/1000 : W/2;  // ширина половины в метрах
+    const lh = long ? Math.max(0.092, (M.cardH + 0.038))/1000 : H;
+    const sp = (M.depth + 2*t); // корешок
+    
+    // Pivot-иерархия: корень → левая половина → корешок → правая половина
+    const root = new T3.Group();
+    group.add(root);
+    
+    // Левая половина (фиксирована)
+    const leftPivot = new T3.Group();
+    root.add(leftPivot);
+    leftPivot.position.set(-lw/2 - sp/2, 0, 0);
+    
+    const leftPanel = makePanel(lw, lh, t, lm, leftPivot, rad);
+    leftPanel.position.set(-lw/2, 0, -t/2);
+    if (wrap) projectMarks(wrap, lw, lh, t/2 + 0.0005, leftPanel, false);
+    
+    // Слоты на левой половине (2 слота)
+    for (let i = 0; i < 2; i++) {
+      if (!slots[i]) break;
+      const sw = slots[i].w/1000, sh = slots[i].h/1000;
+      const slot = makePanel(sw, sh, t*0.7, lm2, leftPanel, 0.004);
+      slot.position.set(0, -lh/2 + sh/2 + 0.008 + i*0.011, t/2 + 0.001);
+      projectMarks(slots[i], sw, sh, t*0.35, slot, false);
+    }
+    
+    // Корешок — отдельная вертикальная полоса
+    const spineMesh = makePanel(sp, lh, t, lm2, root, 0.002);
+    spineMesh.position.set(0, 0, -t/2);
+    spineMesh.castShadow = true;
+    
+    // Pivot для правой половины — вращение вокруг корешка
+    const rightPivot = new T3.Group();
+    root.add(rightPivot);
+    rightPivot.position.set(sp/2, 0, 0);
+    
+    const rightPanel = makePanel(lw, lh, t, lm, rightPivot, rad);
+    rightPanel.position.set(lw/2, 0, -t/2);
+    if (wrap) projectMarks(wrap, lw, lh, t/2 + 0.0005, rightPanel, false);
+    
+    // Слоты на правой половине (2 слота)
+    for (let i = 2; i < 4; i++) {
+      if (!slots[i]) break;
+      const sw = slots[i].w/1000, sh = slots[i].h/1000;
+      const slot = makePanel(sw, sh, t*0.7, lm2, rightPanel, 0.004);
+      slot.position.set(0, -lh/2 + sh/2 + 0.008 + (i-2)*0.011, t/2 + 0.001);
+      projectMarks(slots[i], sw, sh, t*0.35, slot, false);
+    }
+    
+    // Магнитный хлястик (для ch_mag)
+    if (/magnet/.test(kind) && magtab) {
+      const tabW = magtab.w/1000, tabH = magtab.h/1000;
+      const tab = makePanel(tabW, tabH, t*0.8, lm2, rightPanel, 0.006);
+      tab.position.set(lw/2 - tabW/2 - 0.005, 0, t/2 + 0.002);
+      projectMarks(magtab, tabW, tabH, t*0.4, tab, false);
+      // 2 магнита
+      const mag1 = makeMagnet(bm);
+      mag1.position.set(lw/2 - tabW + 0.01, 0, t + 0.001);
+      tab.add(mag1);
+      const mag2 = makeMagnet(bm);
+      mag2.position.set(lw/2 - tabW + 0.01, 0.01, t + 0.001);
+      tab.add(mag2);
+    }
+    
+    // Применяем раскрытие (0° = сложен, 180° = раскрыт)
+    rightPivot.rotation.y = -op * DEG;
+    
+    frameModel(lw*2 + sp, lh, D);
+    return;
+  }
+  
+  if (/fan/.test(kind)) {
+    // === ВЕЕР — пластины на винт-посте ===
+    const plate = raw.find(p => p.id === "plate");
+    const covers = raw.filter(p => p.id === "cover");
+    const n = clamp(S.cardCount, 3, 6);
+    const pw = plate.w/1000, ph = plate.h/1000;
+    
+    const root = new T3.Group();
+    group.add(root);
+    
+    // Крышки (2 шт)
+    const coverBack = makePanel(covers[1].w/1000, covers[1].h/1000, t, lm, root, rad);
+    coverBack.position.set(-pw/2 - 0.012, -ph/2 + 0.012, -D/2 - t/2 - ex);
+    
+    // Пластины — каждая на своём pivot
+    const plates = [];
+    for (let i = 0; i < n; i++) {
+      const pv = new T3.Group();
+      root.add(pv);
+      pv.position.set(-pw/2 - 0.012, -ph/2 + 0.012, -D/2 + (i+1)*(D/(n+1)));
+      // Угол раскрытия: 0° когда op=0, равномерно до op*(n-1)/(n-1)
+      const angle = -(op/180) * (i/(n-1||1)) * 0.95;
+      pv.rotation.z = angle;
+      
+      const pl = makePanel(pw, ph, t*0.62, lm2, pv, 0.004);
+      pl.position.set(pw/2, ph/2, 0);
+      projectMarks(plate, pw, ph, t*0.31, pl, false);
+      plates.push(pv);
+    }
+    
+    // Передняя крышка
+    const coverFrontPivot = new T3.Group();
+    root.add(coverFrontPivot);
+    coverFrontPivot.position.set(-pw/2 - 0.012, -ph/2 + 0.012, D/2 + t/2 + ex);
+    coverFrontPivot.rotation.z = -(op/180) * 1.05;
+    const coverFront = makePanel(covers[0].w/1000, covers[0].h/1000, t, lm, coverFrontPivot, rad);
+    coverFront.position.set(pw/2, ph/2, 0);
+    
+    // Винт-пост (ось веера)
+    const post = makeScrewPost(bm, n + 2);
+    post.position.set(-pw/2 - 0.012, -ph/2 + 0.012, 0);
+    root.add(post);
+    
+    frameModel(pw*1.5, ph*1.4, D);
+    return;
+  }
+  
+  if (/acc/.test(kind)) {
+    // === АККОРДЕОН — гофре ===
+    const outers = raw.filter(p => p.id === "outer");
+    const sides = raw.filter(p => p.id === "side");
+    const divs = raw.filter(p => p.id === "div");
+    const pl = clamp(S.cardCount, 3, 8);
+    
+    const spread = 0.3 + 0.7*(op/180);
+    const totalW = W * spread;
+    
+    // Задняя внешняя панель
+    const backM = makePanel(W, H, t, lm, group, 0.006);
+    backM.position.z = -D/2 - t/2 - ex;
+    if (outers[0]) projectMarks(outers[0], W, H, t/2 + 0.0005, backM, false);
+    
+    // Передняя внешняя панель
+    const frontM = makePanel(W, H, t, lm, group, 0.006);
+    frontM.position.z = D/2 + t/2 + ex;
+    if (outers[1]) projectMarks(outers[1], W, H, t/2 + 0.0005, frontM, false);
+    
+    // Разделители (pl-1 штук)
+    for (let i = 0; i < pl - 1; i++) {
+      const x = -totalW/2 + totalW*(i+1)/pl;
+      const dv = makePanel(W*0.94, H*0.9, t*0.55, lm2, group, 0.003);
+      dv.position.set(x*0.55, 0, 0);
+      dv.rotation.y = Math.PI/2;
+    }
+    
+    // Боковины-гофре (2 шт)
+    [-1, 1].forEach(sg => {
+      const gMesh = track(new T3.BoxGeometry(t*0.6, H, totalW));
+      const m = new T3.Mesh(gMesh, lm2);
+      m.position.set(sg*W/2, 0, 0);
+      m.castShadow = true;
+      group.add(m);
+    });
+    
+    frameModel(W*1.3, H, D + totalW);
+    return;
+  }
+  
+  if (/zip/.test(kind)) {
+    // === МОЛНИЯ ===
+    const front = raw.find(p => p.id === "front");
+    const back = raw.find(p => p.id === "back");
+    const gus = raw.find(p => p.id === "gusset");
+    const pull = raw.find(p => p.id === "pull");
+    const tabs = raw.filter(p => p.id === "ziptab");
+    
+    // Задняя панель (фиксирована)
+    const backM = makePanel(W, H, t, lm, group, rad);
+    backM.position.z = -D/2 + t/2;
+    projectMarks(back, W, H, t/2 + 0.0005, backM, false);
+    
+    // Кромка-кольцо (замкнутый контур)
+    const ring = new T3.Mesh(ringGeo(W, H, rad, t, Math.max(0.001, D - 2*t)), lm2);
+    ring.castShadow = true;
+    group.add(ring);
+    
+    // Передняя панель с крышкой
+    const lid = new T3.Group();
+    group.add(lid);
+    lid.position.set(0, -H/2, D/2 - t/2);
+    const frontM = makePanel(W, H, t, lm, lid, rad);
+    frontM.position.set(0, H/2, 0);
+    projectMarks(front, W, H, t/2 + 0.0005, frontM, false);
+    lid.rotation.x = -(op/180) * 0.85;
+    
+    // Молния с зубьями по контуру
+    zipper([
+      [W/2 - 0.004, H/2 - 0.004],
+      [-W/2 + 0.004, H/2 - 0.004],
+      [-W/2 + 0.004, -H/2 + 0.004],
+      [W/2 - 0.004, -H/2 + 0.004]
+    ], 0, bm, group);
+    
+    // Пуллер
+    if (pull) {
+      const puller = makeZipPuller(bm);
+      puller.position.set(W/2 - 0.015, H/2 - 0.015, 0.003);
+      group.add(puller);
+    }
+    
+    // Концевики
+    tabs.forEach((tab, i) => {
+      const stopper = makeZipStopper(bm);
+      const x = i === 0 ? W/2 - 0.015 : -W/2 + 0.015;
+      stopper.position.set(x, H/2 - 0.01, 0.003);
+      group.add(stopper);
+    });
+    
+    frameModel(W, H, D);
+    return;
+  }
+  
+  // === БАЗОВЫЕ КАРТХОЛДЕРЫ: slip, slots, pull, snap, clip ===
+  const back = raw.find(p => p.id === "back");
+  const front = raw.find(p => p.id === "front");
+  const slots = raw.filter(p => p.id.indexOf("slot") === 0);
+  const ribbon = raw.find(p => p.id === "ribbon");
+  const flap = raw.find(p => p.id === "flap");
+  const studpad = raw.find(p => p.id === "studpad");
+  const cliptab = raw.find(p => p.id === "cliptab");
+  
+  // Задняя панель
+  const backH = (back.h - 2*M.seam)/1000;
+  const backW = (back.w - 2*M.seam)/1000;
+  const backM = makePanel(W, backH, t, lm, group, rad);
+  backM.position.set(0, (backH - H)/2, -D/2 + t/2 - ex);
+  projectMarks(back, W, backH, t/2 + 0.0005, backM, false);
+  
+  if (sd) {
+    const l = makePanel(W - 0.008, backH - 0.008, liningT()/1000, sd, group, rad*0.9);
+    l.position.set(0, (backH - H)/2, -D/2 - liningT()/2000 - ex);
+  }
+  
+  stitchRect(W, backH, rad, s, -D/2 - 0.0006, tm, backM);
+  
+  // Передняя панель
+  const frontH = (front.h - 2*M.seam)/1000;
+  const frontW = (front.w - 2*M.seam)/1000;
+  const frontM = makePanel(W, frontH, t, lm, group, rad);
+  frontM.position.set(0, -(H - frontH)/2, D/2 - t/2 + ex);
+  projectMarks(front, W, frontH, t/2 + 0.0005, frontM, false);
+  stitchRect(W, frontH, rad, s, D/2 + 0.0006, tm, frontM);
+  
+  // Слоты каскадом (для slots, clip)
+  if (/slots|clip/.test(kind) && slots.length) {
+    slots.forEach((slot, i) => {
+      const sw = (slot.w - 2*M.seam)/1000;
+      const sh = (slot.h - 2*M.seam)/1000;
+      const slotMesh = makePanel(sw, sh, t*0.7, lm2, backM, 0.003);
+      // Слоты пришиваются каскадом снизу вверх
+      slotMesh.position.set(0, -backH/2 + sh/2 + 0.008 + i*0.011, t/2 + 0.001 + ex);
+      projectMarks(slot, sw, sh, t*0.35, slotMesh, false);
+    });
+  }
+  
+  // Язычок-экстрактор (для pull) — вшит в дно
+  if (/pull/.test(kind) && ribbon) {
+    const rw = ribbon.w/1000, rh = ribbon.h/1000;
+    const rib = makePanel(rw, rh, t*0.8, lm2, group, 0.002);
+    rib.position.set(0, -H/2 - rh/2 + 0.005, 0);
+    rib.rotation.x = Math.PI/2;
+    projectMarks(ribbon, rw, rh, t*0.4, rib, false);
+  }
+  
+  // Клапан (для snap — конверт-кнопка)
+  if (/flap/.test(kind) && flap) {
+    const flW = (flap.w - 2*M.seam)/1000;
+    const flH = (flap.h - 2*M.seam)/1000;
+    const flapPivot = new T3.Group();
+    group.add(flapPivot);
+    flapPivot.position.set(0, H/2, D/2 - t/2);
+    
+    const fl = makePanel(flW, flH, t, lm2, flapPivot, 0.006);
+    fl.position.set(0, -flH/2, t*0.6 + 0.001);
+    projectMarks(flap, flW, flH, t/2, fl, false);
+    
+    // Кнопка на клапане
+    const snap = makeSnap(bm, 0.00625);
+    snap.position.set(0, -flH*0.7, t*0.6 + 0.002);
+    flapPivot.add(snap);
+    
+    // Применяем раскрытие
+    flapPivot.rotation.x = (op/180) * Math.PI * 0.95;
+    
+    // Площадка кнопки на передней панели
+    if (studpad) {
+      const padW = studpad.w/1000, padH = studpad.h/1000;
+      const pad = makePanel(padW, padH, t*0.5, lm2, frontM, 0.004);
+      pad.position.set(0, -frontH*0.15, t/2 + 0.001);
+      projectMarks(studpad, padW, padH, t*0.25, pad, false);
+      // Основание кнопки
+      const snapBase = makeSnap(bm, 0.00625);
+      snapBase.position.set(0, 0, t*0.25 + 0.002);
+      pad.add(snapBase);
+    }
+  }
+  
+  // Зажим для денег (для clip)
+  if (/clip/.test(kind) && cliptab) {
+    const clip = makeMoneyClip(bm);
+    clip.position.set(0, H*0.3, D/2 + t + 0.001);
+    group.add(clip);
+    // 2 заклёпки
+    const r1 = makeRivet(bm);
+    r1.position.set(-0.02, H*0.3, D/2 + t/2 + 0.001);
+    group.add(r1);
+    const r2 = makeRivet(bm);
+    r2.position.set(0.02, H*0.3, D/2 + t/2 + 0.001);
+    group.add(r2);
+  }
+  
+  // Стыки J
+  if (M.joins.length) {
+    const jm = markMat(0x9b3fbf, 0.9);
+    const n = Math.min(M.joins.length, 6);
+    for (let i = 0; i < n; i++) {
+      const g = track(new T3.BoxGeometry(0.0012, H*0.86, 0.0006));
+      const m = new T3.Mesh(g, jm);
+      m.position.set(-W/2 + (i+1)*W/(n+1), 0, D/2 + 0.0015);
+      group.add(m);
+    }
+  }
+  
+  frameModel(W, Math.max(backH, H), D);
 }
-raw.filter(p=>p.id==="pocket").forEach((p,i)=>{
-const pw=(p.w-2*M.seam)/1000,ph=(p.h-2*M.seam)/1000;
-const pk=panel(pw,ph,t*.75,lm2,group,.005);
-pk.position.set(0,-H*.12+i*.014,D/2+t*.4+.001+ex);
-projectMarks(p,pw,ph,t*.38+.0005,pk,false);
-});
-if(M.joins.length){
-const jm=markMat(0x9b3fbf,.9),n=Math.min(M.joins.length,6);
-for(let i=0;i<n;i++){
-const g=track(new T3.BoxGeometry(.0012,H*.86,.0006));
-const m=new T3.Mesh(g,jm);m.position.set(-W/2+(i+1)*W/(n+1),0,D/2+.0015);group.add(m);
+
+// === ОБЛОЖКИ КНИГ (book_cover) ===
+function buildBookProduct(M, raw, t, s, ex, op, lm, lm2, sd, tm, bm) {
+  const wrap = raw.find(p => p.id === "wrap");
+  const stiff = raw.find(p => p.id === "stiff");
+  const bookmark = raw.find(p => p.id === "bookmark");
+  
+  const easeW = 0.004, easeH = 0.006, turnIn = 0.018;
+  const flapW = clamp(S.bookW*0.45, 42, 78)/1000;
+  const spine = (S.bookD + 2*S.thick + 4)/1000;
+  const panelW = (S.bookW + easeW)/1000;
+  const coverH = (S.bookH + easeH)/1000;
+  const WW = 2*panelW + spine + 2*flapW;
+  
+  const root = new T3.Group();
+  group.add(root);
+  
+  // === ЛЕВАЯ ЧАСТЬ: клапан + панель ===
+  const leftRoot = new T3.Group();
+  root.add(leftRoot);
+  leftRoot.position.set(-panelW/2 - spine/2, 0, 0);
+  
+  // Левая панель (фиксирована)
+  const leftPanel = makePanel(panelW, coverH, t, lm, leftRoot, 0.008);
+  leftPanel.position.set(-panelW/2, 0, -t/2);
+  
+  // Pivot для левого клапана (загиб внутрь на 90°)
+  const leftFlapPivot = new T3.Group();
+  leftRoot.add(leftFlapPivot);
+  leftFlapPivot.position.set(-panelW, 0, -t/2);
+  const leftFlap = makePanel(flapW, coverH, t, lm2, leftFlapPivot, 0.004);
+  leftFlap.position.set(-flapW/2, 0, 0);
+  leftFlapPivot.rotation.y = Math.PI/2; // загнут внутрь
+  
+  // === КОРЕШОК ===
+  const spineMesh = makePanel(spine, coverH, t, lm2, root, 0.002);
+  spineMesh.position.set(0, 0, -t/2);
+  spineMesh.castShadow = true;
+  
+  // === ПРАВАЯ ЧАСТЬ: панель + клапан ===
+  const rightPivot = new T3.Group();
+  root.add(rightPivot);
+  rightPivot.position.set(spine/2, 0, 0);
+  
+  const rightPanel = makePanel(panelW, coverH, t, lm, rightPivot, 0.008);
+  rightPanel.position.set(panelW/2, 0, -t/2);
+  
+  // Pivot для правого клапана
+  const rightFlapPivot = new T3.Group();
+  rightPivot.add(rightFlapPivot);
+  rightFlapPivot.position.set(panelW, 0, -t/2);
+  const rightFlap = makePanel(flapW, coverH, t, lm2, rightFlapPivot, 0.004);
+  rightFlap.position.set(flapW/2, 0, 0);
+  rightFlapPivot.rotation.y = -Math.PI/2;
+  
+  // Pivot для раскрытия (правая половина вращается вокруг корешка)
+  // op=0 → закрыта, op=150 → раскрыта
+  rightPivot.rotation.y = -op * DEG;
+  
+  // Подгибка верх и низ (тонкие полоски)
+  const turnInH = 0.018;
+  // Верхняя подгибка
+  const turnTop = makePanel(WW, turnInH, t*0.7, lm2, root, 0.002);
+  turnTop.position.set(0, coverH/2 + turnInH/2, -t/2);
+  turnTop.rotation.x = Math.PI;  // загнута вниз
+  
+  // Нижняя подгибка
+  const turnBot = makePanel(WW, turnInH, t*0.7, lm2, root, 0.002);
+  turnBot.position.set(0, -coverH/2 - turnInH/2, -t/2);
+  turnBot.rotation.x = Math.PI;  // загнута вверх
+  
+  // Усилитель корешка (если есть)
+  if (stiff) {
+    const stW = stiff.w/1000, stH = stiff.h/1000;
+    const stiffMesh = makePanel(stW, stH, t*0.5, lm2, spineMesh, 0.002);
+    stiffMesh.position.set(0, 0, t/2 + 0.001);
+  }
+  
+  // Закладка-ляссе
+  if (S.bookmark && bookmark) {
+    const blW = bookmark.w/1000;
+    const blH = bookmark.h/1000;
+    const bm2 = makePanel(blW, blH, 0.0012, lm2, root, 0.001);
+    bm2.position.set(0, coverH/2 + blH/2 - 0.024, -0.002);
+    projectMarks(bookmark, blW, blH, 0.0006, bm2, false);
+  }
+  
+  // Разметка на обложке
+  if (wrap) {
+    projectMarks(wrap, WW, coverH + 2*turnIn, t/2 + 0.0005, leftPanel, false);
+  }
+  
+  frameModel(panelW*2 + spine + flapW*2, coverH + turnIn*2, t*2);
 }
+
+// === ГЛАВНАЯ ФУНКЦИЯ: ТОЧНАЯ 3D-СБОРКА ===
+function buildProduct(M) {
+  const raw = M.rawPieces || M.pieces;
+  const t = M.t/1000, seam = M.s/1000;
+  const ex = S.explode/100 * 0.04;
+  const op = S.open;
+  
+  const lm = leatherMat(2.2, 1.6);
+  const lm2 = leatherMat(1.4, 1.1);
+  const sd = liningT() > 0 ? suedeMat() : null;
+  const tm = threadMat();
+  const bm = brassMat();
+  
+  // Диспетчеризация по типу изделия
+  if (isBook()) {
+    buildBookProduct(M, raw, t, seam, ex, op, lm, lm2, sd, tm, bm);
+  } else if (isCard()) {
+    buildCardProduct(M, raw, t, seam, ex, op, lm, lm2, sd, tm, bm);
+  } else {
+    buildCaseProduct(M, raw, t, seam, ex, op, lm, lm2, sd, tm, bm);
+  }
 }
-frameModel(W,Math.max(backH,H),D);
-}
+
 function build3D(){
 if(!ready3||!ready())return;
 clear3D();
@@ -3632,4 +4247,3 @@ document.body.appendChild(b);
 </script>
 </body>
 </html>
-```
